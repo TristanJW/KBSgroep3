@@ -7,4 +7,8 @@ public class NetwerkComponent{
     private int onlineTijd;
     private String Ipv4Adres;
     private String Ipv6adres;
+    
+    public NetwerkComponent(){
+        
+    }
 }
