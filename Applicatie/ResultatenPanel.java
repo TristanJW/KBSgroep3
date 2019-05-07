@@ -1,5 +1,9 @@
-public class ResultatenPanel extend JPanel{
+package kbsgroep3;
+
+import javax.swing.*;
+
+public class ResultatenPanel extends JPanel {
     private LeveranciersLijst lijst;
-    private Netwerk netwerk;
+    private HuidigeConfiguratie netwerk;
     
 }

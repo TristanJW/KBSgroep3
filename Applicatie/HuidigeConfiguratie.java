@@ -1,3 +1,7 @@
+package kbsgroep3;
+
+import java.util.ArrayList;
+
 public class HuidigeConfiguratie{
-    private ArrayList<Netwerkcomponenten> netwerkLijst;
+    private ArrayList<NetwerkComponent> netwerkLijst;
 }

@@ -1,3 +1,7 @@
+package kbsgroep3;
+
+import javax.swing.*;
+
 public class ConfiguratiePanel extends JPanel{
-    private Netwerk netwerk;
+    private HuidigeConfiguratie netwerk;
 }

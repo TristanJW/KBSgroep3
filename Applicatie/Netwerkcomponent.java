@@ -1,3 +1,5 @@
+package kbsgroep3;
+
 public class NetwerkComponent{
     private String naam;
     private double prijs;
