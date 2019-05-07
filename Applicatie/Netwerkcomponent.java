@@ -1,4 +1,4 @@
-package kbsgroep3;
+package Applicatie;
 
 public class NetwerkComponent{
     private String naam;

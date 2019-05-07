@@ -1,7 +1,7 @@
-package kbsgroep3;
+package Applicatie;
 
 import javax.swing.*;
 
-public class MonitorPanel extends JPanel{
+public class MonitorPanel extends JPanel {
     private HuidigeConfiguratie netwerk;
 }
