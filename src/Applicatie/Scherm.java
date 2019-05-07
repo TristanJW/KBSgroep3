@@ -4,8 +4,8 @@ import javax.swing.JFrame;
 
 public class Scherm extends JFrame {
 
-    public Scherm(){
+    public Scherm() {
         setVisible(true);
-        setSize(300,300);
+        setSize(300, 300);
     }
 }
