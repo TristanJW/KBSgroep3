@@ -1,8 +1,7 @@
-package kbsgroep3;
 
-public class Main{
+public class Testfile{
 
     public static void main(String[] args) {
-        Scherm scherm = new Scherm();
+        Scherm scherm1 = new Scherm();
     }
 }
