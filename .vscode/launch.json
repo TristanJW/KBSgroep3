@@ -1,5 +1,19 @@
 {
     "configurations": [
+        
+    
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Testfile",
+            "request": "launch",
+            "mainClass": "Testfile"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Main",
+            "request": "launch",
+            "mainClass": "Main"
+        },
         {
             "type": "java",
             "name": "CodeLens (Launch) - Main",

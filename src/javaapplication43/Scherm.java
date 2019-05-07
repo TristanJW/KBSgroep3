@@ -1,4 +1,4 @@
-package Applicatie;
+package kbsgroep3;
 
 import javax.swing.JFrame;
 
