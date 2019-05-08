@@ -13,7 +13,7 @@ public class Scherm extends JFrame {
 
             JFrame f = new JFrame("Applicatie");
             f.setLayout(new BorderLayout());
-
+            
             MonitorPanel p1 = new MonitorPanel();
             ConfiguratiePanel p2 = new ConfiguratiePanel();
             ResultatenPanel p3 = new ResultatenPanel();
@@ -24,7 +24,7 @@ public class Scherm extends JFrame {
             tp.add("Monitoren", p1);
             tp.add("Configuratie", p2);
             tp.add("Resultaten", p3);
-
+            
             f.add(tp);
             f.setSize(600, 600);
             f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

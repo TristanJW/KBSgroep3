@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scherm scherm1 = new Scherm();
-
+        
 //        JDBC database = new JDBC();
 //
 //        ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst");
