@@ -8,10 +8,12 @@ public class ResultatenPanel extends JPanel {
     private HuidigeConfiguratie netwerk;
 
     public void berekenNieuweBeschikbaarheid() {
-        //hier komt het algoritme
+        //hier komt het algoritme die de beschikbaarheid berekent
     }
 
     public ResultatenPanel() { //LeveranciersLijst lijst in argument
+        JPanel p = new JPanel();
+        JTextArea jt = new JTextArea("please write something ", 10, 10);
 
     }
 }
