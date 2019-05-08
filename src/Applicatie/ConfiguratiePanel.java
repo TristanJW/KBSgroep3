@@ -15,7 +15,7 @@ public class ConfiguratiePanel extends JPanel {
         newPanel.setLayout(new FlowLayout());
 
         //namen componenten
-        JTextArea firewall = new JTextArea("firewall pfSense", 100, 100);
+        JLabel firewall = new JLabel ("firewall");
         JLabel loadbalancer = new JLabel("DBloadbalancer");
         JLabel DBserver1 = new JLabel("DBserver HAL9001DB");
         JLabel DBserver2 = new JLabel("DBserver HAL9002DB");
@@ -25,7 +25,7 @@ public class ConfiguratiePanel extends JPanel {
         JLabel webserver3 = new JLabel("webserver HAL9003W");
 
         this.add(firewall);
-        newPanel.add(loadbalancer);
+        this.add(loadbalancer);
         newPanel.add(DBserver1);
         newPanel.add(DBserver2);
         newPanel.add(DBserver3);
