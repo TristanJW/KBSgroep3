@@ -4,11 +4,9 @@ public abstract class Server extends NetwerkComponent{
   private int processorBelasting;
   private int schijfruimte;
 
-public Server(String naam, double prijs, double beschikbaarheidspercentage, int processorBelasting, int schijfruimte) {
-   // super(naam, prijs, beschikbaarheidspercentage);
-    this.processorBelasting = processorBelasting;
-    this.schijfruimte = schijfruimte;
-}  
+    public Server(String naam, double prijs, double beschikbaarheidspercentage) {
+        super(naam, prijs, beschikbaarheidspercentage);
+    }  
 
     public int getProcessorBelasting() {
         return processorBelasting;
