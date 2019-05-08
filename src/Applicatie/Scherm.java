@@ -1,10 +1,14 @@
 package Applicatie;
 
 import java.awt.FlowLayout;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
 
 public class Scherm extends JFrame {
 
@@ -12,23 +16,23 @@ public class Scherm extends JFrame {
 
         {
 
-            JFrame f = new JFrame();
+            JFrame f = new JFrame("Applicatie");
             setLayout(new FlowLayout());
 
-            ResultatenPanel p1 = new ResultatenPanel();
-            MonitorPanel p2 = new MonitorPanel();
-            JPanel p3 = new JPanel();
+            MonitorPanel p1 = new MonitorPanel();
+            ConfiguratiePanel p2 = new ConfiguratiePanel();
+            ResultatenPanel p3 = new ResultatenPanel();
 
             JTabbedPane tp = new JTabbedPane();
             tp.setBounds(0, 0, 600, 600);
 
-            tp.add("Resultaten", p1);
-            tp.add("Monitoren", p2);
-            tp.add("Configuratie", p3);
+            tp.add("Monitoren", p1);
+            tp.add("Configuratie", p2);
+            tp.add("Resultaten", p3);
 
             f.add(tp);
             f.setSize(600, 600);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             f.setLayout(null);
             f.setVisible(true);
         }
