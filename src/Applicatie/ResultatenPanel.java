@@ -1,6 +1,7 @@
 package Applicatie;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ResultatenPanel extends JPanel {
 
@@ -13,7 +14,9 @@ public class ResultatenPanel extends JPanel {
 
     public ResultatenPanel() { //LeveranciersLijst lijst in argument
         JPanel p = new JPanel();
+        setLayout(new FlowLayout());
         JTextArea jt = new JTextArea("please write something ", 10, 10);
-
+        this.add(jt);
+        this.add(p);
     }
 }

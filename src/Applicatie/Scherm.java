@@ -1,5 +1,6 @@
 package Applicatie;
 
+import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -12,6 +13,7 @@ public class Scherm extends JFrame {
         {
 
             JFrame f = new JFrame();
+            setLayout(new FlowLayout());
 
             ResultatenPanel p1 = new ResultatenPanel();
             MonitorPanel p2 = new MonitorPanel();
