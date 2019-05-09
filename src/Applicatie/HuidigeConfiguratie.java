@@ -14,8 +14,15 @@ public class HuidigeConfiguratie {
         netwerkLijst.add(component);
     }
 
-    public double berekenBeschikbaarheid() {
-        return 0; //3. hier komt de berekening voor de beschikbaarheid
+    public double berekenBeschikbaarheid(LeveranciersLijst leverancier) {
+        int echteBeschikbaarheid = 0;
+        
+        ArrayList<NetwerkComponent> combinatie = new ArrayList();
+        ArrayList<NetwerkComponent> aanbod = leverancier.getAanbod();
+        
+        //combinatie.add(aanbod);
+        
+        return echteBeschikbaarheid;
     }
 
 }

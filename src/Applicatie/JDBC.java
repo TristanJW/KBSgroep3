@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  */
 public class JDBC {
     //driver naam en database url
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/NerdyGadgets";
      
     //credentials

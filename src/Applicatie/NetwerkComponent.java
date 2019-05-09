@@ -1,6 +1,6 @@
 package Applicatie;
 
-public class NetwerkComponent{
+public abstract class NetwerkComponent{
     private String naam;
     private double prijs;
     private double beschikbaarheidspercentage;
@@ -29,4 +29,8 @@ public class NetwerkComponent{
     public String getNaam(){
         return naam;
     }
+    
+    public String getClassNaam(){
+        return this.getClass().getSimpleName();
+    } 
 }

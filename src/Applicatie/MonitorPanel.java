@@ -4,4 +4,9 @@ import javax.swing.*;
 
 public class MonitorPanel extends JPanel {
     private HuidigeConfiguratie netwerk;
+    
+    public MonitorPanel(){
+        //GridBagLayout
+        
+    }
 }

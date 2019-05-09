@@ -25,7 +25,7 @@ public class LeveranciersLijst{
                 if (type.equals("Webserver")){
                     Webserver server = new Webserver(naam,prijs,beschikbaarheid);
                     aanbod.add(server);
-                }else if (type.equals("DBServer")){
+                }else if (type.equals("DBserver")){
                     DBServer database = new DBServer(naam,prijs,beschikbaarheid);
                     aanbod.add(database);    
                 }else if (type.equals("firewall")){
@@ -44,5 +44,17 @@ public class LeveranciersLijst{
     public static ArrayList<NetwerkComponent> getAanbod() {
         return aanbod;
     }
+    
+    public NetwerkComponent zoekOpClass(String term){
+        term = term.toLowerCase();
+        NetwerkComponent apparaat = null;
+        
+        for (int i =0; i < aanbod.size(); i++){
+            if(aanbod.get(i).getClassNaam().toLowerCase().equals(term)){
+                apparaat = aanbod.get(i);
+            }
+        }
+        return apparaat;
+    } 
    
 }
