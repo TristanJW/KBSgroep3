@@ -1,44 +1,27 @@
 package Applicatie;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
     private HuidigeConfiguratie netwerk;
+
     JButton DBserverbutton = new JButton();
     JButton firewallbutton = new JButton();
     JButton loadbalancerbutton = new JButton();
     JButton webserverbutton = new JButton();
 
-    JLabel DBserverimage = new JLabel("dbserver.png");
-    JLabel firewallimage = new JLabel("firewall.png");
-    JLabel loadbalancerimage = new JLabel("loadbalancer.png");
-    JLabel webserverimage = new JLabel("webserver.png");
-
     public ConfiguratiePanel() {
 
         try {
 
-            Image DBserver = ImageIO.read(getClass().getResource("dbserver.png"));
-            DBserverbutton.setIcon(new ImageIcon(DBserver));
-            DBserverbutton.addActionListener(this);
+            Image DBserver = ImageIO.read(getClass().getResource("dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
+            DBserverbutton.setIcon(new ImageIcon(DBserver)); // plaats de imageicon in een button
+            DBserverbutton.addActionListener(this); //zorgt ervoor dat de actionlistener kan zien of deze knop is geklikt met e.getsource
 
             Image firewall = ImageIO.read(getClass().getResource("firewall.png"));
             firewallbutton.setIcon(new ImageIcon(firewall));
@@ -52,6 +35,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             webserverbutton.setIcon(new ImageIcon(webserver));
             webserverbutton.addActionListener(this);
 
+            //voegt alle buttons toe aan de panel
             add(DBserverbutton);
             add(firewallbutton);
             add(loadbalancerbutton);
@@ -64,16 +48,23 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == DBserverbutton) {
-            System.out.println("test");
+        if (e.getSource() == DBserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
 
-            System.out.println("test");
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
+            JLabel dbserverlabel = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
+            add(dbserverlabel);
         } else if (e.getSource() == firewallbutton) {
-            System.out.println("test2");
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("firewall.png"));
+            JLabel firewalllabel = new JLabel(imageIcon);
+            add(firewalllabel);
         } else if (e.getSource() == loadbalancerbutton) {
-            System.out.println("test3");
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("loadbalancer.png"));
+            JLabel loadbalancerlabel = new JLabel(imageIcon);
+            add(loadbalancerlabel);
         } else if (e.getSource() == webserverbutton) {
-            System.out.println("test4");
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("webserver.png"));
+            JLabel webserverlabel = new JLabel(imageIcon);
+            add(webserverlabel);
         }
     }
 }
