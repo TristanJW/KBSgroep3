@@ -1,5 +1,6 @@
 package Applicatie;
 
+import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
@@ -8,7 +9,6 @@ public class Scherm extends JFrame {
     public Scherm() {
 
         setTitle("Applicatie");
-
         MonitorPanel p1 = new MonitorPanel();
         ConfiguratiePanel p2 = new ConfiguratiePanel();
         ResultatenPanel p3 = new ResultatenPanel();
