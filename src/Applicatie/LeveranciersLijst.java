@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class LeveranciersLijst{
-    private static ArrayList<NetwerkComponent> aanbod;
+    static ArrayList<NetwerkComponent> aanbodWebserver;
+    static ArrayList<NetwerkComponent> aanbodDBServer;
+    static ArrayList<NetwerkComponent> aanbodLoadBalancer;
+    static ArrayList<NetwerkComponent> aanbodFirewall;
 
     public LeveranciersLijst() {
-        aanbod = new ArrayList<>(); //initalisatie
+        aanbodWebserver = new ArrayList<>();
+        aanbodDBServer = new ArrayList<>();
+        aanbodLoadBalancer = new ArrayList<>();
+        aanbodFirewall = new ArrayList<>();
         
         //netwerkcomponenten maken die de leverancier heeft
         //we gebruiken hiervoor een sql querry aan de hand van het type wordt bepaalt welke constructor
@@ -24,37 +30,21 @@ public class LeveranciersLijst{
                 //type check
                 if (type.equals("Webserver")){
                     Webserver server = new Webserver(naam,prijs,beschikbaarheid);
-                    aanbod.add(server);
+                    aanbodWebserver.add(server);
                 }else if (type.equals("DBserver")){
                     DBServer database = new DBServer(naam,prijs,beschikbaarheid);
-                    aanbod.add(database);    
+                    aanbodDBServer.add(database);    
                 }else if (type.equals("firewall")){
                     Firewall firewall = new Firewall(naam,prijs,beschikbaarheid);
-                    aanbod.add(firewall);
+                    aanbodFirewall.add(firewall);
                 }else if (type.equals("loadbalancer")){
                     LoadBalancer loadbalancer = new LoadBalancer(naam,prijs,beschikbaarheid);
-                    aanbod.add(loadbalancer);
+                    aanbodLoadBalancer.add(loadbalancer);
                 }
             }    
         }catch(SQLException se){
             se.getStackTrace();
         }   
-    }  
-
-    public static ArrayList<NetwerkComponent> getAanbod() {
-        return aanbod;
     }
-    
-    public NetwerkComponent zoekOpClass(String term){
-        term = term.toLowerCase();
-        NetwerkComponent apparaat = null;
-        
-        for (int i =0; i < aanbod.size(); i++){
-            if(aanbod.get(i).getClassNaam().toLowerCase().equals(term)){
-                apparaat = aanbod.get(i);
-            }
-        }
-        return apparaat;
-    } 
    
 }
