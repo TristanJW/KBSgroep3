@@ -16,12 +16,11 @@ public class HuidigeConfiguratie {
 
     public double berekenBeschikbaarheid(LeveranciersLijst leverancier) {
         int echteBeschikbaarheid = 0;
-        
+
         ArrayList<NetwerkComponent> combinatie = new ArrayList();
-        ArrayList<NetwerkComponent> aanbod = leverancier.getAanbod();
-        
+//        ArrayList<NetwerkComponent> aanbod = leverancier.getAanbod();
+
         //combinatie.add(aanbod);
-        
         return echteBeschikbaarheid;
     }
 

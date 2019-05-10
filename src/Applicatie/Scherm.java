@@ -9,15 +9,13 @@ public class Scherm extends JFrame {
     public Scherm() {
 
         setTitle("Applicatie");
-        MonitorPanel p1 = new MonitorPanel();
-        ConfiguratiePanel p2 = new ConfiguratiePanel();
-        ResultatenPanel p3 = new ResultatenPanel();
+        MonitorPanel p2 = new MonitorPanel();
+        ConfiguratiePanel p1 = new ConfiguratiePanel();
 
         JTabbedPane tp = new JTabbedPane();
 
-        tp.add("Monitoren", p1);
-        tp.add("Configuratie", p2);
-        tp.add("Resultaten", p3);
+        tp.add("Configuratie", p1);
+        tp.add("Monitoren", p2);
 
         add(tp);
         setSize(800, 650);

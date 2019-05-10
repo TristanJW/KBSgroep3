@@ -1,9 +1,6 @@
 package Applicatie;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.imageio.ImageIO;
@@ -11,7 +8,8 @@ import javax.swing.*;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
-    private HuidigeConfiguratie netwerk;
+    private HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    private LeveranciersLijst leverancier = new LeveranciersLijst();
 
     static int xcordsdbserver = 125;
     static int xcordsfirewall = 125;
@@ -38,6 +36,10 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     JLabel loadbalancerlabel = new JLabel("Loadbalancer");
     JLabel webserverlabel = new JLabel("Webserver");
 
+//    JComboBox dbservercombo = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
+//    JComboBox firewallcombo = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodDBServer));
+//    JComboBox loadbalancercombo = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodDBServer));
+//    JComboBox webservercombo = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodDBServer));
     public ConfiguratiePanel() {
         setLayout(null);
 
@@ -75,13 +77,19 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             laadbutton.setBounds(400, 550, 150, 20);
             doorgaanbutton.setBounds(600, 550, 150, 20);
             opslaanbutton.setText("Opslaan");
+            opslaanbutton.addActionListener(this);
             add(opslaanbutton);
             laadbutton.setText("Configuratie laden");
+            laadbutton.addActionListener(this);
             add(laadbutton);
             doorgaanbutton.setText("Doorgaan");
-
+            doorgaanbutton.addActionListener(this);
             add(doorgaanbutton);
+
+            // de hoofdtekst bovenaan die toegevoegd word
             add(hoofdtekst);
+
+            // de component buttons die worden toegevoegd met de labels (namen) eronder
             add(DBserverbutton);
             add(DBserverlabel);
             add(firewallbutton);
@@ -90,6 +98,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(loadbalancerlabel);
             add(webserverbutton);
             add(webserverlabel);
+
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -135,6 +144,16 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(webserverlabel);
             add(webserverimage);
             repaint();
+        } else if (e.getSource() == opslaanbutton) {
+//            JDBC database = new JDBC();
+//            database.dataOphalen("INSERT INTO"); // moet nog gedaan worden!
+            System.out.println("test1");
+        } else if (e.getSource() == laadbutton) {
+//            JDBC database = new JDBC();
+//            database.dataOphalen("SELECT * FROM deplaats waar alle configuraties opgeslagen zijn"); // moet nog gedaan worden!
+            System.out.println("test2");
+        } else if (e.getSource() == doorgaanbutton) {
+            System.out.println("test3");
         }
     }
 }
