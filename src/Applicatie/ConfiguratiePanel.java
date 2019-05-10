@@ -23,10 +23,20 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     JButton loadbalancerbutton = new JButton();
     JButton webserverbutton = new JButton();
 
-    JLabel DBserver = new JLabel("DBserver");
-    JLabel firewall = new JLabel("Firewall");
-    JLabel loadbalancer = new JLabel("Loadbalancer");
-    JLabel webserver = new JLabel("Webserver");
+    JButton opslaanbutton = new JButton();
+    JButton laadbutton = new JButton();
+    JButton doorgaanbutton = new JButton();
+
+    JLabel DBserverimage = new JLabel();
+    JLabel firewalllimage = new JLabel();
+    JLabel loadbalancerimage = new JLabel();
+    JLabel webserverimage = new JLabel();
+
+    JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
+    JLabel DBserverlabel = new JLabel("DBserver");
+    JLabel firewalllabel = new JLabel("Firewall");
+    JLabel loadbalancerlabel = new JLabel("Loadbalancer");
+    JLabel webserverlabel = new JLabel("Webserver");
 
     public ConfiguratiePanel() {
         setLayout(null);
@@ -35,7 +45,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
             Image DBserver = ImageIO.read(getClass().getResource("dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
             DBserverbutton.setIcon(new ImageIcon(DBserver)); // plaats de imageicon in een button
-
             DBserverbutton.addActionListener(this); //zorgt ervoor dat de actionlistener kan zien of deze knop is geklikt met e.getsource
             DBserverbutton.setBounds(25, 25, 100, 100);
 
@@ -54,15 +63,33 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             webserverbutton.setBounds(25, 400, 100, 100);
             webserverbutton.addActionListener(this);
 
-            //voegt alle buttons toe aan de panel
+            // zet de labels en buttons op de locatie (x-as, y-as, breedte, hoogte)
+            DBserverlabel.setBounds(45, 85, 100, 100);
+            firewalllabel.setBounds(50, 210, 100, 100);
+            loadbalancerlabel.setBounds(40, 335, 100, 100);
+            webserverlabel.setBounds(45, 460, 100, 100);
+            hoofdtekst.setBounds(250, -30, 400, 100);
+
+            //voegt de 3 buttons onderaan toe met de locatie
+            opslaanbutton.setBounds(200, 550, 150, 20);
+            laadbutton.setBounds(400, 550, 150, 20);
+            doorgaanbutton.setBounds(600, 550, 150, 20);
+            opslaanbutton.setText("Opslaan");
+            add(opslaanbutton);
+            laadbutton.setText("Configuratie laden");
+            add(laadbutton);
+            doorgaanbutton.setText("Doorgaan");
+
+            add(doorgaanbutton);
+            add(hoofdtekst);
             add(DBserverbutton);
-
+            add(DBserverlabel);
             add(firewallbutton);
-
+            add(firewalllabel);
             add(loadbalancerbutton);
-
+            add(loadbalancerlabel);
             add(webserverbutton);
-
+            add(webserverlabel);
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -76,11 +103,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
             ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
             JLabel dbserverlabel = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
-            dbserverlabel.setBounds(xcordsdbserver, 25, 100, 100);
-            xcordsdbserver = this.xcordsdbserver + 75;
+            dbserverlabel.setBounds(xcordsdbserver, 25, 100, 100); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
+            xcordsdbserver = this.xcordsdbserver + 75; // elke keer als er op een knop word gedrukt gaat de volgende afbeelding 75 pixels naar de zijkant zodat het netjes op een rijtje staat
             add(dbserverlabel);
-            add(DBserver);
-            repaint();
+            add(DBserverimage);
+            repaint(); //zorgt ervoor dat als je op de knop klikt de afbeelding realtime word upgedate waardoor je niet hoeft te refreshen om de afbeelding op het scherm te krijgen
         } else if (e.getSource() == firewallbutton) {
 
             ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("firewall.png"));
@@ -88,7 +115,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             firewalllabel.setBounds(xcordsfirewall, 150, 100, 100);
             xcordsfirewall = this.xcordsfirewall + 75;
             add(firewalllabel);
-            add(firewall);
+            add(firewalllimage);
             repaint();
         } else if (e.getSource() == loadbalancerbutton) {
 
@@ -97,7 +124,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             loadbalancerlabel.setBounds(xcordsloadbalancer, 275, 100, 100);
             xcordsloadbalancer = this.xcordsloadbalancer + 75;
             add(loadbalancerlabel);
-            add(loadbalancer);
+            add(loadbalancerimage);
             repaint();
         } else if (e.getSource() == webserverbutton) {
 
@@ -106,7 +133,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             webserverlabel.setBounds(xcordswebserver, 400, 100, 100);
             xcordswebserver = this.xcordswebserver + 75;
             add(webserverlabel);
-            add(webserver);
+            add(webserverimage);
             repaint();
         }
     }

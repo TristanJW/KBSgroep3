@@ -20,7 +20,8 @@ public class Scherm extends JFrame {
         tp.add("Resultaten", p3);
 
         add(tp);
-        setSize(600, 600);
+        setSize(800, 650);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
