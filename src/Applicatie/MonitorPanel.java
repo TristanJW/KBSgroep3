@@ -13,12 +13,12 @@ public class MonitorPanel extends JPanel {
     int aantalcomponenten = 0;
     
     public MonitorPanel(){
-        JPanel panel = new JPanel();
-        JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    scrollPane.getViewport().add(panel);
-    scrollPane.getViewport().setPreferredSize(panel.getPreferredSize());         
+//        JPanel panel = new JPanel();
+//        JScrollPane scrollPane = new JScrollPane();
+//    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//    scrollPane.getViewport().add(panel);
+//    scrollPane.getViewport().setPreferredSize(panel.getPreferredSize());         
 
     
         setLayout(null);
