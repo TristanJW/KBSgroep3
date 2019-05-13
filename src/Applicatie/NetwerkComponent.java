@@ -29,7 +29,11 @@ public abstract class NetwerkComponent{
     public String getNaam(){
         return naam;
     }
-    
+
+    public double getPrijs() {
+        return prijs;
+    }
+
     public String getClassNaam(){
         return this.getClass().getSimpleName();
     } 
