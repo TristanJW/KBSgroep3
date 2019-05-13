@@ -12,16 +12,19 @@ public class HuidigeConfiguratie {
 
     public HuidigeConfiguratie() {
         this.netwerkLijst = new ArrayList<NetwerkComponent>();
-
     }
 
     public void voegToe(NetwerkComponent component) {
         netwerkLijst.add(component);
     }
 
+    // tijdelijke methode die ik even nodig had in ConfiguratiePanel todo remove if not needed anymore
+    public ArrayList<NetwerkComponent> returnConfig() {
+        return netwerkLijst;
+    }
+
     public double berekenBeschikbaarheid(ArrayList<NetwerkComponent> netwerk) {
-        
-        return (berekenFirewall()/100)*(berekenLoadbalancer()/100)*(berekenWebservers()/100)*berekenDBservers();
+        return (berekenFirewall() / 100) * (berekenLoadbalancer() / 100) * (berekenWebservers() / 100) * berekenDBservers();
     }
 
     public void maakCombinatie(double percentage) {
@@ -35,33 +38,32 @@ public class HuidigeConfiguratie {
         // voor elk aanbod van netwerkcomponent wordt de naam in een array gezet.
         // deze naam wordt gebruikt om vervolgens het netwerkcomponent in een aanbod
         // ArrayList te zoeken.
-        
+
         //combinatie toevoegen aan het netwerk zodat we de beschikbaarheid kunnen berekenen.
         voegToe(leverancier.aanbodFirewall.get(0));
         voegToe(leverancier.aanbodLoadBalancer.get(0));
         voegToe(leverancier.aanbodWebserver.get(0));
         voegToe(leverancier.aanbodDBServer.get(0));
-        
-        if (!isVoldaan(percentage,netwerkLijst)){
-            
-                //als het opgeggeven percentage nog niet bereikt is voegen we servers toe.
-                while(hoogstepercentage < percentage){
-                    if(berekenWebservers() < berekenDBservers()){
-                        netwerkLijst.add(leverancier.aanbodWebserver.get(0));
-                    }else {
-                        netwerkLijst.add(leverancier.aanbodDBServer.get(0));
-                    }
-                    hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
-                    System.out.println(hoogstepercentage);
-                    
-                    for(NetwerkComponent nc : netwerkLijst){
-                        System.out.println(nc.getNaam());
-                    }
-                    break;
+
+        if (!isVoldaan(percentage, netwerkLijst)) {
+
+            //als het opgeggeven percentage nog niet bereikt is voegen we servers toe.
+            while (hoogstepercentage < percentage) {
+                if (berekenWebservers() < berekenDBservers()) {
+                    netwerkLijst.add(leverancier.aanbodWebserver.get(0));
+                } else {
+                    netwerkLijst.add(leverancier.aanbodDBServer.get(0));
                 }
-                
+                hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
+                System.out.println(hoogstepercentage);
+
+                for (NetwerkComponent nc : netwerkLijst) {
+                    System.out.println(nc.getNaam());
+                }
+                break;
             }
         }
+    }
 
     private Boolean isErin(String s, ArrayList<NetwerkComponent> aanbod) {
         return netwerkLijst.contains(zoekOpNaam(s, aanbod));
@@ -70,62 +72,62 @@ public class HuidigeConfiguratie {
     public Boolean isVoldaan(double percentage, ArrayList<NetwerkComponent> aanbod) {
         return berekenBeschikbaarheid(aanbod) >= percentage;
     }
-    
-    public double berekenWebservers(){
+
+    public double berekenWebservers() {
         double beschikbaarheid = 1;
-        
+
         //voor elke component wordt gekeken of het een webserver is.
         //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-        for (NetwerkComponent nc: netwerkLijst){
-                if(nc instanceof Webserver){
-                 BigDecimal bdWS = new BigDecimal(nc.getBeschikbaarheid() / 100).setScale(2, RoundingMode.HALF_EVEN);
+        for (NetwerkComponent nc : netwerkLijst) {
+            if (nc instanceof Webserver) {
+                BigDecimal bdWS = new BigDecimal(nc.getBeschikbaarheid() / 100).setScale(2, RoundingMode.HALF_EVEN);
 
-                 if(beschikbaarheid ==1 ){
-                     beschikbaarheid = 1-(1-bdWS.doubleValue());
-                 }else {
-                     beschikbaarheid*=bdWS.doubleValue();
-                 }
-            }
-        }
-        return beschikbaarheid*100;
-    }
-    
-    public double berekenDBservers(){
-        double beschikbaarheid = 1;
-        
-        //voor elke component wordt gekeken of het een DBServer is.
-        //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-        for (NetwerkComponent nc: netwerkLijst){
-            if(nc instanceof DBServer){
-                BigDecimal bdWS = new BigDecimal(nc.getBeschikbaarheid()/100).setScale(2, RoundingMode.HALF_EVEN);
-
-                if(beschikbaarheid ==1 ){
-                    beschikbaarheid = 1-(1-bdWS.doubleValue());
-                }else {
-                    beschikbaarheid*=bdWS.doubleValue();
+                if (beschikbaarheid == 1) {
+                    beschikbaarheid = 1 - (1 - bdWS.doubleValue());
+                } else {
+                    beschikbaarheid *= bdWS.doubleValue();
                 }
             }
         }
-        return beschikbaarheid*100;
-        
+        return beschikbaarheid * 100;
     }
-    
-    public double berekenFirewall(){
+
+    public double berekenDBservers() {
+        double beschikbaarheid = 1;
+
+        //voor elke component wordt gekeken of het een DBServer is.
+        //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
+        for (NetwerkComponent nc : netwerkLijst) {
+            if (nc instanceof DBServer) {
+                BigDecimal bdWS = new BigDecimal(nc.getBeschikbaarheid() / 100).setScale(2, RoundingMode.HALF_EVEN);
+
+                if (beschikbaarheid == 1) {
+                    beschikbaarheid = 1 - (1 - bdWS.doubleValue());
+                } else {
+                    beschikbaarheid *= bdWS.doubleValue();
+                }
+            }
+        }
+        return beschikbaarheid * 100;
+
+    }
+
+    public double berekenFirewall() {
         double beschikbaarheid = 0;
-        
-        for(NetwerkComponent nc : netwerkLijst){
-            if(nc instanceof Firewall){
+
+        for (NetwerkComponent nc : netwerkLijst) {
+            if (nc instanceof Firewall) {
                 beschikbaarheid = nc.getBeschikbaarheid();
             }
         }
         return beschikbaarheid;
     }
-    
-    public double berekenLoadbalancer(){
+
+    public double berekenLoadbalancer() {
         double beschikbaarheid = 0;
-        
-        for(NetwerkComponent nc : netwerkLijst){
-            if (nc instanceof LoadBalancer){
+
+        for (NetwerkComponent nc : netwerkLijst) {
+            if (nc instanceof LoadBalancer) {
                 beschikbaarheid = nc.getBeschikbaarheid();
             }
         }
@@ -146,5 +148,18 @@ public class HuidigeConfiguratie {
             }
         }
         return apparaat;
+    }
+
+    // looped over alle items in de netwerklijst ArrayList en telt de prijs bij elkaar op, returned dit als int
+    public String berekenTotalePrijs() {
+        int totalePrijs = 0;
+        try {
+            for (NetwerkComponent component : netwerkLijst) {
+                totalePrijs += component.getPrijs();
+            }
+        } catch (NullPointerException npe) {
+            System.out.println(npe);
+        }
+        return totalePrijs + " Euro";
     }
 }
