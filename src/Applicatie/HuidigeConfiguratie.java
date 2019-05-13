@@ -83,16 +83,9 @@ public class HuidigeConfiguratie {
                 bDB *= (1 - beschikbaarheidDB[i]);
             }
         }
+        
         // het beschikbaarheidspercentage uitrekenen voor het hele netwerk;
-
-        // *****testen*****
-        System.out.println("Beschikbaarheid firewall: " + bFW);
-        System.out.println("Beschikbaarheid loadbalancer: " + bLB);
-        System.out.println("Beschikbaarheid Webservers: " + bWS);
-        System.out.println("Beschikbaarheid Databaseservers: " + bDB);
-        // *****testen*****
-
-        BigDecimal bdBeschikbaarheid = new BigDecimal(bFW * bLB * bWS * 100).setScale(2, RoundingMode.DOWN);
+        BigDecimal bdBeschikbaarheid = new BigDecimal(bFW * bLB * bWS *bDB * 100).setScale(2, RoundingMode.DOWN);
         return bdBeschikbaarheid.doubleValue();
     }
 

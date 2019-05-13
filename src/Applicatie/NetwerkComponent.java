@@ -33,4 +33,8 @@ public abstract class NetwerkComponent{
     public String getClassNaam(){
         return this.getClass().getSimpleName();
     } 
+    
+    public double getBeschikbaarheid(){
+        return this.beschikbaarheidspercentage;
+    }
 }
