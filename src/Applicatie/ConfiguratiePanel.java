@@ -146,11 +146,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             repaint();
         } else if (e.getSource() == opslaanbutton) {
 //            JDBC database = new JDBC();
-//            database.dataOphalen("INSERT INTO"); // moet nog gedaan worden!
+//            database.dataOphalen("INSERT INTO (tabelnaam waar we configuraties opslaan) VALUES (de componenten die opgeslagen gaan worden)"); // moet nog gedaan worden!
             System.out.println("test1");
         } else if (e.getSource() == laadbutton) {
 //            JDBC database = new JDBC();
-//            database.dataOphalen("SELECT * FROM deplaats waar alle configuraties opgeslagen zijn"); // moet nog gedaan worden!
+//            database.dataOphalen("SELECT naam FROM (tabelnaam waar we configuraties opslaan)"); // moet nog gedaan worden!
             System.out.println("test2");
         } else if (e.getSource() == doorgaanbutton) {
             System.out.println("test3");
