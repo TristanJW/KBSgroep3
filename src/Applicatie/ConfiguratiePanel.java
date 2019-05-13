@@ -1,13 +1,11 @@
 package Applicatie;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Scrollbar;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
@@ -19,30 +17,29 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     static int xcordsloadbalancer = 125;
     static int xcordswebserver = 125;
 
-    JButton DBserverbutton = new JButton();
+    //// BUTTONS ////
+    JButton dbserverbutton = new JButton();
     JButton firewallbutton = new JButton();
     JButton loadbalancerbutton = new JButton();
     JButton webserverbutton = new JButton();
-
+    //// BUTTONS ////
     JButton opslaanbutton = new JButton();
     JButton laadbutton = new JButton();
     JButton doorgaanbutton = new JButton();
-
-    JLabel DBserverimage = new JLabel();
-    JLabel firewalllimage = new JLabel();
-    JLabel loadbalancerimage = new JLabel();
-    JLabel webserverimage = new JLabel();
-
+    //// LABELS ////
     JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
-    JLabel DBserverlabel = new JLabel("DBserver");
+    JLabel dbserverlabel = new JLabel("DBserver");
     JLabel firewalllabel = new JLabel("Firewall");
     JLabel loadbalancerlabel = new JLabel("Loadbalancer");
     JLabel webserverlabel = new JLabel("Webserver");
+    JLabel totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
+    JLabel totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid(netwerk.returnConfig()) + " %");
+    //// DROPDOWNS ////
+    JComboBox dbserverdropdown = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
+    JComboBox firewalldropdown = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodFirewall));
+    JComboBox loadbalancerdropdown = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodLoadBalancer));
+    JComboBox webserverdropdown = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodWebserver));
 
-//    JComboBox dbservercombo = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
-//    JComboBox firewallcombo = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodDBServer));
-//    JComboBox loadbalancercombo = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodDBServer));
-//    JComboBox webservercombo = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodDBServer));
     public ConfiguratiePanel() {
         setLayout(null);
 //        Scrollbar ranger = new Scrollbar(Scrollbar.HORIZONTAL, 30, 20, 0, 500);
@@ -50,33 +47,42 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 //        this.add(ranger);
 
         try {
+            Image DBserver = ImageIO.read(getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
+            dbserverbutton.setIcon(new ImageIcon(DBserver)); // plaats de imageicon in een button
+            dbserverbutton.addActionListener(this); //zorgt ervoor dat de actionlistener kan zien of deze knop is geklikt met e.getsource
+            dbserverbutton.setBounds(25, 25, 100, 80);
 
-            Image DBserver = ImageIO.read(getClass().getResource("dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
-            DBserverbutton.setIcon(new ImageIcon(DBserver)); // plaats de imageicon in een button
-            DBserverbutton.addActionListener(this); //zorgt ervoor dat de actionlistener kan zien of deze knop is geklikt met e.getsource
-            DBserverbutton.setBounds(25, 25, 100, 100);
-
-            Image firewall = ImageIO.read(getClass().getResource("firewall.png"));
+            Image firewall = ImageIO.read(getClass().getResource("resources/firewall.png"));
             firewallbutton.setIcon(new ImageIcon(firewall));
-            firewallbutton.setBounds(25, 150, 100, 100);
+            firewallbutton.setBounds(25, 150, 100, 80);
             firewallbutton.addActionListener(this);
 
-            Image loadbalancer = ImageIO.read(getClass().getResource("loadbalancer.png"));
+            Image loadbalancer = ImageIO.read(getClass().getResource("resources/loadbalancer.png"));
             loadbalancerbutton.setIcon(new ImageIcon(loadbalancer));
-            loadbalancerbutton.setBounds(25, 275, 100, 100);
+            loadbalancerbutton.setBounds(25, 275, 100, 80);
             loadbalancerbutton.addActionListener(this);
 
-            Image webserver = ImageIO.read(getClass().getResource("webserver.png"));
+            Image webserver = ImageIO.read(getClass().getResource("resources/webserver.png"));
             webserverbutton.setIcon(new ImageIcon(webserver));
-            webserverbutton.setBounds(25, 400, 100, 100);
+            webserverbutton.setBounds(25, 400, 100, 80);
             webserverbutton.addActionListener(this);
 
+            // locaties van combo boxes (dropdowns)
+            dbserverdropdown.setBounds(25, 105, 100, 20);
+            firewalldropdown.setBounds(25, 230, 100, 20);
+            loadbalancerdropdown.setBounds(25, 355, 100, 20);
+            webserverdropdown.setBounds(25, 480, 100, 20);
+
             // zet de labels en buttons op de locatie (x-as, y-as, breedte, hoogte)
-            DBserverlabel.setBounds(45, 85, 100, 100);
-            firewalllabel.setBounds(50, 210, 100, 100);
-            loadbalancerlabel.setBounds(40, 335, 100, 100);
-            webserverlabel.setBounds(45, 460, 100, 100);
-            hoofdtekst.setBounds(250, -30, 400, 100);
+            dbserverlabel.setBounds(45, 10, 100, 10);
+            firewalllabel.setBounds(50, 135, 100, 10);
+            loadbalancerlabel.setBounds(40, 260, 100, 10);
+            webserverlabel.setBounds(45, 385, 100, 10);
+            hoofdtekst.setBounds(250, 5, 400, 15);
+            totaleprijslabel.setBounds(50, 530, 400, 15);
+            totaleuptimelabel.setBounds(50, 545, 400, 15);
+            add(totaleprijslabel);
+            add(totaleuptimelabel);
 
             //voegt de 3 buttons onderaan toe met de locatie
             opslaanbutton.setBounds(200, 550, 150, 20);
@@ -95,61 +101,76 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             // de hoofdtekst bovenaan die toegevoegd word
             add(hoofdtekst);
 
+            // add comboboxes (dropdowna)
+            add(dbserverdropdown);
+            add(firewalldropdown);
+            add(loadbalancerdropdown);
+            add(webserverdropdown);
             // de component buttons die worden toegevoegd met de labels (namen) eronder
-            add(DBserverbutton);
-            add(DBserverlabel);
-            add(firewallbutton);
+            add(dbserverlabel);
+            add(dbserverbutton);
             add(firewalllabel);
-            add(loadbalancerbutton);
+            add(firewallbutton);
             add(loadbalancerlabel);
-            add(webserverbutton);
+            add(loadbalancerbutton);
             add(webserverlabel);
+            add(webserverbutton);
 
         } catch (Exception ex) {
             System.out.println(ex);
         }
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //todo dit moet beter kunnen????????!!!!!!!!!???????????????
+        if (e.getSource() == dbserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
+            netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 
-        if (e.getSource() == DBserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
-
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
             JLabel dbserverlabel = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
-            dbserverlabel.setBounds(xcordsdbserver, 25, 100, 100); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
+            JLabel dbservertekstlabel = new JLabel(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex()).getNaam()); // tekst onder het icon dat weergeeft welke type server het is
+            dbserverlabel.setBounds(xcordsdbserver, 25, 100, 80); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
+            dbservertekstlabel.setBounds(xcordsdbserver + 10, 95, 100, 15); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
             xcordsdbserver = this.xcordsdbserver + 75; // elke keer als er op een knop word gedrukt gaat de volgende afbeelding 75 pixels naar de zijkant zodat het netjes op een rijtje staat
             add(dbserverlabel);
-            add(DBserverimage);
-            repaint(); //zorgt ervoor dat als je op de knop klikt de afbeelding realtime word upgedate waardoor je niet hoeft te refreshen om de afbeelding op het scherm te krijgen
-        } else if (e.getSource() == firewallbutton) {
+            add(dbservertekstlabel);
 
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("firewall.png"));
+//            System.out.println(netwerk.berekenBeschikbaarheid(netwerk.returnConfig()));
+//            netwerk.printConfiguratie(); // todo remove when done testing
+        } else if (e.getSource() == firewallbutton) {
+            netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
+
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/firewall.png"));
             JLabel firewalllabel = new JLabel(imageIcon);
-            firewalllabel.setBounds(xcordsfirewall, 150, 100, 100);
+            JLabel firewalltekstlabel = new JLabel(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex()).getNaam());
+            firewalllabel.setBounds(xcordsfirewall, 150, 100, 80);
+            firewalltekstlabel.setBounds(xcordsfirewall + 25, 220, 100, 15);
             xcordsfirewall = this.xcordsfirewall + 75;
             add(firewalllabel);
-            add(firewalllimage);
-            repaint();
+            add(firewalltekstlabel);
         } else if (e.getSource() == loadbalancerbutton) {
+            netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("loadbalancer.png"));
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/loadbalancer.png"));
             JLabel loadbalancerlabel = new JLabel(imageIcon);
-            loadbalancerlabel.setBounds(xcordsloadbalancer, 275, 100, 100);
+            JLabel loadbalancertekstlabel = new JLabel(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex()).getNaam());
+            loadbalancerlabel.setBounds(xcordsloadbalancer, 275, 100, 80);
+            loadbalancertekstlabel.setBounds(xcordsloadbalancer + 15, 345, 70, 20); // todo fix tekst die half afgehakt is
             xcordsloadbalancer = this.xcordsloadbalancer + 75;
             add(loadbalancerlabel);
-            add(loadbalancerimage);
-            repaint();
+            add(loadbalancertekstlabel);
         } else if (e.getSource() == webserverbutton) {
+            netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("webserver.png"));
-            JLabel webserverlabel = new JLabel(imageIcon);
-            webserverlabel.setBounds(xcordswebserver, 400, 100, 100);
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/webserver.png"));
+            JLabel webserverImage = new JLabel(imageIcon);
+            JLabel webservertekstlabel = new JLabel(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex()).getNaam());
+            webserverImage.setBounds(xcordswebserver, 400, 100, 80);
+            webservertekstlabel.setBounds(xcordswebserver + 15, 465, 100, 20);
             xcordswebserver = this.xcordswebserver + 75;
-            add(webserverlabel);
-            add(webserverimage);
-            repaint();
+            add(webserverImage);
+            add(webservertekstlabel);
         } else if (e.getSource() == opslaanbutton) {
             OpslaanDialoog od1 = new OpslaanDialoog();
             System.out.println("test1");
@@ -159,5 +180,10 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         } else if (e.getSource() == doorgaanbutton) {
             System.out.println("test3");
         }
+        // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
+        totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
+        System.out.println(netwerk.returnConfig());
+        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid(netwerk.returnConfig()) + " %"); // update de totale uptime
+        repaint(); //zorgt ervoor dat als je op de knop klikt de afbeelding realtime word upgedate waardoor je niet hoeft te refreshen om de afbeelding op het scherm te krijgen
     }
 }
