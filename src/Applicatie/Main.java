@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scherm scherm1 = new Scherm();
-        
+
         JDBC database = new JDBC();
 
         ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst");
@@ -21,11 +21,11 @@ public class Main {
         } catch (SQLException se) {
             se.printStackTrace();
         }
-        
+
         LeveranciersLijst leverancier = new LeveranciersLijst();
-        ArrayList<NetwerkComponent> servers = leverancier.aanbodWebserver;
-        
-        for(NetwerkComponent s : servers){
+//        ArrayList<NetwerkComponent> servers = leverancier.aanbodWebserver;
+
+        for (NetwerkComponent s : leverancier.aanbodWebserver) {
             System.out.println(s.getNaam());
         }
     }
