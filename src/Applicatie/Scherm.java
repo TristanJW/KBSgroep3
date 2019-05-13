@@ -17,7 +17,7 @@ public class Scherm extends JFrame {
 
         tp.add("Configuratie", p1);
         tp.add("Monitoren", p2);
-        tp.add("Optimalizeren", p3);
+        tp.add("Optimaliseren", p3);
 
         add(tp);
         setSize(800, 650);

@@ -1,10 +1,13 @@
 package Applicatie;
 
+import java.awt.Color;
 import java.awt.Image;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
@@ -42,6 +45,9 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 //    JComboBox webservercombo = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodDBServer));
     public ConfiguratiePanel() {
         setLayout(null);
+//        Scrollbar ranger = new Scrollbar(Scrollbar.HORIZONTAL, 30, 20, 0, 500);
+//        ranger.setBounds(100, 575, 700, 700);
+//        this.add(ranger);
 
         try {
 
@@ -145,12 +151,10 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(webserverimage);
             repaint();
         } else if (e.getSource() == opslaanbutton) {
-//            JDBC database = new JDBC();
-//            database.dataOphalen("INSERT INTO (tabelnaam waar we configuraties opslaan) VALUES (de componenten die opgeslagen gaan worden)"); // moet nog gedaan worden!
+            OpslaanDialoog od1 = new OpslaanDialoog();
             System.out.println("test1");
         } else if (e.getSource() == laadbutton) {
-//            JDBC database = new JDBC();
-//            database.dataOphalen("SELECT naam FROM (tabelnaam waar we configuraties opslaan)"); // moet nog gedaan worden!
+//            LaadDialoog ld1 = new LaadDialoog();
             System.out.println("test2");
         } else if (e.getSource() == doorgaanbutton) {
             System.out.println("test3");
