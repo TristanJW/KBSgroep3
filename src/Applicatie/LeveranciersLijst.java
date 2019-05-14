@@ -46,6 +46,7 @@ public class LeveranciersLijst {
         } catch (SQLException se) {
             se.getStackTrace();
         }
+        System.out.println(aanbodWebserver.get(2).getBeschikbaarheid());
     }
 
     public String[] zoekNaam(String term, ArrayList<NetwerkComponent> lijst) {

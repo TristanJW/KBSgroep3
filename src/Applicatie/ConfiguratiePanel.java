@@ -3,7 +3,6 @@ package Applicatie;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -89,13 +88,10 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             laadbutton.setBounds(400, 550, 150, 20);
             doorgaanbutton.setBounds(600, 550, 150, 20);
             opslaanbutton.setText("Opslaan");
-            opslaanbutton.addActionListener(this);
             add(opslaanbutton);
             laadbutton.setText("Configuratie laden");
-            laadbutton.addActionListener(this);
             add(laadbutton);
             doorgaanbutton.setText("Doorgaan");
-            doorgaanbutton.addActionListener(this);
             add(doorgaanbutton);
 
             // de hoofdtekst bovenaan die toegevoegd word
@@ -171,14 +167,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             xcordswebserver = this.xcordswebserver + 75;
             add(webserverImage);
             add(webservertekstlabel);
-        } else if (e.getSource() == opslaanbutton) {
-            OpslaanDialoog od1 = new OpslaanDialoog();
-            System.out.println("test1");
-        } else if (e.getSource() == laadbutton) {
-//            LaadDialoog ld1 = new LaadDialoog();
-            System.out.println("test2");
-        } else if (e.getSource() == doorgaanbutton) {
-            System.out.println("test3");
         }
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
         totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
