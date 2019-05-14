@@ -23,7 +23,7 @@ public class HuidigeConfiguratie {
         return netwerkLijst;
     }
 
-    public double berekenBeschikbaarheid(ArrayList<NetwerkComponent> netwerk) {
+    public double berekenBeschikbaarheid() {
         return (berekenFirewall() / 100) * (berekenLoadbalancer() / 100) * (berekenWebservers() / 100) * berekenDBservers();
     }
 
@@ -54,8 +54,7 @@ public class HuidigeConfiguratie {
                 } else {
                     netwerkLijst.add(leverancier.aanbodDBServer.get(0));
                 }
-                
-                hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
+                hoogstepercentage = berekenBeschikbaarheid();
                 break;
             }
         }
@@ -66,15 +65,13 @@ public class HuidigeConfiguratie {
     }
 
     public Boolean isVoldaan(double percentage, ArrayList<NetwerkComponent> aanbod) {
-        return berekenBeschikbaarheid(aanbod) >= percentage;
+        return berekenBeschikbaarheid() >= percentage;
     }
 
     public double berekenWebservers() {
         double beschikbaarheid = 1;
-
         //voor elke component wordt gekeken of het een webserver is.
         //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-        
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof Webserver) {
                     beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
@@ -90,7 +87,7 @@ public class HuidigeConfiguratie {
         //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof DBServer) {
-                    beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
+                beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
             }
         }
         return (1-beschikbaarheid)* 100;
@@ -98,27 +95,25 @@ public class HuidigeConfiguratie {
     }
 
     public double berekenFirewall() {
-        double beschikbaarheid = 0;
+        double beschikbaarheid = 1;
 
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof Firewall) {
-                beschikbaarheid = nc.getBeschikbaarheid();
-                break;
+                beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
             }
         }
-        return beschikbaarheid;
+        return (1-beschikbaarheid)*100;
     }
 
     public double berekenLoadbalancer() {
-        double beschikbaarheid = 0;
+        double beschikbaarheid = 1;
 
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof LoadBalancer) {
-                beschikbaarheid = nc.getBeschikbaarheid();
-                break;
+                beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
             }
         }
-        return beschikbaarheid;
+        return (1-beschikbaarheid)*100;
     }
 
     public NetwerkComponent zoekOpNaam(String term, ArrayList<NetwerkComponent> aanbod) {
