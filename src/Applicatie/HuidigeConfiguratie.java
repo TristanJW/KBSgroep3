@@ -162,4 +162,10 @@ public class HuidigeConfiguratie {
         }
         return totalePrijs + " Euro";
     }
+
+    public void configuratieNaarDatabase() {
+        for (NetwerkComponent component : netwerkLijst) {
+            System.out.println(component);
+        }
+    }
 }
