@@ -66,7 +66,7 @@ public class HuidigeConfiguratie {
     }
 
     public Boolean isVoldaan(double percentage, ArrayList<NetwerkComponent> aanbod) {
-        return berekenBeschikbaarheid(aanbod) >= percentage;
+        return berekenBeschikbaarheid() >= percentage;
     }
 
     public double berekenWebservers() {
