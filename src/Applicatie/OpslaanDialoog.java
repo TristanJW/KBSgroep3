@@ -5,9 +5,12 @@
  */
 package Applicatie;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 
@@ -17,19 +20,20 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
  */
 public class OpslaanDialoog extends JDialog implements ActionListener {
 
-    String dialoog1;
+    public OpslaanDialoog(JFrame frame1) {
+        super(frame1, true);
+        setTitle("Opslaan");
+        setSize(300, 150);
+        setVisible(true);
 
-    public OpslaanDialoog() {
-        String dialoog1 = JOptionPane.showInputDialog("vul een naam in");
+        JButton opslaanbutton = new JButton();
+        opslaanbutton.setBounds(0, 0, 50, 50);
+        opslaanbutton.setVisible(true);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (JOptionPane.OK_OPTION == 0) {
-            System.out.println("TESTTESTTEST");
-        }
 
     }
-
 }
