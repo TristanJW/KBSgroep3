@@ -32,7 +32,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     JLabel loadbalancerlabel = new JLabel("Loadbalancer");
     JLabel webserverlabel = new JLabel("Webserver");
     JLabel totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
-    JLabel totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid(netwerk.returnConfig()) + " %");
+    JLabel totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid() + " %");
     //// DROPDOWNS ////
     JComboBox dbserverdropdown = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
     JComboBox firewalldropdown = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodFirewall));
@@ -171,7 +171,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
         totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
         System.out.println(netwerk.returnConfig());
-        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid(netwerk.returnConfig()) + " %"); // update de totale uptime
+        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
         repaint(); //zorgt ervoor dat als je op de knop klikt de afbeelding realtime word upgedate waardoor je niet hoeft te refreshen om de afbeelding op het scherm te krijgen
     }
 }
