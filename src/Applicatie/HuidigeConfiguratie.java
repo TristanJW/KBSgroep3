@@ -44,23 +44,23 @@ public class HuidigeConfiguratie {
         voegToe(leverancier.aanbodLoadBalancer.get(0));
         voegToe(leverancier.aanbodWebserver.get(0));
         voegToe(leverancier.aanbodDBServer.get(0));
-
+        
+        
         if (!isVoldaan(percentage, netwerkLijst)) {
-
             //als het opgeggeven percentage nog niet bereikt is voegen we servers toe.
             while (hoogstepercentage < percentage) {
                 if (berekenWebservers() < berekenDBservers()) {
-                    netwerkLijst.add(leverancier.aanbodWebserver.get(0));
+                    netwerkLijst.add(leverancier.aanbodWebserver.get(2));
                 } else {
                     netwerkLijst.add(leverancier.aanbodDBServer.get(0));
                 }
+
+                System.out.println(berekenBeschikbaarheid(netwerkLijst));
                 hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
-                System.out.println(hoogstepercentage);
 
                 for (NetwerkComponent nc : netwerkLijst) {
                     System.out.println(nc.getNaam());
                 }
-                break;
             }
         }
     }
@@ -78,18 +78,13 @@ public class HuidigeConfiguratie {
 
         //voor elke component wordt gekeken of het een webserver is.
         //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
+        
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof Webserver) {
-                BigDecimal bdWS = new BigDecimal(nc.getBeschikbaarheid() / 100).setScale(2, RoundingMode.HALF_EVEN);
-
-                if (beschikbaarheid == 1) {
-                    beschikbaarheid = 1 - (1 - bdWS.doubleValue());
-                } else {
-                    beschikbaarheid *= bdWS.doubleValue();
+                    beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
                 }
-            }
         }
-        return beschikbaarheid * 100;
+        return (1-beschikbaarheid)* 100;
     }
 
     public double berekenDBservers() {
@@ -99,16 +94,10 @@ public class HuidigeConfiguratie {
         //hierna wordt de formule uitgevoerd voor de beschikbaarheid.
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof DBServer) {
-                BigDecimal bdWS = new BigDecimal(nc.getBeschikbaarheid() / 100).setScale(2, RoundingMode.HALF_EVEN);
-
-                if (beschikbaarheid == 1) {
-                    beschikbaarheid = 1 - (1 - bdWS.doubleValue());
-                } else {
-                    beschikbaarheid *= bdWS.doubleValue();
-                }
+                    beschikbaarheid *= (1-(nc.getBeschikbaarheid()/100));
             }
         }
-        return beschikbaarheid * 100;
+        return (1-beschikbaarheid)* 100;
 
     }
 
@@ -118,6 +107,7 @@ public class HuidigeConfiguratie {
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof Firewall) {
                 beschikbaarheid = nc.getBeschikbaarheid();
+                break;
             }
         }
         return beschikbaarheid;
@@ -129,6 +119,7 @@ public class HuidigeConfiguratie {
         for (NetwerkComponent nc : netwerkLijst) {
             if (nc instanceof LoadBalancer) {
                 beschikbaarheid = nc.getBeschikbaarheid();
+                break;
             }
         }
         return beschikbaarheid;
