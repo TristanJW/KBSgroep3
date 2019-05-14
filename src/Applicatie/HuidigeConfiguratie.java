@@ -23,7 +23,7 @@ public class HuidigeConfiguratie {
         return netwerkLijst;
     }
 
-    public double berekenBeschikbaarheid(ArrayList<NetwerkComponent> netwerk) {
+    public double berekenBeschikbaarheid() {
         return (berekenFirewall() / 100) * (berekenLoadbalancer() / 100) * (berekenWebservers() / 100) * berekenDBservers();
     }
 
@@ -55,7 +55,7 @@ public class HuidigeConfiguratie {
                     netwerkLijst.add(leverancier.aanbodDBServer.get(0));
                 }
                 
-                hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
+                hoogstepercentage = berekenBeschikbaarheid();
                 break;
             }
         }
@@ -66,7 +66,7 @@ public class HuidigeConfiguratie {
     }
 
     public Boolean isVoldaan(double percentage, ArrayList<NetwerkComponent> aanbod) {
-        return berekenBeschikbaarheid(aanbod) >= percentage;
+        return berekenBeschikbaarheid() >= percentage;
     }
 
     public double berekenWebservers() {
