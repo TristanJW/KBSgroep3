@@ -24,7 +24,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     //// BUTTONS ////
     JButton opslaanbutton = new JButton();
     JButton laadbutton = new JButton();
-    JButton doorgaanbutton = new JButton();
     //// LABELS ////
     JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
     JLabel dbserverlabel = new JLabel("DBserver");
@@ -84,15 +83,12 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(totaleuptimelabel);
 
             //voegt de 3 buttons onderaan toe met de locatie
-            opslaanbutton.setBounds(200, 550, 150, 20);
-            laadbutton.setBounds(400, 550, 150, 20);
-            doorgaanbutton.setBounds(600, 550, 150, 20);
+            opslaanbutton.setBounds(600, 550, 150, 20);
+            laadbutton.setBounds(425, 550, 150, 20);
             opslaanbutton.setText("Opslaan");
             add(opslaanbutton);
             laadbutton.setText("Configuratie laden");
             add(laadbutton);
-            doorgaanbutton.setText("Doorgaan");
-            add(doorgaanbutton);
 
             // de hoofdtekst bovenaan die toegevoegd word
             add(hoofdtekst);

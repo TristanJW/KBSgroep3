@@ -28,12 +28,16 @@ public class LaadDialoog extends JDialog implements ActionListener {
     private JTextField percentage;
     private JLabel error;
 
-    public LaadDialoog() {
-
+    public LaadDialoog(JFrame frame1) {
+        super(frame1, true);
+        setTitle("Laad configuratie");
+        setLayout(new FlowLayout());
+        setSize(300, 150);
+        setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 }
