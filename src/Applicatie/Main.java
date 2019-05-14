@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-       //   Scherm scherm1 = new Scherm();
+          Scherm scherm1 = new Scherm();
 //
 //        JDBC database = new JDBC();
 //
