@@ -54,8 +54,7 @@ public class HuidigeConfiguratie {
                 } else {
                     netwerkLijst.add(leverancier.aanbodDBServer.get(0));
                 }
-
-                System.out.println(berekenBeschikbaarheid(netwerkLijst));
+                
                 hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
 
                 for (NetwerkComponent nc : netwerkLijst) {
