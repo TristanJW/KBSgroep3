@@ -56,10 +56,7 @@ public class HuidigeConfiguratie {
                 }
                 
                 hoogstepercentage = berekenBeschikbaarheid(netwerkLijst);
-
-                for (NetwerkComponent nc : netwerkLijst) {
-                    System.out.println(nc.getNaam());
-                }
+                break;
             }
         }
     }
