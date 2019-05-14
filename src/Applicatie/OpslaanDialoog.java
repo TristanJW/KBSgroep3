@@ -13,6 +13,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -20,16 +22,23 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
  */
 public class OpslaanDialoog extends JDialog implements ActionListener {
 
+    JTextField opslaannaam;
+    JButton opslaanbutton;
+
     public OpslaanDialoog(JFrame frame1) {
         super(frame1, true);
+        setLayout(null);
         setTitle("Opslaan");
-        setSize(300, 150);
-        setVisible(true);
+        setSize(500, 150);
 
-        JButton opslaanbutton = new JButton();
-        opslaanbutton.setBounds(0, 0, 50, 50);
-        opslaanbutton.setVisible(true);
+        opslaannaam = new JTextField("vul een naam in");
+        opslaannaam.setBounds(25, 25, 290, 25);
+        this.add(opslaannaam);
 
+        opslaanbutton = new JButton("opslaan");
+        opslaanbutton.setBounds(325, 25, 125, 25);
+        opslaanbutton.addActionListener(this);
+        this.add(opslaanbutton);
     }
 
     @Override

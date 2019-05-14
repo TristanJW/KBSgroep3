@@ -37,7 +37,7 @@ public class Scherm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == p1.opslaanbutton || e.getSource() == p3.opslaanbutton) {
             OpslaanDialoog od1 = new OpslaanDialoog(this);
-
+            od1.setVisible(true);
         } else if (e.getSource() == p1.laadbutton) {
             LaadDialoog ld1 = new LaadDialoog(this);
         }
