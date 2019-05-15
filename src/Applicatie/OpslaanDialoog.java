@@ -7,9 +7,12 @@ package Applicatie;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -17,19 +20,34 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
  */
 public class OpslaanDialoog extends JDialog implements ActionListener {
 
-    String dialoog1;
+    JTextField opslaannaam;
+    JButton ODopslaanbutton;
+    JTabbedPane tp;
 
-    public OpslaanDialoog() {
-        String dialoog1 = JOptionPane.showInputDialog("vul een naam in");
+    public OpslaanDialoog(JFrame frame1) {
+        super(frame1, true);
+        setLayout(null);
+        setTitle("Opslaan");
+        setSize(500, 150);
+
+        opslaannaam = new JTextField("vul een naam in");
+        opslaannaam.setBounds(25, 25, 290, 25);
+        this.add(opslaannaam);
+
+        ODopslaanbutton = new JButton("opslaan");
+        ODopslaanbutton.setBounds(325, 25, 125, 25);
+        ODopslaanbutton.addActionListener(this);
+        this.add(ODopslaanbutton);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (JOptionPane.OK_OPTION == 0) {
-            System.out.println("TESTTESTTEST");
+        if (e.getSource() == ODopslaanbutton) {
+            JDBC database = new JDBC();
+            ResultSet resultaat = database.dataOphalen("INSERT INTO xxx VALUES xxx");
+            dispose();
         }
 
     }
-
 }

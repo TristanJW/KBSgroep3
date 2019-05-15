@@ -20,26 +20,27 @@ public class LeveranciersLijst {
         //we gebruiken hiervoor een sql querry aan de hand van het type wordt bepaalt welke constructor
         //wordt toegepast
         try {
-            ResultSet resultaat = JDBC.dataOphalen("SELECT Naam, prijs, beschikbaarheid, type FROM leverancierslijst");
+            ResultSet resultaat = JDBC.dataOphalen("SELECT itemID, Naam, prijs, beschikbaarheid, type FROM leverancierslijst");
             while (resultaat.next()) {
 
                 String naam = resultaat.getString("Naam");
+                int itemID = resultaat.getInt("itemID");
                 double prijs = resultaat.getDouble("prijs");
                 double beschikbaarheid = resultaat.getDouble("beschikbaarheid");
                 String type = resultaat.getString("type");
 
                 //type check
                 if (type.equals("Webserver")) {
-                    Webserver server = new Webserver(naam, prijs, beschikbaarheid);
+                    Webserver server = new Webserver(itemID, naam, prijs, beschikbaarheid);
                     aanbodWebserver.add(server);
                 } else if (type.equals("DBserver")) {
-                    DBServer database = new DBServer(naam, prijs, beschikbaarheid);
+                    DBServer database = new DBServer(itemID, naam, prijs, beschikbaarheid);
                     aanbodDBServer.add(database);
                 } else if (type.equals("firewall")) {
-                    Firewall firewall = new Firewall(naam, prijs, beschikbaarheid);
+                    Firewall firewall = new Firewall(itemID, naam, prijs, beschikbaarheid);
                     aanbodFirewall.add(firewall);
                 } else if (type.equals("loadbalancer")) {
-                    LoadBalancer loadbalancer = new LoadBalancer(naam, prijs, beschikbaarheid);
+                    LoadBalancer loadbalancer = new LoadBalancer(itemID, naam, prijs, beschikbaarheid);
                     aanbodLoadBalancer.add(loadbalancer);
                 }
             }

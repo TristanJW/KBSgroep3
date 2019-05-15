@@ -60,7 +60,7 @@ public class MonitorPanel extends JPanel {
 
                 if(itemID != 1 && itemID != 2){
                     
-                System.out.println("test");
+//                System.out.println("test");
                 JLabel diskruimte = new JLabel("Diskruimte:");
                 diskruimte.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
                 diskruimte.setBounds(x, 60+y, 200, 25);
@@ -68,9 +68,9 @@ public class MonitorPanel extends JPanel {
                 }
                 y += 100;
                 aantalcomponenten++;
-                System.out.println(naam);
-                System.out.println(itemID);
-                System.out.println(aantalcomponenten);
+//                System.out.println(naam);
+//                System.out.println(itemID);
+//                System.out.println(aantalcomponenten);
                         
             }
             

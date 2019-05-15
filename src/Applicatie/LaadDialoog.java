@@ -8,6 +8,8 @@ package Applicatie;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -23,17 +25,40 @@ import javax.swing.JTextField;
 public class LaadDialoog extends JDialog implements ActionListener {
     //configuratie en optimaliserenpanel opslaan knop moet hieraan gelinked worden
 
-    private JButton optimaliseer;
-    private JButton terug;
-    private JTextField percentage;
-    private JLabel error;
+    JButton laadbutton;
 
-    public LaadDialoog() {
+    public LaadDialoog(JFrame frame1) {
+        super(frame1, true);
+        setLayout(null);
+        setTitle("Opslaan");
+        setSize(500, 500);
 
+        laadbutton = new JButton("laad configuratie");
+        laadbutton.setBounds(325, 25, 125, 25);
+        laadbutton.addActionListener(this);
+        this.add(laadbutton);
+
+        JDBC database = new JDBC();
+        ResultSet resultaat = database.dataOphalen("SELECT naam, datum, prijs, beschikbaarheidspercentage FROM netwerk");
+        try {
+            while (resultaat.next()) {
+                String naam = resultaat.getString("naam");
+                String datum = resultaat.getString("datum");
+                int prijs = resultaat.getInt("prijs");
+                int beschikbaarheidspercentage = resultaat.getInt("beschikbaarheidspercentage");
+
+                System.out.println(" naam:" + naam + " datum:" + datum + " prijs:" + prijs + " beschikbaarheidspercentage:" + beschikbaarheidspercentage);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e.getSource() == laadbutton) {
+
+        }
+
     }
 }
