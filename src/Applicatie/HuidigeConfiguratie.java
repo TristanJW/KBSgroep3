@@ -164,7 +164,5 @@ public class HuidigeConfiguratie {
             se.printStackTrace();
             
             }
-        }
 
     }
-}
