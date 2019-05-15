@@ -5,7 +5,6 @@ public abstract class NetwerkComponent{
     private int itemID;
     private double prijs;
     private double beschikbaarheidspercentage;
-    private int onlineTijd;
     private String Ipv4Adres;
     private String Ipv6adres;
     
@@ -14,10 +13,6 @@ public abstract class NetwerkComponent{
         this.naam = naam;
         this.prijs = prijs;
         this.beschikbaarheidspercentage = beschikbaarheidspercentage;
-    }
-
-    public void setOnlineTijd(int onlineTijd) {
-        this.onlineTijd = onlineTijd;
     }
 
     public void setIpv4Adres(String Ipv4Adres) {
