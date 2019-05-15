@@ -34,8 +34,7 @@ public class HuidigeConfiguratie {
     }
 
     public void maakCombinatie(double percentage) {
-        // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver
-        // heeft.
+        // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver heeft.
         if (netwerkLijst.isEmpty()) {
             voegToe(leverancier.aanbodFirewall.get(0));
             voegToe(leverancier.aanbodLoadBalancer.get(0));
@@ -43,13 +42,10 @@ public class HuidigeConfiguratie {
             voegToe(leverancier.aanbodDBServer.get(0));
         } else {// als er al van alle componenten één aanwezig is dan wordt dit algoritme
                 // doorgelopen.
-
-            if (berekenWebservers() < berekenDBservers()) { // kijken of we een webserver of een database server nodig
-                                                            // is.
+            if (berekenWebservers() < berekenDBservers()) { // kijken of we een webserver of een database server nodig is.
                 if (!isLaatste(Webserver.class)) { // kijken of er een vertakking plaats vind
                     int plaatsVanWebserver = vindLaatsteInstantie(Webserver.class);
-                    NetwerkComponent component = leverancier.aanbodWebserver
-                            .get(leverancier.aanbodWebserver.indexOf(netwerkLijst.get(plaatsVanWebserver)) + 1);
+                    NetwerkComponent component = leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.indexOf(netwerkLijst.get(plaatsVanWebserver)) + 1);
                     vervang(component, plaatsVanWebserver);
                 } else {// als het het laatste webserver van de aanbod lijst is dan komt er een
                         // vertakking
@@ -62,13 +58,11 @@ public class HuidigeConfiguratie {
                 if (!isLaatste(DBServer.class)) {
                     int plaatsVanDBServer = vindLaatsteInstantie(DBServer.class);
                     // nieuwe component is het volgende component in de aanbodlijst
-                    NetwerkComponent component = leverancier.aanbodDBServer
-                            .get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(plaatsVanDBServer)) + 1);
+                    NetwerkComponent component = leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(plaatsVanDBServer)) + 1);
                     vervang(component, plaatsVanDBServer);
                 } else {
                     int plaatsVanDBServer = vindLaatsteInstantie(DBServer.class);
-                    NetwerkComponent component = leverancier.aanbodDBServer
-                            .get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(plaatsVanDBServer)));
+                    NetwerkComponent component = leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(plaatsVanDBServer)));
                     vervang(component, plaatsVanDBServer);
                     voegToe(leverancier.aanbodDBServer.get(0));
                 }
@@ -79,14 +73,12 @@ public class HuidigeConfiguratie {
         }
         System.out.print(berekenBeschikbaarheid());
         System.out.println();
-        // als het opgegeven percentage niet behaald is dan gaat het algoritme verder
-        // opzoek.
+        // als het opgegeven percentage niet behaald is dan gaat het algoritme verder zoekt.
         if (!isVoldaan(percentage)) {
             maakCombinatie(percentage);
         } else {
 
         }
-
         // kijk welke type servers moeten worden toegevoegd
         // voldoet het aan het percentage
     }
@@ -112,11 +104,9 @@ public class HuidigeConfiguratie {
         // op de duurste server staat.
         // return true
         if (netwerkLijst.get(vindLaatsteInstantie(type)) instanceof Webserver) {
-            isLaatst = netwerkLijst.get(vindLaatsteInstantie(type)) == leverancier.aanbodWebserver
-                    .get(leverancier.aanbodWebserver.size() - 1);
+            isLaatst = netwerkLijst.get(vindLaatsteInstantie(type)) == leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.size() - 1);
         } else if (netwerkLijst.get(vindLaatsteInstantie(type)) instanceof DBServer) {
-            isLaatst = netwerkLijst.get(vindLaatsteInstantie(type)) == leverancier.aanbodDBServer
-                    .get(leverancier.aanbodDBServer.size() - 1);
+            isLaatst = netwerkLijst.get(vindLaatsteInstantie(type)) == leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.size() - 1);
         }
         return isLaatst;
     }
@@ -211,9 +201,11 @@ public class HuidigeConfiguratie {
         return totalePrijs + " Euro";
     }
 
+    //********************************************************
+    // wat is dit??
     JDBC database = new JDBC();
     ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst");
-
+    //********************************************************
     public void configuratieNaarDatabase() {
         for (NetwerkComponent component : netwerkLijst) {   
         try {
@@ -224,5 +216,6 @@ public class HuidigeConfiguratie {
             se.printStackTrace();
             
             }
-
+        }
     }
+}

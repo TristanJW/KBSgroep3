@@ -30,6 +30,6 @@ public class Main {
 //        }
         
         HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-        netwerk.maakCombinatie(99.999);
+        netwerk.maakCombinatie(99.99);
     }
 }
