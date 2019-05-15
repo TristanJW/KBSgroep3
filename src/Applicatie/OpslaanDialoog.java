@@ -5,15 +5,13 @@
  */
 package Applicatie;
 
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.QUESTION_MESSAGE;
-import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 /**
@@ -23,7 +21,8 @@ import javax.swing.JTextField;
 public class OpslaanDialoog extends JDialog implements ActionListener {
 
     JTextField opslaannaam;
-    JButton opslaanbutton;
+    JButton ODopslaanbutton;
+    JTabbedPane tp;
 
     public OpslaanDialoog(JFrame frame1) {
         super(frame1, true);
@@ -35,14 +34,20 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
         opslaannaam.setBounds(25, 25, 290, 25);
         this.add(opslaannaam);
 
-        opslaanbutton = new JButton("opslaan");
-        opslaanbutton.setBounds(325, 25, 125, 25);
-        opslaanbutton.addActionListener(this);
-        this.add(opslaanbutton);
+        ODopslaanbutton = new JButton("opslaan");
+        ODopslaanbutton.setBounds(325, 25, 125, 25);
+        ODopslaanbutton.addActionListener(this);
+        this.add(ODopslaanbutton);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == ODopslaanbutton) {
+            JDBC database = new JDBC();
+            ResultSet resultaat = database.dataOphalen("INSERT INTO xxx VALUES xxx");
+            dispose();
+        }
 
     }
 }
