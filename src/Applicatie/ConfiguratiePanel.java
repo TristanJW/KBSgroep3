@@ -42,14 +42,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     JComboBox loadbalancerdropdown = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodLoadBalancer));
     JComboBox webserverdropdown = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodWebserver));
     
-    Tekenpanel tekenp = new Tekenpanel(this); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
+    Tekenpanel tekenp = new Tekenpanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
 
     public ConfiguratiePanel() {
         setLayout(null);
-        Scrollbar ranger = new Scrollbar(Scrollbar.HORIZONTAL, 30, 20, 0, 500);
-        ranger.setBounds(100, 575, 700, 700);
-        this.add(ranger);
-        
+
         //panel waarin de aangeklikte componenten komen te staan binnen de zwarte rechthoek
         tekenp.setSize(500,400); 
         tekenp.setBounds(150, 25, 605, 500);
@@ -141,9 +138,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             tekenp.add(dbservertekstlabel);
             aantalDbservers++;
             }
-            
-//            System.out.println(netwerk.berekenBeschikbaarheid(netwerk.returnConfig()));
-//            netwerk.printConfiguratie(); // todo remove when done testing
         } else if (e.getSource() == firewallbutton) {
             if(aantalFirewalls < 7) {
             netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
