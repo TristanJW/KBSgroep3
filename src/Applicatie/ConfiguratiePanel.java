@@ -3,6 +3,8 @@ package Applicatie;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -19,6 +21,8 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     static int xcordsfirewall = 0;
     static int xcordsloadbalancer = 0;
     static int xcordswebserver = 0;
+    
+    LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
 
     //// BUTTONS ////
     JButton dbserverbutton = new JButton();
@@ -115,7 +119,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(loadbalancerbutton);
             add(webserverlabel);
             add(webserverbutton);
-
+            
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -187,4 +191,5 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
         repaint(); //zorgt ervoor dat als je op de knop klikt de afbeelding realtime word upgedate waardoor je niet hoeft te refreshen om de afbeelding op het scherm te krijgen
     }
+
 }

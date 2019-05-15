@@ -8,6 +8,8 @@ package Applicatie;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -19,7 +21,8 @@ import javax.swing.JTextField;
  * @author Trist
  */
 public class OpslaanDialoog extends JDialog implements ActionListener {
-
+    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
     JTextField opslaannaam;
     JButton ODopslaanbutton;
     JTabbedPane tp;
@@ -44,9 +47,13 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ODopslaanbutton) {
-            JDBC database = new JDBC();
-            ResultSet resultaat = database.dataOphalen("INSERT INTO xxx VALUES xxx");
+            netwerk.configuratieNaarDatabase("INSERT INTO netwerk (netwerkID, datum, beschikbaarheidspercentage, naam, prijs) VALUES (36, \"" + datum + "\"," + netwerk.berekenBeschikbaarheid() + ", \"" + opslaannaam.getText()+ "\"," + netwerk.dbTotalePrijs() + ")");
+            for(NetwerkComponent component : netwerk.getNetwerkLijst()) {
+                System.out.println(component.getNaam());
+            } 
+            System.out.println("Opslaan");
             dispose();
+        } else {
         }
 
     }

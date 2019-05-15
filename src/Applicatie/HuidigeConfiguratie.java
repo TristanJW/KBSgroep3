@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.math.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class HuidigeConfiguratie {
 
@@ -14,6 +16,10 @@ public class HuidigeConfiguratie {
         this.netwerkLijst = new ArrayList<NetwerkComponent>();
     }
 
+    public ArrayList<NetwerkComponent> getNetwerkLijst() {
+        return netwerkLijst;
+    }
+    
     public void voegToe(NetwerkComponent component) {
         netwerkLijst.add(component);
     }
@@ -210,19 +216,24 @@ public class HuidigeConfiguratie {
         }
         return totalePrijs + " Euro";
     }
-
-    JDBC database = new JDBC();
-    ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst");
-
-    public void configuratieNaarDatabase() {
-        for (NetwerkComponent component : netwerkLijst) {   
+    
+    public int dbTotalePrijs() {
+     int totalePrijs = 0;
         try {
-            while (resultaat.next()) {
-                int id = resultaat.getInt("Itemid");
+            for (NetwerkComponent component : netwerkLijst) {
+                totalePrijs += component.getPrijs();
             }
-        } catch (SQLException se) {
-            se.printStackTrace();
-            
-            }
-
+        } catch (NullPointerException npe) {
+            System.out.println(npe);
+        }
+        return totalePrijs;
     }
+
+
+    public void configuratieNaarDatabase(String query) {
+            JDBC database = new JDBC();
+            database.dataToevoegen(query);
+            
+    }
+}
+
