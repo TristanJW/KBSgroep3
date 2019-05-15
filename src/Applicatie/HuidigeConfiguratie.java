@@ -152,7 +152,7 @@ public class HuidigeConfiguratie {
 
     public void configuratieNaarDatabase() {
         for (NetwerkComponent component : netwerkLijst) {
-            System.out.println(component);
+            System.out.println(component.getItemID());
         }
     }
 }
