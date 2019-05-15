@@ -4,6 +4,8 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.math.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class HuidigeConfiguratie {
 
@@ -149,10 +151,20 @@ public class HuidigeConfiguratie {
         }
         return totalePrijs + " Euro";
     }
-
+    JDBC database = new JDBC();
+    ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst"); 
+    
     public void configuratieNaarDatabase() {
-        for (NetwerkComponent component : netwerkLijst) {
-            System.out.println(component);
+        for (NetwerkComponent component : netwerkLijst) {   
+        try {
+            while (resultaat.next()) {
+                int id = resultaat.getInt("Itemid");
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+            
+            }
         }
+
     }
 }
