@@ -28,12 +28,6 @@ public class HuidigeConfiguratie {
         netwerkLijst.set(index, component);
     }
 
-    // tijdelijke methode die ik even nodig had in ConfiguratiePanel todo remove if
-    // not needed anymore
-    public ArrayList<NetwerkComponent> returnConfig() {
-        return netwerkLijst;
-    }
-
     public double berekenBeschikbaarheid() {
         return (berekenFirewall() / 100) * (berekenLoadbalancer() / 100) * (berekenWebservers() / 100)
                 * berekenDBservers();
