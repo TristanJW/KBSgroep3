@@ -13,16 +13,16 @@ import javax.swing.JTextField;
 
 public class OpslaanDialoog extends JDialog implements ActionListener {
     private HuidigeConfiguratie netwerk;
+    private int aantalDbservers;
+    private int hoogsteID;
     JDBC database = new JDBC();
     LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
     JTextField opslaannaam;
     JButton ODopslaanbutton;
     JTabbedPane tp;
 
-
-    public OpslaanDialoog(JFrame frame1, ConfiguratiePanel config1) {
+    public OpslaanDialoog (JFrame frame1) {
         super(frame1, true);
-        netwerk = config1.netwerk;
         setLayout(null);
         setTitle("Opslaan");
         setSize(500, 150);
@@ -34,24 +34,17 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
         ODopslaanbutton.setBounds(325, 25, 125, 25);
         ODopslaanbutton.addActionListener(this);
         this.add(ODopslaanbutton);
+    }
+    public OpslaanDialoog(JFrame frame1, ConfiguratiePanel config1) {
+       this(frame1);
+       netwerk = config1.netwerk;
     }
 
     public OpslaanDialoog(JFrame frame1, OptimaliseringPanel config1) {
-        super(frame1, true);
+        this(frame1);
         netwerk = config1.netwerk;
-        setLayout(null);
-        setTitle("Opslaan");
-        setSize(500, 150);
-        opslaannaam = new JTextField("vul een naam in");
-        opslaannaam.setBounds(25, 25, 290, 25);
-        this.add(opslaannaam);
-
-        ODopslaanbutton = new JButton("opslaan");
-        ODopslaanbutton.setBounds(325, 25, 125, 25);
-        ODopslaanbutton.addActionListener(this);
-        this.add(ODopslaanbutton);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ODopslaanbutton) {
@@ -60,9 +53,12 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
             try {
                 while (resultaat.next()) {
                     //hoogste netwerkID opslaan als een int    
-                    int hoogsteID = resultaat.getInt("MAX(netwerkID)");
+                    hoogsteID = resultaat.getInt("MAX(netwerkID)");
                     hoogsteID++;
                     netwerk.configuratieNaarDatabase("INSERT INTO netwerk (netwerkID, datum, beschikbaarheidspercentage, naam, prijs) VALUES (" + hoogsteID + ", \"" + datum + "\"," + netwerk.berekenBeschikbaarheid() + ", \"" + opslaannaam.getText() + "\"," + netwerk.dbTotalePrijs() + ")");
+                }
+                for(NetwerkComponent component: netwerk.getNetwerkLijst()) {
+                  netwerk.configuratieNaarDatabase("insert into netwerkregel (netwerkID, itemID) VALUES ("+ hoogsteID + "," + component.getItemID() + ");");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
