@@ -28,7 +28,10 @@ public class Main {
 //        for (NetwerkComponent s : leverancier.aanbodWebserver) {
 //            System.out.println(s.getNaam());
 //        }
-        
+            JDBC database = new JDBC();
+
+                database.dataToevoegen("insert into netwerk (netwerkID, datum, beschikbaarheidspercentage, naam, prijs) values (12, \"2019-02-14\", 30, \"tesgdst\", 50)");
+
         HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
         netwerk.maakCombinatie(99.99);
     }
