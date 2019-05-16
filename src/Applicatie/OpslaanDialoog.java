@@ -21,7 +21,9 @@ import javax.swing.JTextField;
  * @author Trist
  */
 public class OpslaanDialoog extends JDialog implements ActionListener {
-    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    private HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    private ConfiguratiePanel configuratiepanel;
+    JDBC database = new JDBC();
     LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
     JTextField opslaannaam;
     JButton ODopslaanbutton;
@@ -41,20 +43,28 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
         ODopslaanbutton.setBounds(325, 25, 125, 25);
         ODopslaanbutton.addActionListener(this);
         this.add(ODopslaanbutton);
-
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {      
         if (e.getSource() == ODopslaanbutton) {
-            netwerk.configuratieNaarDatabase("INSERT INTO netwerk (netwerkID, datum, beschikbaarheidspercentage, naam, prijs) VALUES (36, \"" + datum + "\"," + netwerk.berekenBeschikbaarheid() + ", \"" + opslaannaam.getText()+ "\"," + netwerk.dbTotalePrijs() + ")");
-            for(NetwerkComponent component : netwerk.getNetwerkLijst()) {
-                System.out.println(component.getNaam());
-            } 
+            //hoogste netwerkID ophalen, zodat de primary key steeds 1 hoger wordt
+            ResultSet resultaat = database.dataOphalen("SELECT MAX(netwerkID) FROM netwerk");
+                try {
+                    while (resultaat.next()) {
+                    //hoogste netwerkID opslaan als een int    
+                    int hoogsteID = resultaat.getInt("MAX(netwerkID)");
+                    hoogsteID++;
+                    netwerk.configuratieNaarDatabase("INSERT INTO netwerk (netwerkID, datum, beschikbaarheidspercentage, naam, prijs) VALUES (" + hoogsteID + ", \"" + datum + "\"," + netwerk.berekenBeschikbaarheid() + ", \"" + opslaannaam.getText()+ "\"," + netwerk.dbTotalePrijs() + ")");
+                    }
+                }
+                catch(Exception ex) {
+                    System.out.println(ex);
+                }
             System.out.println("Opslaan");
             dispose();
         } else {
-        }
+            }
 
     }
 }

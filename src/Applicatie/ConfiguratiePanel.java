@@ -3,8 +3,6 @@ package Applicatie;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -22,7 +20,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     static int xcordsloadbalancer = 0;
     static int xcordswebserver = 0;
     
-    LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
 
     //// BUTTONS ////
     JButton dbserverbutton = new JButton();
@@ -48,6 +45,23 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
     Tekenpanel tekenp = new Tekenpanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
 
+    public int getAantalDbservers() {
+        return aantalDbservers;
+    }
+
+    public int getAantalWebservers() {
+        return aantalWebservers;
+    }
+
+    public int getAantalFirewalls() {
+        return aantalFirewalls;
+    }
+
+    public int getAantalLoadbalancers() {
+        return aantalLoadbalancers;
+    }
+    
+    
     public ConfiguratiePanel() {
         setLayout(null);
 
