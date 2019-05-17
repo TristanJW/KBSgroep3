@@ -24,6 +24,10 @@ public class HuidigeConfiguratie {
         netwerkLijst.add(component);
     }
 
+    public void verwijderComponent(NetwerkComponent component) {
+        netwerkLijst.remove(component);
+    }
+
     public void vervang(NetwerkComponent component, int index) {
         netwerkLijst.set(index, component);
     }
