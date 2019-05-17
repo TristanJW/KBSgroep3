@@ -43,16 +43,16 @@ public class MonitorPanel extends JPanel {
                 beschikbaar.setBounds(x, y + 30, 200, 25);
                 add(beschikbaar);
 
-                JLabel processor = new JLabel("Processorbelasting:" + SSHConnectie.SSHConnectie(SSHUsername, IPv4, SSHPassword, "top -b -n1 | grep \"Cpu(s)\" | awk '{print $2 + $4}'") + "%");
-                processor.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
-                processor.setBounds(x, y + 45, 200, 25);
-                add(processor);
-
-
-                JLabel diskruimte = new JLabel("Diskruimte:" + SSHConnectie.SSHConnectie(SSHUsername, IPv4, SSHPassword, "df -h --output=pcent --total | awk 'END {print $1}'"));
-                diskruimte.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
-                diskruimte.setBounds(x, y + 60, 200, 25);
-                add(diskruimte);
+//                JLabel processor = new JLabel("Processorbelasting:" + SSHConnectie.SSHConnectie(SSHUsername, IPv4, SSHPassword, "top -b -n1 | grep \"Cpu(s)\" | awk '{print $2 + $4}'") + "%");
+//                processor.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
+//                processor.setBounds(x, y + 45, 200, 25);
+//                add(processor);
+//
+//
+//                JLabel diskruimte = new JLabel("Diskruimte:" + SSHConnectie.SSHConnectie(SSHUsername, IPv4, SSHPassword, "df -h --output=pcent --total | awk 'END {print $1}'"));
+//                diskruimte.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
+//                diskruimte.setBounds(x, y + 60, 200, 25);
+//                add(diskruimte);
 
                 y += 100;
                 aantalcomponenten++;
