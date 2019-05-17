@@ -44,4 +44,14 @@ public class JDBC {
         }
         return rs;
     }
+
+    //methode voor invoegen data in db
+    public static void dataToevoegen(String querry){
+        try{
+            Statement stmt = connectieMaken().createStatement(); //
+            stmt.execute(querry);
+        }catch(SQLException se){
+            se.printStackTrace();
+        }
+    }
 }

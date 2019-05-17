@@ -28,8 +28,8 @@ public class Main {
 //        for (NetwerkComponent s : leverancier.aanbodWebserver) {
 //            System.out.println(s.getNaam());
 //        }
-        
+
         HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-        netwerk.maakCombinatie(99.999);
+        netwerk.maakCombinatie(99.99);
     }
 }

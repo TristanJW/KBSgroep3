@@ -56,7 +56,7 @@ public class MonitorPanel extends JPanel {
                 processor.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
                 processor.setBounds(x, 45+y, 200, 25);
                 add(processor);
-
+                
 
                 System.out.println("test");
                 JLabel diskruimte = new JLabel("Diskruimte:");
