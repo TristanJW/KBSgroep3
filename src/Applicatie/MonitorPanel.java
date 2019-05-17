@@ -56,9 +56,6 @@ public class MonitorPanel extends JPanel {
 
                 y += 100;
                 aantalcomponenten++;
-                System.out.println(naam);
-                System.out.println(itemID);
-                System.out.println(aantalcomponenten);
             }
             repaint();
         } catch (SQLException se) {
