@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,35 +23,64 @@ import javax.swing.JLabel;
 public class LaadDialoog extends JDialog implements ActionListener {
 
     JButton laadbutton;
-    int ycords = 50;
-    static boolean isUitgevoerd = false;
+    JButton verwijderbutton;
+    JTextField input1;
+    int ycords = 85;
+    int itemID;
+
+    int queryinput;
+
+    JLabel error = new JLabel("voer een getal in");
 
     public LaadDialoog(JFrame frame1) {
         super(frame1, true);
         setLayout(null);
         setTitle("Laad configuratie");
-        setSize(700, 750);
+        setSize(600, 750);
         Font font = new Font("", Font.BOLD, 12);
+
+        error.setBounds(5, 25, 100, 25);
+        add(error);
+        error.setVisible(false);
+
+        JLabel cfid = new JLabel("ID");
+        cfid.setFont(font);
+        cfid.setBounds(5, 45, 50, 25);
+        add(cfid);
 
         JLabel cfnaam = new JLabel("Naam");
         cfnaam.setFont(font);
-        cfnaam.setBounds(15, 0, 50, 25);
+        cfnaam.setBounds(25, 45, 50, 25);
         add(cfnaam);
 
         JLabel cfdatum = new JLabel("Datum");
         cfdatum.setFont(font);
-        cfdatum.setBounds(100, 0, 50, 25);
+        cfdatum.setBounds(100, 45, 50, 25);
         add(cfdatum);
 
         JLabel cfprijs = new JLabel("Prijs");
         cfprijs.setFont(font);
-        cfprijs.setBounds(250, 0, 50, 25);
+        cfprijs.setBounds(250, 45, 50, 25);
         add(cfprijs);
 
         JLabel cfbeschikbaarheidspercentage = new JLabel("Beschikbaarheidspercentage");
         cfbeschikbaarheidspercentage.setFont(font);
-        cfbeschikbaarheidspercentage.setBounds(330, 0, 200, 25);
+        cfbeschikbaarheidspercentage.setBounds(330, 45, 200, 25);
         add(cfbeschikbaarheidspercentage);
+
+        input1 = new JTextField("");
+        input1.setBounds(5, 5, 400, 25);
+        add(input1);
+
+        laadbutton = new JButton("laad");
+        laadbutton.setBounds(410, 2, 125, 20);
+        laadbutton.addActionListener(this);
+        this.add(laadbutton);
+
+        verwijderbutton = new JButton("delete");
+        verwijderbutton.setBounds(410, 28, 125, 20);
+        verwijderbutton.addActionListener(this);
+        this.add(verwijderbutton);
 
         dataImplementeren();
     }
@@ -62,13 +92,18 @@ public class LaadDialoog extends JDialog implements ActionListener {
         try {
             //while (gaat alle resultaten door van de query hierboven)
             while (resultaat.next()) {
+                String netwerkID = resultaat.getString("netwerkID");
                 String naam = resultaat.getString("naam");
                 String datum = resultaat.getString("datum");
                 String prijs = resultaat.getString("prijs");
                 String beschikbaarheidspercentage = resultaat.getString("beschikbaarheidspercentage");
 
+                JLabel netwerkIDlabel = new JLabel(netwerkID);
+                netwerkIDlabel.setBounds(5, ycords, 100, 25);
+                add(netwerkIDlabel);
+
                 JLabel naamlabel = new JLabel(naam);
-                naamlabel.setBounds(15, ycords, 100, 25);
+                naamlabel.setBounds(25, ycords, 100, 25);
                 add(naamlabel);
 
                 JLabel datumlabel = new JLabel(datum);
@@ -83,11 +118,6 @@ public class LaadDialoog extends JDialog implements ActionListener {
                 beschikbaarheidspercentagelabel.setBounds(400, ycords, 50, 25);
                 add(beschikbaarheidspercentagelabel);
 
-                laadbutton = new JButton("laad");
-                laadbutton.setBounds(550, ycords, 125, 25);
-                laadbutton.addActionListener(this);
-                this.add(laadbutton);
-
                 // zorgt ervoor dat elk nieuw label iets naar onder gaat zodat het elkaar niet overlapt
                 ycords += 50;
             }
@@ -99,12 +129,30 @@ public class LaadDialoog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == laadbutton) {
-//            JDBC database = new JDBC();
-//            ResultSet resultaat2 = database.dataOphalen("SELECT * From component WHERE xxx ");
-//            for (Object object : col) {
-//                // loop door de componenten die van de samenstelling zijn (moet ze dus ophalen) maar het moet eerst kunnen zien welke button geklikt is
-//            }
-            System.out.println("test");
+            try {
+                queryinput = Integer.parseInt(input1.getText());
+                JDBC database = new JDBC();
+                ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst WHERE itemID IN (SELECT itemID FROM netwerkregel WHERE netwerkID =" + queryinput + ")");
+                while (resultaat.next()) {
+                    String naam = resultaat.getString("naam");
+                    System.out.println(naam); //test om te kijken of de namen terugkomen (werkt)
+                }
+                dispose();
+            } catch (Exception ex) {
+                error.setVisible(true);
+                repaint();
+            }
+
+        } else if (e.getSource() == verwijderbutton) {
+            try {
+                queryinput = Integer.parseInt(input1.getText());
+                JDBC database = new JDBC();
+                database.dataToevoegen("DELETE FROM netwerkregel WHERE netwerkID =" + queryinput);
+                database.dataToevoegen("DELETE FROM netwerk WHERE netwerkID =" + queryinput);
+            } catch (Exception ex) {
+                error.setVisible(true);
+            }
         }
+        repaint();
     }
 }
