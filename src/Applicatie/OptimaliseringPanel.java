@@ -9,7 +9,7 @@ import javax.swing.border.Border;
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
     private LeveranciersLijst lijst;
-    private HuidigeConfiguratie netwerk;
+    public HuidigeConfiguratie netwerk;
 
     private JButton optimaliseer;
     JButton opslaanbutton;

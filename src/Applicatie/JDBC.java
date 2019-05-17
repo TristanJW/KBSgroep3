@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class JDBC {
     //driver naam en database url
-    static final String DB_URL = "jdbc:mysql://localhost/NerdyGadgets";
+    static final String DB_URL = "jdbc:mysql://localhost/NerdyGadgets?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
      
     //credentials
     static final String USER = "MonitoringsApplicatie";

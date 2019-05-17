@@ -24,14 +24,12 @@ public class HuidigeConfiguratie {
         netwerkLijst.add(component);
     }
 
-    public void vervang(NetwerkComponent component, int index) {
-        netwerkLijst.set(index, component);
+    public void verwijderComponent(NetwerkComponent component) {
+        netwerkLijst.remove(component);
     }
 
-    // tijdelijke methode die ik even nodig had in ConfiguratiePanel todo remove if
-    // not needed anymore
-    public ArrayList<NetwerkComponent> returnConfig() {
-        return netwerkLijst;
+    public void vervang(NetwerkComponent component, int index) {
+        netwerkLijst.set(index, component);
     }
 
     public double berekenBeschikbaarheid() {
