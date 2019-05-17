@@ -1,11 +1,6 @@
 package Applicatie;
 
 import java.util.ArrayList;
-import java.math.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class HuidigeConfiguratie {
 
@@ -33,172 +28,144 @@ public class HuidigeConfiguratie {
     }
 
     public double berekenBeschikbaarheid() {
-        return (berekenFirewall() / 100) * (berekenLoadbalancer() / 100) * (berekenWebservers() / 100)
-                * berekenDBservers();
+        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
     }
 
     public void maakCombinatie(double percentage) {
-        // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver
-        // heeft.
+        // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver heeft.
         if (netwerkLijst.isEmpty()) {
             voegToe(leverancier.aanbodFirewall.get(0));
             voegToe(leverancier.aanbodLoadBalancer.get(0));
             voegToe(leverancier.aanbodWebserver.get(0));
             voegToe(leverancier.aanbodDBServer.get(0));
-        } else {// als er al van alle componenten één aanwezig is dan wordt dit algoritme
-                // doorgelopen.
-
-            if (berekenWebservers() < berekenDBservers()) { // kijken of we een webserver of een database server nodig
-                                                            // is.
-                if (!isLaatste(Webserver.class)) { // kijken of er een vertakking plaats vind
-                    int plaatsVanWebserver = vindLaatsteInstantie(Webserver.class);
-                    NetwerkComponent component = leverancier.aanbodWebserver
-                            .get(leverancier.aanbodWebserver.indexOf(netwerkLijst.get(plaatsVanWebserver)) + 1);
-                    vervang(component, plaatsVanWebserver);
-                } else {// als het het laatste webserver van de aanbod lijst is dan komt er een
-                        // vertakking
-                    int plaatsVanWebserver = vindLaatsteInstantie(Webserver.class);
-                    NetwerkComponent component = leverancier.aanbodWebserver.get(0);
-                    vervang(component, plaatsVanWebserver);
-                    voegToe(leverancier.aanbodWebserver.get(0));
-                }
-            } else { // voeg een DBServer toe
-                if (!isLaatste(DBServer.class)) {
-                    int plaatsVanDBServer = vindLaatsteInstantie(DBServer.class);
-                    // nieuwe component is het volgende component in de aanbodlijst
-                    NetwerkComponent component = leverancier.aanbodDBServer
-                            .get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(plaatsVanDBServer)) + 1);
-                    vervang(component, plaatsVanDBServer);
-                } else {
-                    int plaatsVanDBServer = vindLaatsteInstantie(DBServer.class);
-                    NetwerkComponent component = leverancier.aanbodDBServer
-                            .get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(plaatsVanDBServer)));
-                    vervang(component, plaatsVanDBServer);
-                    voegToe(leverancier.aanbodDBServer.get(0));
-                }
-            }
+        }else {// als er al van alle componenten één aanwezig is dan wordt dit algoritme doorgelopen.
+           if (berekenComponent(Webserver.class) < berekenComponent(DBServer.class)) { // kijken of we een webserver of een database server nodig is.
+                voegVolgendeToe(Webserver.class);
+                // 1 > 2 > 1,1 > 3 > 2,1 > 2,2 > 1,1,1 > 2,1,1 > 2,3 > 1,1,1,1 > 3,2 > 3,1,1 > 3,3 > 1,1,1,1,1
+           }else {
+               voegVolgendeToe(DBServer.class);
+           }
         }
         for (NetwerkComponent nc : netwerkLijst) {
             System.out.print(nc.getNaam() + " ");
         }
-        System.out.print(berekenBeschikbaarheid());
+        System.out.print(berekenBeschikbaarheid()+ " ");
+        System.out.print(berekenTotalePrijs());
         System.out.println();
-        // als het opgegeven percentage niet behaald is dan gaat het algoritme verder
-        // opzoek.
+        // als het opgegeven percentage niet behaald is dan gaat het algoritme verder opzoek.
         if (!isVoldaan(percentage)) {
             maakCombinatie(percentage);
-        } else {
-
         }
-
-        // kijk welke type servers moeten worden toegevoegd
-        // voldoet het aan het percentage
     }
-
-    private int vindLaatsteInstantie(Class type) {
-        int index = 0;
-        // voor elke instatie kijken of het van Type is dan wordt de index het index
-        // nummer van het netwerkcomponent
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (type.isAssignableFrom(nc.getClass())) {
-                index = netwerkLijst.indexOf(nc);
+    
+    //methode om de goedkoopste volgende component te bepalen
+    public void goedkoopsteVolgendeOptie(ArrayList<NetwerkComponent> aanbod){
+        
+    }
+    
+    private void voegVolgendeToe(Class type){
+        int[] posities = welkePositie(type); // array met alle posities van Webserver of DBServer
+        if(type.isAssignableFrom(Webserver.class)){ // kijken of de volgende class een webserver of DBServer is
+            if(!isAllesLaatste(posities)){ // kijken of alle waardes op de max staan
+                for(int i=0; i < posities.length; i++){
+                    if(!isLaatste(netwerkLijst.get(posities[i]))){ // als de huidige positie niet op max staat dan wordt de huidige vervangen door de volgende entry
+                        vervang(leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.indexOf(netwerkLijst.get(posities[i]))+1),posities[i]);
+                        break; // we willen niet dat alles direct wordt toegevoegd
+                    }
+                }
+            }else{// als alle waardes op max staan vind er vertakking plaats
+                for(int i =0; i < posities.length; i++){ // alle huidige waardes op het laagst zetten.
+                    vervang(leverancier.aanbodWebserver.get(0), posities[i]);
+                }
+                voegToe(leverancier.aanbodWebserver.get(0)); // naar de volgende tak
+            }
+        }else if (type.isAssignableFrom(DBServer.class)){
+            if(!isAllesLaatste(posities)){
+                for(int i=0; i < posities.length; i++){
+                    if(!isLaatste(netwerkLijst.get(posities[i]))){
+                        vervang(leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.indexOf(netwerkLijst.get(posities[i]))+1),posities[i]);
+                        break;
+                    }
+                }
+            }else{
+                for(int i =0; i < posities.length; i++){
+                    vervang(leverancier.aanbodDBServer.get(0), posities[i]);
+                }
+                voegToe(leverancier.aanbodDBServer.get(0));
             }
         }
-        return index;
     }
 
-    // kijken of het laatste instantie in de netwerklijst gelijk staat aan het
-    // laatste instantie van de aanbodlijst
-    private Boolean isLaatste(Class type) {
-        Boolean isLaatst = null;
-
-        // als de laatste instantie van een netwerkcomponent bijvoorbeeld een webserver
-        // op de duurste server staat.
-        // return true
-        if (netwerkLijst.get(vindLaatsteInstantie(type)) instanceof Webserver) {
-            isLaatst = netwerkLijst.get(vindLaatsteInstantie(type)) == leverancier.aanbodWebserver
-                    .get(leverancier.aanbodWebserver.size() - 1);
-        } else if (netwerkLijst.get(vindLaatsteInstantie(type)) instanceof DBServer) {
-            isLaatst = netwerkLijst.get(vindLaatsteInstantie(type)) == leverancier.aanbodDBServer
-                    .get(leverancier.aanbodDBServer.size() - 1);
+    //deze methode geeft alle posities van x in netwerklijst weer.
+    //waarbij x het type server is
+    private int[] welkePositie(Class type){
+        //kijken hoe groot de array moet worden
+        int aantal = 0;
+        for(NetwerkComponent nc: netwerkLijst){
+            if(type.isAssignableFrom(nc.getClass())){
+                aantal++;
+            }
         }
-        return isLaatst;
+        int[] posities = new int[aantal];
+        aantal = 0; // houd de positie van de array bij
+        int counter = 0; // telt het aantal posities
+        for(NetwerkComponent nc : netwerkLijst){
+            if(type.isAssignableFrom(nc.getClass())){
+                posities[aantal]=counter;
+                aantal++;
+            }
+            counter++;
+        }
+        return posities;
+    }
+    
+    private Boolean isAllesLaatste(int[] posities){
+        Boolean isAllesLaatste = false;
+        for(int i=0; i< posities.length; i++){
+            if(netwerkLijst.get(posities[i]) instanceof Webserver){
+                if(isLaatste(netwerkLijst.get(posities[i]))){
+                    isAllesLaatste = true;
+                }else {
+                    isAllesLaatste = false;
+                    break;
+                }
+            }else if (netwerkLijst.get(posities[i]) instanceof DBServer){
+                if(isLaatste(netwerkLijst.get(posities[i]))){
+                    isAllesLaatste = true;
+                }else {
+                    isAllesLaatste = false;
+                    break;
+                }
+            }
+        }
+        return isAllesLaatste;
     }
 
-    private Boolean isErin(String s, ArrayList<NetwerkComponent> aanbod) {
-        return netwerkLijst.contains(zoekOpNaam(s, aanbod));
+    // kijken of een object de laatste van het aanbod van servers is.
+    private Boolean isLaatste(NetwerkComponent component) {
+        Boolean isLaatste = false;
+            if(component instanceof Webserver){
+                isLaatste = component == leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.size()-1);
+            }else if (component instanceof DBServer){
+                isLaatste = component == leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.size()-1);
+            }
+        return isLaatste;
     }
 
     public Boolean isVoldaan(double percentage) {
         return berekenBeschikbaarheid() >= percentage;
     }
 
-    public double berekenWebservers() {
+    public double berekenComponent(Class type) {
         double beschikbaarheid = 1;
-
         // voor elke component wordt gekeken of het een webserver is.
         // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-
         for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof Webserver) {
+            if (type.isAssignableFrom(nc.getClass())) {
                 beschikbaarheid *= (1 - (nc.getBeschikbaarheid() / 100));
             }
         }
         return (1 - beschikbaarheid) * 100;
-    }
-
-    public double berekenDBservers() {
-        double beschikbaarheid = 1;
-
-        // voor elke component wordt gekeken of het een DBServer is.
-        // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof DBServer) {
-                beschikbaarheid *= (1 - (nc.getBeschikbaarheid() / 100));
-            }
-        }
-        return (1 - beschikbaarheid) * 100;
-
-    }
-
-    public double berekenFirewall() {
-        double beschikbaarheid = 0;
-
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof Firewall) {
-                beschikbaarheid = nc.getBeschikbaarheid();
-                break;
-            }
-        }
-        return beschikbaarheid;
-    }
-
-    public double berekenLoadbalancer() {
-        double beschikbaarheid = 0;
-
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof LoadBalancer) {
-                beschikbaarheid = nc.getBeschikbaarheid();
-                break;
-            }
-        }
-        return beschikbaarheid;
-    }
-
-    public NetwerkComponent zoekOpNaam(String term, ArrayList<NetwerkComponent> aanbod) {
-        // zoekterm
-        term = term.toLowerCase();
-        NetwerkComponent apparaat = null;
-
-        // voor elke entry in de arraylist kijken of de naam, bijvoorbeeld HALW9001
-        // gelijk is
-        // als dit zo is wordt de hele class ervan terug gegeven.
-        for (int i = 0; i < aanbod.size(); i++) {
-            if (aanbod.get(i).getNaam().toLowerCase().equals(term)) {
-                apparaat = aanbod.get(i);
-            }
-        }
-        return apparaat;
     }
 
     // looped over alle items in de netwerklijst ArrayList en telt de prijs bij
@@ -226,7 +193,6 @@ public class HuidigeConfiguratie {
         }
         return totalePrijs;
     }
-
 
     public void configuratieNaarDatabase(String query) {
             JDBC database = new JDBC();

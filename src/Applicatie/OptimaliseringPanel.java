@@ -9,21 +9,25 @@ import javax.swing.border.Border;
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
     private LeveranciersLijst lijst;
-    public HuidigeConfiguratie netwerk;
-
-    private JButton optimaliseer;
+    HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    JButton optimaliseer;
     JButton opslaanbutton;
     private JTextField percentage;
-    private JLabel error;
+    JLabel error;
 
     public void berekenNieuweBeschikbaarheid() {
         //hier komt het algoritme die de beschikbaarheid berekent
     }
 
     public OptimaliseringPanel() { //LeveranciersLijst lijst; moet hier nog in? denk ik xxx tristan xxx
-
+        
         setLayout(null);
-
+        
+        error = new JLabel("voer een getal in");
+        error.setBounds(260, 50, 100, 25);
+        add(error);
+        error.setVisible(false);
+                
         JLabel percentageL = new JLabel("Gewenste beschikbaarheidspercentage");
         percentageL.setBounds(25, 25, 250, 25);
         add(percentageL);
@@ -38,28 +42,51 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
 
         optimaliseer = new JButton("Optimaliseer");
         optimaliseer.setBounds(375, 25, 115, 25);
-        optimaliseer.addActionListener((ActionListener) this);
+        optimaliseer.addActionListener(this);
         add(optimaliseer);
 
         opslaanbutton = new JButton("Opslaan");
         opslaanbutton.setBounds(500, 25, 115, 25);
         add(opslaanbutton);
-
-        optimaliseer = new JButton("Optimaliseer en doorgaan"); //even kijken of we deze knop willen of niet
-        optimaliseer.setBounds(375, 75, 240, 25);
-        optimaliseer.addActionListener((ActionListener) this);
-        add(optimaliseer);
-
-        error = new JLabel("");
-        error.setBounds(260, 50, 125, 20);
-        add(error);
-
+         
+            
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e.getSource() == optimaliseer) {
+            try {
+                //ingevulde percentage ophalen en in het algoritme invoeren
+                HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+                int gewenstepercentage = Integer.parseInt(percentage.getText());
+                System.out.println(gewenstepercentage);
+                netwerk.maakCombinatie(gewenstepercentage);
+                //netwerkcomponenten weergeven op het scherm
+                int xcords = 50;
+                  for (NetwerkComponent nc : netwerk.getNetwerkLijst()) {
+                    JLabel naam = new JLabel(nc.getNaam());
+                    naam.setBounds(25, xcords, 115, 25);
+                    add(naam);
+                    xcords += 15;
+                    repaint();
+                  }
+                //prijs op het scherm tonen
+                JLabel prijs = new JLabel(netwerk.berekenTotalePrijs());
+                prijs.setBounds(350, 50, 115, 25);
+                add(prijs);
+                //beschikbaarheidspercentage op het scherm tonen
+                String beschikbaarheid = netwerk.berekenBeschikbaarheid() + " %";
+                JLabel beschikbaarheidspercentage = new JLabel(beschikbaarheid);
+                beschikbaarheidspercentage.setBounds(350, 65, 115, 25);
+                add(beschikbaarheidspercentage);
+                System.out.println(netwerk.berekenTotalePrijs());  
+                error.setVisible(false);
+            } catch (Exception ex) {
+                error.setVisible(true);
+                repaint();
+            }          
+        }
     }
 
 }

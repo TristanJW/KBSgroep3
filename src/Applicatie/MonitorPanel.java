@@ -24,7 +24,7 @@ public class MonitorPanel extends JPanel {
         setLayout(null);
         JDBC database = new JDBC();
         
-        ResultSet resultaat = database.dataOphalen("select * from leverancierslijst"); //query die uitgevoerd wordt in de databasse
+        ResultSet resultaat = database.dataOphalen("select * from component"); //query die uitgevoerd wordt in de databasse
 
         try {
             while (resultaat.next()) {
@@ -35,7 +35,7 @@ public class MonitorPanel extends JPanel {
                 }
 
                 int itemID = resultaat.getInt("itemID");
-                String naam = resultaat.getString("naam"); //naam uit de database opslaan in een variabele
+                String naam = resultaat.getString("componentNaam"); //naam uit de database opslaan in een variabele
                 
                 JLabel componentNaam = new JLabel(naam);
                 componentNaam.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.BOLD, 18));
@@ -58,19 +58,17 @@ public class MonitorPanel extends JPanel {
                 add(processor);
                 
 
-                if(itemID != 1 && itemID != 2){
-                    
-//                System.out.println("test");
+                System.out.println("test");
                 JLabel diskruimte = new JLabel("Diskruimte:");
                 diskruimte.setFont(new Font("UIManager.getDefaults().getFont(\"TabbedPane.font\")", Font.PLAIN, 14));
                 diskruimte.setBounds(x, 60+y, 200, 25);
                 add(diskruimte);
-                }
+
                 y += 100;
                 aantalcomponenten++;
-//                System.out.println(naam);
-//                System.out.println(itemID);
-//                System.out.println(aantalcomponenten);
+                System.out.println(naam);
+                System.out.println(itemID);
+                System.out.println(aantalcomponenten);
                         
             }
             
