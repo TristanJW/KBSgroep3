@@ -61,7 +61,8 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
                 HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
                 int gewenstepercentage = Integer.parseInt(percentage.getText());
                 System.out.println(gewenstepercentage);
-                netwerk.maakCombinatie(gewenstepercentage);
+                Algoritme algoritme = new Algoritme(netwerk);
+                algoritme.maakCombinatie(gewenstepercentage);
                 //netwerkcomponenten weergeven op het scherm
                 int xcords = 50;
                   for (NetwerkComponent nc : netwerk.getNetwerkLijst()) {

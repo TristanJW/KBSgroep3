@@ -30,6 +30,8 @@ public class Main {
 //        }
 
         HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-        netwerk.maakCombinatie(99.99);
+        Algoritme algoritme = new Algoritme(netwerk); 
+        algoritme.maakCombinatie(99.99);
+        System.out.println(netwerk.berekenTotalePrijs());
     }
 }
