@@ -3,6 +3,8 @@ package Applicatie;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -119,6 +121,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
     public void tekenComponenten() {
         //todo dit moet beter kunnen????????!!!!!!!!!???????????????
+        //todo fix duplicate code
         int xcordsdbserver = 0;
         int xcordsfirewall = 0;
         int xcordsloadbalancer = 0;
@@ -127,45 +130,80 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
             if (component instanceof DBServer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
-                JLabel dbserverlabel = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
-                JLabel dbservertekstlabel = new JLabel(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex()).getNaam()); // tekst onder het icon dat weergeeft welke type server het is
-                dbserverlabel.setBounds(xcordsdbserver, 0, 100, 80); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
+                JLabel dbserverImage = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
+                JLabel dbservertekstlabel = new JLabel(component.getNaam()); // tekst onder het icon dat weergeeft welke type server het is
+                dbserverImage.setBounds(xcordsdbserver, 0, 100, 80); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
                 dbservertekstlabel.setBounds(xcordsdbserver + 10, 75, 100, 15); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
                 xcordsdbserver += 75; // elke keer als er op een knop word gedrukt gaat de volgende afbeelding 75 pixels naar de zijkant zodat het netjes op een rijtje staat
-                tekenp.add(dbserverlabel);
+
+                dbserverImage.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        netwerk.verwijderComponent(component);
+                        aantalDbservers--;
+                        tekenComponenten();
+                    }
+                });
+                tekenp.add(dbserverImage);
                 tekenp.add(dbservertekstlabel);
             }
             if (component instanceof Firewall) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/firewall.png"));
-                JLabel firewalllabel = new JLabel(imageIcon);
-                JLabel firewalltekstlabel = new JLabel(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex()).getNaam());
-                firewalllabel.setBounds(xcordsfirewall, 125, 100, 80);
+                JLabel firewallImage = new JLabel(imageIcon);
+                JLabel firewalltekstlabel = new JLabel(component.getNaam());
+                firewallImage.setBounds(xcordsfirewall, 125, 100, 80);
                 firewalltekstlabel.setBounds(xcordsfirewall + 25, 195, 100, 15);
                 xcordsfirewall += 75;
-                tekenp.add(firewalllabel);
+
+                firewallImage.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        netwerk.verwijderComponent(component);
+                        aantalFirewalls--;
+                        tekenComponenten();
+                    }
+                });
+                tekenp.add(firewallImage);
                 tekenp.add(firewalltekstlabel);
             }
             if (component instanceof LoadBalancer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/loadbalancer.png"));
-                JLabel loadbalancerlabel = new JLabel(imageIcon);
-                JLabel loadbalancertekstlabel = new JLabel(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex()).getNaam());
-                loadbalancerlabel.setBounds(xcordsloadbalancer, 250, 100, 80);
+                JLabel loadbalancerImage = new JLabel(imageIcon);
+                JLabel loadbalancertekstlabel = new JLabel(component.getNaam());
+                loadbalancerImage.setBounds(xcordsloadbalancer, 250, 100, 80);
                 loadbalancertekstlabel.setBounds(xcordsloadbalancer + 15, 320, 70, 20); // todo fix tekst die half afgehakt is
                 xcordsloadbalancer += 75;
-                tekenp.add(loadbalancerlabel);
+
+                loadbalancerImage.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        netwerk.verwijderComponent(component);
+                        aantalLoadbalancers--;
+                        tekenComponenten();
+                    }
+                });
+                tekenp.add(loadbalancerImage);
                 tekenp.add(loadbalancertekstlabel);
             }
             if (component instanceof Webserver) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/webserver.png"));
                 JLabel webserverImage = new JLabel(imageIcon);
-                JLabel webservertekstlabel = new JLabel(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex()).getNaam());
+                JLabel webservertekstlabel = new JLabel(component.getNaam());
                 webserverImage.setBounds(xcordswebserver, 375, 100, 80);
                 webservertekstlabel.setBounds(xcordswebserver + 15, 440, 100, 20);
                 xcordswebserver += 75;
+
+                webserverImage.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        netwerk.verwijderComponent(component);
+                        aantalWebservers--;
+                        tekenComponenten();
+                    }
+                });
                 tekenp.add(webserverImage);
                 tekenp.add(webservertekstlabel);
             }
         }
+        totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
+        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
+        repaint();
     }
 
     @Override
@@ -193,9 +231,5 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         }
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
         tekenComponenten();
-        totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
-        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
-        repaint(); //zorgt ervoor dat als je op de knop klikt de afbeelding realtime word upgedate waardoor je niet hoeft te refreshen om de afbeelding op het scherm te krijgen
     }
-
 }
