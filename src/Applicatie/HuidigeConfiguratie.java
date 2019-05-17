@@ -1,11 +1,6 @@
 package Applicatie;
 
 import java.util.ArrayList;
-import java.math.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class HuidigeConfiguratie {
 
@@ -33,7 +28,7 @@ public class HuidigeConfiguratie {
     }
 
     public double berekenBeschikbaarheid() {
-        return (berekenFirewall() / 100) * (berekenLoadbalancer() / 100) * (berekenWebservers() / 100) * berekenDBservers();
+        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
     }
 
     public void maakCombinatie(double percentage) {
@@ -43,8 +38,8 @@ public class HuidigeConfiguratie {
             voegToe(leverancier.aanbodLoadBalancer.get(0));
             voegToe(leverancier.aanbodWebserver.get(0));
             voegToe(leverancier.aanbodDBServer.get(0));
-        } else {// als er al van alle componenten één aanwezig is dan wordt dit algoritme doorgelopen.
-           if (berekenWebservers() < berekenDBservers()) { // kijken of we een webserver of een database server nodig is.
+        }else {// als er al van alle componenten één aanwezig is dan wordt dit algoritme doorgelopen.
+           if (berekenComponent(Webserver.class) < berekenComponent(DBServer.class)) { // kijken of we een webserver of een database server nodig is.
                 voegVolgendeToe(Webserver.class);
                 // 1 > 2 > 1,1 > 3 > 2,1 > 2,2 > 1,1,1 > 2,1,1 > 2,3 > 1,1,1,1 > 3,2 > 3,1,1 > 3,3 > 1,1,1,1,1
            }else {
@@ -101,6 +96,8 @@ public class HuidigeConfiguratie {
         }
     }
 
+    //deze methode geeft alle posities van x in netwerklijst weer.
+    //waarbij x het type server is
     private int[] welkePositie(Class type){
         //kijken hoe groot de array moet worden
         int aantal = 0;
@@ -159,56 +156,16 @@ public class HuidigeConfiguratie {
         return berekenBeschikbaarheid() >= percentage;
     }
 
-    public double berekenWebservers() {
+    public double berekenComponent(Class type) {
         double beschikbaarheid = 1;
-
         // voor elke component wordt gekeken of het een webserver is.
         // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-
         for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof Webserver) {
+            if (type.isAssignableFrom(nc.getClass())) {
                 beschikbaarheid *= (1 - (nc.getBeschikbaarheid() / 100));
             }
         }
         return (1 - beschikbaarheid) * 100;
-    }
-
-    public double berekenDBservers() {
-        double beschikbaarheid = 1;
-
-        // voor elke component wordt gekeken of het een DBServer is.
-        // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof DBServer) {
-                beschikbaarheid *= (1 - (nc.getBeschikbaarheid() / 100));
-            }
-        }
-        return (1 - beschikbaarheid) * 100;
-
-    }
-
-    public double berekenFirewall() {
-        double beschikbaarheid = 0;
-
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof Firewall) {
-                beschikbaarheid = nc.getBeschikbaarheid();
-                break;
-            }
-        }
-        return beschikbaarheid;
-    }
-
-    public double berekenLoadbalancer() {
-        double beschikbaarheid = 0;
-
-        for (NetwerkComponent nc : netwerkLijst) {
-            if (nc instanceof LoadBalancer) {
-                beschikbaarheid = nc.getBeschikbaarheid();
-                break;
-            }
-        }
-        return beschikbaarheid;
     }
 
     // looped over alle items in de netwerklijst ArrayList en telt de prijs bij
