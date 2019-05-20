@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -25,12 +26,13 @@ public class LaadDialoog extends JDialog implements ActionListener {
     JButton laadbutton;
     JButton verwijderbutton;
     JTextField input1;
-    int ycords = 85;
     int itemID;
 
     int queryinput;
 
     JLabel error = new JLabel("voer een geldig configuratie ID in");
+    
+    JPanel panel = new JPanel();
 
     public LaadDialoog(JFrame frame1) {
         super(frame1, true);
@@ -43,7 +45,12 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
         add(error);
         error.setVisible(false);
-
+        
+        panel.setLayout(null);
+        panel.setSize(500, 400);
+        panel.setBounds(15, 75 ,605, 500);
+        add(panel);
+        
         JLabel cfid = new JLabel("ID");
         cfid.setFont(font);
         cfid.setBounds(5, 45, 50, 25);
@@ -87,6 +94,8 @@ public class LaadDialoog extends JDialog implements ActionListener {
     }
 
     public void dataImplementeren() {
+        int ycords = 0;
+        panel.removeAll();
         //query voor het ophalen van alle opgeslagen configuraties
         JDBC database = new JDBC();
         ResultSet resultaat = database.dataOphalen("SELECT * From netwerk");
@@ -101,23 +110,23 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
                 JLabel netwerkIDlabel = new JLabel(netwerkID);
                 netwerkIDlabel.setBounds(5, ycords, 100, 25);
-                add(netwerkIDlabel);
+                panel.add(netwerkIDlabel);
 
                 JLabel naamlabel = new JLabel(naam);
                 naamlabel.setBounds(25, ycords, 100, 25);
-                add(naamlabel);
+                panel.add(naamlabel);
 
                 JLabel datumlabel = new JLabel(datum);
                 datumlabel.setBounds(100, ycords, 100, 25);
-                add(datumlabel);
+                panel.add(datumlabel);
 
                 JLabel prijslabel = new JLabel(prijs);
                 prijslabel.setBounds(250, ycords, 100, 25);
-                add(prijslabel);
+                panel.add(prijslabel);
 
                 JLabel beschikbaarheidspercentagelabel = new JLabel(beschikbaarheidspercentage);
                 beschikbaarheidspercentagelabel.setBounds(400, ycords, 50, 25);
-                add(beschikbaarheidspercentagelabel);
+                panel.add(beschikbaarheidspercentagelabel);
 
                 // zorgt ervoor dat elk nieuw label iets naar onder gaat zodat het elkaar niet overlapt
                 ycords += 50;
@@ -125,6 +134,10 @@ public class LaadDialoog extends JDialog implements ActionListener {
         } catch (SQLException se) {
             se.printStackTrace();
         }
+    }
+    
+    public void tekenComponenten() {
+        
     }
 
     @Override
@@ -153,6 +166,7 @@ public class LaadDialoog extends JDialog implements ActionListener {
             } catch (Exception ex) {
                 error.setVisible(true);
             }
+            dataImplementeren();
         }
         repaint();
     }
