@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -119,7 +120,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void tekenComponenten() {
+    public void tekenComponenten(HuidigeConfiguratie netwerk) {
         //todo dit moet beter kunnen????????!!!!!!!!!???????????????
         //todo fix duplicate code
         int xcordsdbserver = 0;
@@ -140,7 +141,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
                         aantalDbservers--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(dbserverImage);
@@ -158,7 +159,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
                         aantalFirewalls--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(firewallImage);
@@ -176,7 +177,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
                         aantalLoadbalancers--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(loadbalancerImage);
@@ -194,7 +195,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
                         aantalWebservers--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(webserverImage);
@@ -230,6 +231,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             }
         }
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
-        tekenComponenten();
+        tekenComponenten(netwerk);
     }
 }
