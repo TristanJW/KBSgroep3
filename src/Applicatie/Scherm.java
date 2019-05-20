@@ -3,6 +3,9 @@ package Applicatie;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class Scherm extends JFrame implements ActionListener {
@@ -46,6 +49,17 @@ public class Scherm extends JFrame implements ActionListener {
         } else if (e.getSource() == p1.laadbutton) {
             LaadDialoog ld1 = new LaadDialoog(this);
             ld1.setVisible(true);
+            if (ld1.getOphalen()) {
+                try {
+                    HuidigeConfiguratie geimporteerdNetwerk = new HuidigeConfiguratie();
+                    geimporteerdNetwerk.dataNaarNetwerk(ld1.getResultaat());
+
+                    p1.netwerk = geimporteerdNetwerk;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Scherm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         }
     }
 }

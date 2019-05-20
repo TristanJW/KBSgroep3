@@ -27,11 +27,13 @@ public class LaadDialoog extends JDialog implements ActionListener {
     JButton verwijderbutton;
     JTextField input1;
     int itemID;
+    private Boolean ophalen = false;
+    private ResultSet resultaat;
 
     int queryinput;
 
     JLabel error = new JLabel("voer een geldig configuratie ID in");
-    
+
     JPanel panel = new JPanel();
 
     public LaadDialoog(JFrame frame1) {
@@ -45,12 +47,12 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
         add(error);
         error.setVisible(false);
-        
+
         panel.setLayout(null);
         panel.setSize(500, 400);
-        panel.setBounds(15, 75 ,605, 500);
+        panel.setBounds(15, 75, 605, 500);
         add(panel);
-        
+
         JLabel cfid = new JLabel("ID");
         cfid.setFont(font);
         cfid.setBounds(5, 45, 50, 25);
@@ -135,9 +137,9 @@ public class LaadDialoog extends JDialog implements ActionListener {
             se.printStackTrace();
         }
     }
-    
+
     public void tekenComponenten() {
-        
+
     }
 
     @Override
@@ -146,13 +148,9 @@ public class LaadDialoog extends JDialog implements ActionListener {
             try {
                 queryinput = Integer.parseInt(input1.getText());
                 JDBC database = new JDBC();
-                ResultSet resultaat = database.dataOphalen("SELECT naam From leverancierslijst JOIN netwerkregel ON netwerkregel.itemID = leverancierslijst.itemID WHERE netwerkregel.netwerkID =" + queryinput);
-                while (resultaat.next()) {
-                    String naam = resultaat.getString("naam");
-                    System.out.println(naam); // van alles krijg ik nu 1 terug, werkt niet zit in de select query
-                    // hier moet de geladen configuratie dus de labels uitprinten op het configuratiescherm
-                }
+                resultaat = database.dataOphalen("SELECT * From leverancierslijst JOIN netwerkregel ON netwerkregel.itemID = leverancierslijst.itemID WHERE netwerkregel.netwerkID =" + queryinput);
                 dispose();
+                ophalen = true;
             } catch (Exception ex) {
                 error.setVisible(true);
             }
@@ -169,5 +167,13 @@ public class LaadDialoog extends JDialog implements ActionListener {
             dataImplementeren();
         }
         repaint();
+    }
+
+    public Boolean getOphalen() {
+        return ophalen;
+    }
+
+    public ResultSet getResultaat() {
+        return resultaat;
     }
 }

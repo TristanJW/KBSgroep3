@@ -1,5 +1,7 @@
 package Applicatie;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HuidigeConfiguratie {
@@ -13,7 +15,7 @@ public class HuidigeConfiguratie {
     public ArrayList<NetwerkComponent> getNetwerkLijst() {
         return netwerkLijst;
     }
-    
+
     public void voegToe(NetwerkComponent component) {
         netwerkLijst.add(component);
     }
@@ -29,7 +31,7 @@ public class HuidigeConfiguratie {
     public double berekenBeschikbaarheid() {
         return (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
     }
-    
+
     public double berekenComponent(Class type) {
         double beschikbaarheid = 1;
         // voor elke component wordt gekeken of het een webserver is.
@@ -55,9 +57,9 @@ public class HuidigeConfiguratie {
         }
         return totalePrijs + " Euro";
     }
-    
+
     public int dbTotalePrijs() {
-     int totalePrijs = 0;
+        int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerkLijst) {
                 totalePrijs += component.getPrijs();
@@ -69,9 +71,37 @@ public class HuidigeConfiguratie {
     }
 
     public void configuratieNaarDatabase(String query) {
-            JDBC database = new JDBC();
-            database.dataToevoegen(query);
-            
+        JDBC database = new JDBC();
+        database.dataToevoegen(query);
+
+    }
+
+    public void dataNaarNetwerk(ResultSet resultaat) throws SQLException {
+        while (resultaat.next()) {
+            String naam = resultaat.getString("Naam");
+            int itemID = resultaat.getInt("itemID");
+            double prijs = resultaat.getDouble("prijs");
+            double beschikbaarheid = resultaat.getDouble("beschikbaarheid");
+            String type = resultaat.getString("type");
+
+            //type check
+            if (type.equals("Webserver")) {
+                Webserver server = new Webserver(itemID, naam, prijs, beschikbaarheid);
+                netwerkLijst.add(server);
+                System.out.println(server.getNaam() + "toegevoegd");
+            } else if (type.equals("DBserver")) {
+                DBServer database = new DBServer(itemID, naam, prijs, beschikbaarheid);
+                netwerkLijst.add(database);
+                System.out.println(database.getNaam() + "toegevoegd");
+            } else if (type.equals("firewall")) {
+                Firewall firewall = new Firewall(itemID, naam, prijs, beschikbaarheid);
+                netwerkLijst.add(firewall);
+                System.out.println(firewall.getNaam() + "toegevoegd");
+            } else if (type.equals("loadbalancer")) {
+                LoadBalancer loadbalancer = new LoadBalancer(itemID, naam, prijs, beschikbaarheid);
+                netwerkLijst.add(loadbalancer);
+                System.out.println(loadbalancer.getNaam() + "toegevoegd");
+            }
+        }
     }
 }
-
