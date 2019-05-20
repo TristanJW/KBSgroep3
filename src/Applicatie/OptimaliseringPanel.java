@@ -10,7 +10,7 @@ import javax.swing.border.Border;
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
     private LeveranciersLijst lijst;
-    HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
     JButton optimaliseer;
     JButton opslaanbutton;
     private JTextField percentage;
@@ -63,14 +63,14 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
             
         setVisible(true);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
             if(e.getSource() == optimaliseer) {
                 panellabels.removeAll();
+                repaint();
                 try {    
                 //ingevulde percentage ophalen en in het algoritme invoeren
-                HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
                 double gewenstepercentage = Double.parseDouble(percentage.getText());
                 if(gewenstepercentage >= 100 || gewenstepercentage < 0) {
                     panellabels.add(errorBP);
@@ -102,8 +102,9 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
                 error.setVisible(false);
                 }
             } catch (Exception ex) {
-                panellabels.add(error);
-                repaint();
+               System.out.println("error");
+               repaint();
+               panellabels.add(error);             
             } 
                 
             }
