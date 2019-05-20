@@ -9,11 +9,13 @@ public class Scherm extends JFrame implements ActionListener {
 
     ConfiguratiePanel p1 = new ConfiguratiePanel();
     MonitorPanel p2 = new MonitorPanel();
+
     OptimaliseringPanel p3 = new OptimaliseringPanel();
 
     JTabbedPane tp;
 
     public Scherm() {
+        //p2.start(); //uncomment voor een werkend monitorpanel
         // actionlisteners
         p1.opslaanbutton.addActionListener(this);
         p1.laadbutton.addActionListener(this);
