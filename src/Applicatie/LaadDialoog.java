@@ -30,7 +30,7 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
     int queryinput;
 
-    JLabel error = new JLabel("voer een getal in");
+    JLabel error = new JLabel("voer een geldig configuratie ID in");
 
     public LaadDialoog(JFrame frame1) {
         super(frame1, true);
@@ -39,7 +39,8 @@ public class LaadDialoog extends JDialog implements ActionListener {
         setSize(600, 750);
         Font font = new Font("", Font.BOLD, 12);
 
-        error.setBounds(5, 25, 100, 25);
+        error.setBounds(5, 25, 200, 25);
+
         add(error);
         error.setVisible(false);
 
@@ -132,15 +133,15 @@ public class LaadDialoog extends JDialog implements ActionListener {
             try {
                 queryinput = Integer.parseInt(input1.getText());
                 JDBC database = new JDBC();
-                ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst WHERE itemID IN (SELECT itemID FROM netwerkregel WHERE netwerkID =" + queryinput + ")");
+                ResultSet resultaat = database.dataOphalen("SELECT naam From leverancierslijst JOIN netwerkregel ON netwerkregel.itemID = leverancierslijst.itemID WHERE netwerkregel.netwerkID =" + queryinput);
                 while (resultaat.next()) {
                     String naam = resultaat.getString("naam");
-                    System.out.println(naam); //test om te kijken of de namen terugkomen (werkt)
+                    System.out.println(naam); // van alles krijg ik nu 1 terug, werkt niet zit in de select query
+                    // hier moet de geladen configuratie dus de labels uitprinten op het configuratiescherm
                 }
                 dispose();
             } catch (Exception ex) {
                 error.setVisible(true);
-                repaint();
             }
 
         } else if (e.getSource() == verwijderbutton) {

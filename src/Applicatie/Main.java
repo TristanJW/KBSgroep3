@@ -1,12 +1,9 @@
 package Applicatie;
 
-import java.sql.*;
-import java.util.ArrayList;
-
 public class Main {
 
     public static void main(String[] args) {
-          Scherm scherm1 = new Scherm();
+        Scherm scherm1 = new Scherm();
 //
 //        JDBC database = new JDBC();
 //
@@ -30,7 +27,7 @@ public class Main {
 //        }
 
         HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-        Algoritme algoritme = new Algoritme(netwerk); 
+        Algoritme algoritme = new Algoritme(netwerk);
         algoritme.maakCombinatie(99.99);
         System.out.println(netwerk.berekenTotalePrijs());
     }
