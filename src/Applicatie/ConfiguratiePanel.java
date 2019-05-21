@@ -14,6 +14,8 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
     private LeveranciersLijst leverancier = new LeveranciersLijst();
 
+    private ArrayList<NetwerkComponent> alletypescomponenten;
+
     int aantalDbservers = 0;
     int aantalWebservers = 0;
     int aantalFirewalls = 0;
@@ -126,23 +128,20 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     }
 
     public void tekenComponenten(HuidigeConfiguratie netwerk) {
-        //todo dit moet beter kunnen????????!!!!!!!!!???????????????
-        //todo fix duplicate code
-//        aantalDbservers = 0;
-//        aantalWebservers = 0;
-//        aantalFirewalls = 0;
-//        aantalLoadbalancers = 0;
 
         int xcordsdbserver = 0;
         int xcordsfirewall = 0;
         int xcordsloadbalancer = 0;
         int xcordswebserver = 0;
         tekenp.removeAll();
-        for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
+        setAlletypescomponenten();
+        for (NetwerkComponent component : alletypescomponenten) {
+
             if (component instanceof DBServer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
                 JLabel dbserverImage = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
                 JLabel dbservertekstlabel = new JLabel(component.getNaam()); // tekst onder het icon dat weergeeft welke type server het is
+
                 dbserverImage.setBounds(xcordsdbserver, 0, 100, 80); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
                 dbservertekstlabel.setBounds(xcordsdbserver + 10, 75, 100, 15); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
                 xcordsdbserver += 75; // elke keer als er op een knop word gedrukt gaat de volgende afbeelding 75 pixels naar de zijkant zodat het netjes op een rijtje staat
@@ -150,13 +149,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 dbserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-//                        aantalDbservers--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(dbserverImage);
                 tekenp.add(dbservertekstlabel);
-//                aantalDbservers++;
             }
             if (component instanceof Firewall) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/firewall.png"));
@@ -169,32 +166,28 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 firewallImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-//                        aantalFirewalls--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(firewallImage);
                 tekenp.add(firewalltekstlabel);
-//                aantalFirewalls++;
             }
             if (component instanceof LoadBalancer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/loadbalancer.png"));
                 JLabel loadbalancerImage = new JLabel(imageIcon);
                 JLabel loadbalancertekstlabel = new JLabel(component.getNaam());
                 loadbalancerImage.setBounds(xcordsloadbalancer, 250, 100, 80);
-                loadbalancertekstlabel.setBounds(xcordsloadbalancer + 15, 320, 70, 20); // todo fix tekst die half afgehakt is
+                loadbalancertekstlabel.setBounds(xcordsloadbalancer + 20, 320, 100, 20); // todo fix tekst die half afgehakt is
                 xcordsloadbalancer += 75;
 
                 loadbalancerImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-//                        aantalLoadbalancers--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(loadbalancerImage);
                 tekenp.add(loadbalancertekstlabel);
-//                aantalLoadbalancers++;
             }
             if (component instanceof Webserver) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/webserver.png"));
@@ -207,43 +200,43 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 webserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-//                        aantalWebservers--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(webserverImage);
                 tekenp.add(webservertekstlabel);
-//                aantalWebservers++;
+            }
+
+            totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
+            totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
+            repaint();
+        }
+    }
+
+    public void setAlletypescomponenten() {
+        alletypescomponenten = new ArrayList<>();
+        for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
+            if (!alletypescomponenten.contains(component)) {
+                alletypescomponenten.add(component);
             }
         }
-        totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
-        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
-        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dbserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
-//            if (aantalDbservers < 7) {
             netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-//            }
         } else if (e.getSource() == firewallbutton) {
-//            if (aantalFirewalls < 7) {
             netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-//            }
         } else if (e.getSource() == loadbalancerbutton) {
-//            if (aantalLoadbalancers < 7) {
             netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-//            }
         } else if (e.getSource() == webserverbutton) {
-//            if (aantalWebservers < 7) {
             netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-//            }
         } else if (e.getSource() == leegmaakbutton) {
             netwerk.getNetwerkLijst().clear();
             tekenp.removeAll();
         }
-            
+
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
         tekenComponenten(netwerk);
     }
