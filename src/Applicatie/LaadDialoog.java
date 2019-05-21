@@ -5,6 +5,7 @@
  */
 package Applicatie;
 
+import static Applicatie.LeveranciersLijst.aanbodWebserver;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -22,26 +24,36 @@ import javax.swing.JTextField;
  */
 public class LaadDialoog extends JDialog implements ActionListener {
 
+    ConfiguratiePanel panel1;
     JButton laadbutton;
     JButton verwijderbutton;
     JTextField input1;
-    int ycords = 85;
     int itemID;
+    private Boolean ophalen = false;
+    private ResultSet resultaat;
 
     int queryinput;
 
-    JLabel error = new JLabel("voer een getal in");
+    JLabel error = new JLabel("voer een geldig configuratie ID in");
 
-    public LaadDialoog(JFrame frame1) {
+    JPanel panel = new JPanel();
+
+    public LaadDialoog(JFrame frame1, ConfiguratiePanel panel1) {
         super(frame1, true);
         setLayout(null);
         setTitle("Laad configuratie");
         setSize(600, 750);
         Font font = new Font("", Font.BOLD, 12);
 
-        error.setBounds(5, 25, 100, 25);
+        error.setBounds(5, 25, 200, 25);
+
         add(error);
         error.setVisible(false);
+
+        panel.setLayout(null);
+        panel.setSize(500, 400);
+        panel.setBounds(15, 75, 605, 500);
+        add(panel);
 
         JLabel cfid = new JLabel("ID");
         cfid.setFont(font);
@@ -50,22 +62,22 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
         JLabel cfnaam = new JLabel("Naam");
         cfnaam.setFont(font);
-        cfnaam.setBounds(25, 45, 50, 25);
+        cfnaam.setBounds(50, 45, 50, 25);
         add(cfnaam);
 
         JLabel cfdatum = new JLabel("Datum");
         cfdatum.setFont(font);
-        cfdatum.setBounds(100, 45, 50, 25);
+        cfdatum.setBounds(125, 45, 50, 25);
         add(cfdatum);
 
         JLabel cfprijs = new JLabel("Prijs");
         cfprijs.setFont(font);
-        cfprijs.setBounds(250, 45, 50, 25);
+        cfprijs.setBounds(275, 45, 50, 25);
         add(cfprijs);
 
         JLabel cfbeschikbaarheidspercentage = new JLabel("Beschikbaarheidspercentage");
         cfbeschikbaarheidspercentage.setFont(font);
-        cfbeschikbaarheidspercentage.setBounds(330, 45, 200, 25);
+        cfbeschikbaarheidspercentage.setBounds(350, 45, 200, 25);
         add(cfbeschikbaarheidspercentage);
 
         input1 = new JTextField("");
@@ -82,13 +94,16 @@ public class LaadDialoog extends JDialog implements ActionListener {
         verwijderbutton.addActionListener(this);
         this.add(verwijderbutton);
 
-        dataImplementeren();
+        netwerkenOphalen();
     }
 
-    public void dataImplementeren() {
+    public void netwerkenOphalen() {
+        int ycords = 0;
+        panel.removeAll();
         //query voor het ophalen van alle opgeslagen configuraties
         JDBC database = new JDBC();
         ResultSet resultaat = database.dataOphalen("SELECT * From netwerk");
+        HuidigeConfiguratie configuratie = new HuidigeConfiguratie();
         try {
             //while (gaat alle resultaten door van de query hierboven)
             while (resultaat.next()) {
@@ -99,24 +114,24 @@ public class LaadDialoog extends JDialog implements ActionListener {
                 String beschikbaarheidspercentage = resultaat.getString("beschikbaarheidspercentage");
 
                 JLabel netwerkIDlabel = new JLabel(netwerkID);
-                netwerkIDlabel.setBounds(5, ycords, 100, 25);
-                add(netwerkIDlabel);
+                netwerkIDlabel.setBounds(0, ycords, 100, 25);
+                panel.add(netwerkIDlabel);
 
                 JLabel naamlabel = new JLabel(naam);
-                naamlabel.setBounds(25, ycords, 100, 25);
-                add(naamlabel);
+                naamlabel.setBounds(25, ycords, 50, 25);
+                panel.add(naamlabel);
 
                 JLabel datumlabel = new JLabel(datum);
                 datumlabel.setBounds(100, ycords, 100, 25);
-                add(datumlabel);
+                panel.add(datumlabel);
 
                 JLabel prijslabel = new JLabel(prijs);
                 prijslabel.setBounds(250, ycords, 100, 25);
-                add(prijslabel);
+                panel.add(prijslabel);
 
                 JLabel beschikbaarheidspercentagelabel = new JLabel(beschikbaarheidspercentage);
                 beschikbaarheidspercentagelabel.setBounds(400, ycords, 50, 25);
-                add(beschikbaarheidspercentagelabel);
+                panel.add(beschikbaarheidspercentagelabel);
 
                 // zorgt ervoor dat elk nieuw label iets naar onder gaat zodat het elkaar niet overlapt
                 ycords += 50;
@@ -126,21 +141,21 @@ public class LaadDialoog extends JDialog implements ActionListener {
         }
     }
 
+    public void tekenComponenten() {
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == laadbutton) {
             try {
                 queryinput = Integer.parseInt(input1.getText());
                 JDBC database = new JDBC();
-                ResultSet resultaat = database.dataOphalen("SELECT * From leverancierslijst WHERE itemID IN (SELECT itemID FROM netwerkregel WHERE netwerkID =" + queryinput + ")");
-                while (resultaat.next()) {
-                    String naam = resultaat.getString("naam");
-                    System.out.println(naam); //test om te kijken of de namen terugkomen (werkt)
-                }
+                resultaat = database.dataOphalen("SELECT * From leverancierslijst JOIN netwerkregel ON netwerkregel.itemID = leverancierslijst.itemID WHERE netwerkregel.netwerkID =" + queryinput);
                 dispose();
+                ophalen = true;
             } catch (Exception ex) {
                 error.setVisible(true);
-                repaint();
             }
 
         } else if (e.getSource() == verwijderbutton) {
@@ -152,7 +167,16 @@ public class LaadDialoog extends JDialog implements ActionListener {
             } catch (Exception ex) {
                 error.setVisible(true);
             }
+            netwerkenOphalen();
         }
         repaint();
+    }
+
+    public Boolean getOphalen() {
+        return ophalen;
+    }
+
+    public ResultSet getResultaat() {
+        return resultaat;
     }
 }

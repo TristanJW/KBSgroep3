@@ -5,14 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
-    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    public HuidigeConfiguratie netwerk;
     private LeveranciersLijst leverancier = new LeveranciersLijst();
 
+    private ArrayList<NetwerkComponent> alletypescomponenten;
+
+    //// AANTALLEN ////
     int aantalDbservers = 0;
     int aantalWebservers = 0;
     int aantalFirewalls = 0;
@@ -26,14 +30,10 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     //// BUTTONS ////
     JButton opslaanbutton = new JButton();
     JButton laadbutton = new JButton();
+    JButton leegmaakbutton = new JButton();
     //// LABELS ////
-    JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
-    JLabel dbserverlabel = new JLabel("DBserver");
-    JLabel firewalllabel = new JLabel("Firewall");
-    JLabel loadbalancerlabel = new JLabel("Loadbalancer");
-    JLabel webserverlabel = new JLabel("Webserver");
-    JLabel totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
-    JLabel totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid() + " %");
+    JLabel totaleprijslabel;
+    JLabel totaleuptimelabel;
     //// DROPDOWNS ////
     JComboBox dbserverdropdown = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
     JComboBox firewalldropdown = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodFirewall));
@@ -43,7 +43,17 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     Tekenpanel tekenp = new Tekenpanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
 
     public ConfiguratiePanel() {
+        netwerk = new HuidigeConfiguratie();
         setLayout(null);
+
+        //// LABELS ////
+        JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
+        JLabel dbserverlabel = new JLabel("DBserver");
+        JLabel firewalllabel = new JLabel("Firewall");
+        JLabel loadbalancerlabel = new JLabel("Loadbalancer");
+        JLabel webserverlabel = new JLabel("Webserver");
+        totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
+        totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid() + " %");
 
         //panel waarin de aangeklikte componenten komen te staan binnen de zwarte rechthoek
         tekenp.setSize(500, 400);
@@ -91,10 +101,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             //voegt de 3 buttons onderaan toe met de locatie
             opslaanbutton.setBounds(600, 550, 150, 20);
             laadbutton.setBounds(425, 550, 150, 20);
+            leegmaakbutton.setBounds(250, 550, 150, 20);
             opslaanbutton.setText("Opslaan");
             add(opslaanbutton);
             laadbutton.setText("Configuratie laden");
             add(laadbutton);
+            leegmaakbutton.setText("Leeg maken");
+            add(leegmaakbutton);
 
             // de hoofdtekst bovenaan die toegevoegd word
             add(hoofdtekst);
@@ -113,25 +126,28 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(loadbalancerbutton);
             add(webserverlabel);
             add(webserverbutton);
+            leegmaakbutton.addActionListener(this);
 
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
 
-    public void tekenComponenten() {
-        //todo dit moet beter kunnen????????!!!!!!!!!???????????????
-        //todo fix duplicate code
+    public void tekenComponenten(HuidigeConfiguratie netwerk) {
+
         int xcordsdbserver = 0;
         int xcordsfirewall = 0;
         int xcordsloadbalancer = 0;
         int xcordswebserver = 0;
         tekenp.removeAll();
-        for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
+        setAlletypescomponenten();
+        for (NetwerkComponent component : alletypescomponenten) {
+
             if (component instanceof DBServer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
                 JLabel dbserverImage = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
                 JLabel dbservertekstlabel = new JLabel(component.getNaam()); // tekst onder het icon dat weergeeft welke type server het is
+
                 dbserverImage.setBounds(xcordsdbserver, 0, 100, 80); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
                 dbservertekstlabel.setBounds(xcordsdbserver + 10, 75, 100, 15); //xcords zijn geinitialiseerd boven aan de class, dit geeft de coordinaten voor de label die geplaatst word als je op een knop drukt
                 xcordsdbserver += 75; // elke keer als er op een knop word gedrukt gaat de volgende afbeelding 75 pixels naar de zijkant zodat het netjes op een rijtje staat
@@ -139,8 +155,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 dbserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalDbservers--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(dbserverImage);
@@ -157,8 +172,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 firewallImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalFirewalls--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(firewallImage);
@@ -169,14 +183,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 JLabel loadbalancerImage = new JLabel(imageIcon);
                 JLabel loadbalancertekstlabel = new JLabel(component.getNaam());
                 loadbalancerImage.setBounds(xcordsloadbalancer, 250, 100, 80);
-                loadbalancertekstlabel.setBounds(xcordsloadbalancer + 15, 320, 70, 20); // todo fix tekst die half afgehakt is
+                loadbalancertekstlabel.setBounds(xcordsloadbalancer + 20, 320, 100, 20); // todo fix tekst die half afgehakt is
                 xcordsloadbalancer += 75;
 
                 loadbalancerImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalLoadbalancers--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(loadbalancerImage);
@@ -193,43 +206,59 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 webserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalWebservers--;
-                        tekenComponenten();
+                        tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(webserverImage);
                 tekenp.add(webservertekstlabel);
             }
+
+            totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
+            totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
+            repaint();
         }
-        totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
-        totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
-        repaint();
+    }
+
+    public void setAlletypescomponenten() {
+        alletypescomponenten = new ArrayList<>();
+        for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
+            if (!alletypescomponenten.contains(component)) {
+                alletypescomponenten.add(component);
+            }
+        }
+    }
+
+    //// verbeterd worden (alletypescomponenten.contains(netwerk)) is nog fout
+    public int aantalComponenten(ArrayList<NetwerkComponent> netwerk) {
+        int counter = 0;
+        for (NetwerkComponent nc : netwerk) {
+            if (nc.equals(alletypescomponenten.contains(netwerk))) {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dbserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
-            if (aantalDbservers < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalDbservers++;
-            }
+            netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
         } else if (e.getSource() == firewallbutton) {
-            if (aantalFirewalls < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalFirewalls++;
-            }
+            netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
         } else if (e.getSource() == loadbalancerbutton) {
-            if (aantalLoadbalancers < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalLoadbalancers++;
-            }
+            netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
         } else if (e.getSource() == webserverbutton) {
-            if (aantalWebservers < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalWebservers++;
-            }
+            netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
+        } else if (e.getSource() == leegmaakbutton) {
+            netwerk.getNetwerkLijst().clear();
+            tekenp.removeAll();
+            totaleprijslabel.setText("0 Euro");
+            totaleuptimelabel.setText("0.0 %");
+            repaint();
+
         }
+
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
-        tekenComponenten();
+        tekenComponenten(netwerk);
     }
 }

@@ -3,17 +3,22 @@ package Applicatie;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class Scherm extends JFrame implements ActionListener {
 
     ConfiguratiePanel p1 = new ConfiguratiePanel();
     MonitorPanel p2 = new MonitorPanel();
+
     OptimaliseringPanel p3 = new OptimaliseringPanel();
 
     JTabbedPane tp;
 
     public Scherm() {
+        //p2.start(); //uncomment voor een werkend monitorpanel
         // actionlisteners
         p1.opslaanbutton.addActionListener(this);
         p1.laadbutton.addActionListener(this);
@@ -44,8 +49,18 @@ public class Scherm extends JFrame implements ActionListener {
             OpslaanDialoog od1 = new OpslaanDialoog(this, p3);
             od1.setVisible(true);
         } else if (e.getSource() == p1.laadbutton) {
-            LaadDialoog ld1 = new LaadDialoog(this);
+            LaadDialoog ld1 = new LaadDialoog(this, p1);
             ld1.setVisible(true);
+            if (ld1.getOphalen()) {
+                try {
+                    HuidigeConfiguratie geimporteerdNetwerk = new HuidigeConfiguratie();
+                    geimporteerdNetwerk.dataNaarNetwerk(ld1.getResultaat());
+
+                    p1.netwerk = geimporteerdNetwerk;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Scherm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 }
