@@ -5,6 +5,7 @@
  */
 package Applicatie;
 
+import static Applicatie.LeveranciersLijst.aanbodWebserver;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ import javax.swing.JTextField;
  */
 public class LaadDialoog extends JDialog implements ActionListener {
 
+    ConfiguratiePanel panel1;
     JButton laadbutton;
     JButton verwijderbutton;
     JTextField input1;
@@ -36,7 +38,7 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
     JPanel panel = new JPanel();
 
-    public LaadDialoog(JFrame frame1) {
+    public LaadDialoog(JFrame frame1, ConfiguratiePanel panel1) {
         super(frame1, true);
         setLayout(null);
         setTitle("Laad configuratie");
@@ -92,15 +94,16 @@ public class LaadDialoog extends JDialog implements ActionListener {
         verwijderbutton.addActionListener(this);
         this.add(verwijderbutton);
 
-        dataImplementeren();
+        netwerkenOphalen();
     }
 
-    public void dataImplementeren() {
+    public void netwerkenOphalen() {
         int ycords = 0;
         panel.removeAll();
         //query voor het ophalen van alle opgeslagen configuraties
         JDBC database = new JDBC();
         ResultSet resultaat = database.dataOphalen("SELECT * From netwerk");
+        HuidigeConfiguratie configuratie = new HuidigeConfiguratie();
         try {
             //while (gaat alle resultaten door van de query hierboven)
             while (resultaat.next()) {
@@ -164,7 +167,7 @@ public class LaadDialoog extends JDialog implements ActionListener {
             } catch (Exception ex) {
                 error.setVisible(true);
             }
-            dataImplementeren();
+            netwerkenOphalen();
         }
         repaint();
     }

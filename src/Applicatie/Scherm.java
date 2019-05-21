@@ -49,7 +49,7 @@ public class Scherm extends JFrame implements ActionListener {
             OpslaanDialoog od1 = new OpslaanDialoog(this, p3);
             od1.setVisible(true);
         } else if (e.getSource() == p1.laadbutton) {
-            LaadDialoog ld1 = new LaadDialoog(this);
+            LaadDialoog ld1 = new LaadDialoog(this, p1);
             ld1.setVisible(true);
             if (ld1.getOphalen()) {
                 try {
@@ -61,6 +61,6 @@ public class Scherm extends JFrame implements ActionListener {
                     Logger.getLogger(Scherm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } 
+        }
     }
 }

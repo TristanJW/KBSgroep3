@@ -11,11 +11,12 @@ import javax.swing.*;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
-    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    public HuidigeConfiguratie netwerk;
     private LeveranciersLijst leverancier = new LeveranciersLijst();
 
     private ArrayList<NetwerkComponent> alletypescomponenten;
 
+    //// AANTALLEN ////
     int aantalDbservers = 0;
     int aantalWebservers = 0;
     int aantalFirewalls = 0;
@@ -31,13 +32,8 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     JButton laadbutton = new JButton();
     JButton leegmaakbutton = new JButton();
     //// LABELS ////
-    JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
-    JLabel dbserverlabel = new JLabel("DBserver");
-    JLabel firewalllabel = new JLabel("Firewall");
-    JLabel loadbalancerlabel = new JLabel("Loadbalancer");
-    JLabel webserverlabel = new JLabel("Webserver");
-    JLabel totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
-    JLabel totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid() + " %");
+    JLabel totaleprijslabel;
+    JLabel totaleuptimelabel;
     //// DROPDOWNS ////
     JComboBox dbserverdropdown = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
     JComboBox firewalldropdown = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodFirewall));
@@ -47,7 +43,17 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     Tekenpanel tekenp = new Tekenpanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
 
     public ConfiguratiePanel() {
+        netwerk = new HuidigeConfiguratie();
         setLayout(null);
+
+        //// LABELS ////
+        JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
+        JLabel dbserverlabel = new JLabel("DBserver");
+        JLabel firewalllabel = new JLabel("Firewall");
+        JLabel loadbalancerlabel = new JLabel("Loadbalancer");
+        JLabel webserverlabel = new JLabel("Webserver");
+        totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
+        totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid() + " %");
 
         //panel waarin de aangeklikte componenten komen te staan binnen de zwarte rechthoek
         tekenp.setSize(500, 400);
@@ -222,6 +228,17 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         }
     }
 
+    //// verbeterd worden (alletypescomponenten.contains(netwerk)) is nog fout
+    public int aantalComponenten(ArrayList<NetwerkComponent> netwerk) {
+        int counter = 0;
+        for (NetwerkComponent nc : netwerk) {
+            if (nc.equals(alletypescomponenten.contains(netwerk))) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dbserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
@@ -235,6 +252,10 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         } else if (e.getSource() == leegmaakbutton) {
             netwerk.getNetwerkLijst().clear();
             tekenp.removeAll();
+            totaleprijslabel.setText("0 Euro");
+            totaleuptimelabel.setText("0.0 %");
+            repaint();
+
         }
 
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
