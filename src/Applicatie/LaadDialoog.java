@@ -60,22 +60,22 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
         JLabel cfnaam = new JLabel("Naam");
         cfnaam.setFont(font);
-        cfnaam.setBounds(25, 45, 50, 25);
+        cfnaam.setBounds(50, 45, 50, 25);
         add(cfnaam);
 
         JLabel cfdatum = new JLabel("Datum");
         cfdatum.setFont(font);
-        cfdatum.setBounds(100, 45, 50, 25);
+        cfdatum.setBounds(125, 45, 50, 25);
         add(cfdatum);
 
         JLabel cfprijs = new JLabel("Prijs");
         cfprijs.setFont(font);
-        cfprijs.setBounds(250, 45, 50, 25);
+        cfprijs.setBounds(275, 45, 50, 25);
         add(cfprijs);
 
         JLabel cfbeschikbaarheidspercentage = new JLabel("Beschikbaarheidspercentage");
         cfbeschikbaarheidspercentage.setFont(font);
-        cfbeschikbaarheidspercentage.setBounds(330, 45, 200, 25);
+        cfbeschikbaarheidspercentage.setBounds(350, 45, 200, 25);
         add(cfbeschikbaarheidspercentage);
 
         input1 = new JTextField("");
@@ -111,11 +111,11 @@ public class LaadDialoog extends JDialog implements ActionListener {
                 String beschikbaarheidspercentage = resultaat.getString("beschikbaarheidspercentage");
 
                 JLabel netwerkIDlabel = new JLabel(netwerkID);
-                netwerkIDlabel.setBounds(5, ycords, 100, 25);
+                netwerkIDlabel.setBounds(0, ycords, 100, 25);
                 panel.add(netwerkIDlabel);
 
                 JLabel naamlabel = new JLabel(naam);
-                naamlabel.setBounds(25, ycords, 100, 25);
+                naamlabel.setBounds(25, ycords, 50, 25);
                 panel.add(naamlabel);
 
                 JLabel datumlabel = new JLabel(datum);

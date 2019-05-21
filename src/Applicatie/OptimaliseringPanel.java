@@ -27,18 +27,17 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
         panellabels.setBounds(50, 50, 500, 500);
         panellabels.setLayout(null);
         add(panellabels);
-        
+
         setLayout(null);
-        
-        
+
         //melding die weergeven wordt als er een getal >= 100 wordt ingevoerd
         errorBP = new JLabel("voer een getal tussen 0 en 100 in");
         errorBP.setBounds(200, 0, 200, 25);
-        
+
         //melding die weergeven wordt als er geen getal wordt ingevoerd
         error = new JLabel("voer een getal in");
         error.setBounds(200, 0, 100, 25);
-                
+
         JLabel percentageL = new JLabel("Gewenste beschikbaarheidspercentage");
         percentageL.setBounds(25, 25, 250, 25);
         add(percentageL);
@@ -59,56 +58,53 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
         opslaanbutton = new JButton("Opslaan");
         opslaanbutton.setBounds(500, 25, 115, 25);
         add(opslaanbutton);
-         
-            
+
         setVisible(true);
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == optimaliseer) {
-                panellabels.removeAll();
-                repaint();
-                try {    
+        if (e.getSource() == optimaliseer) {
+            panellabels.removeAll();
+            repaint();
+            try {
                 //ingevulde percentage ophalen en in het algoritme invoeren
                 double gewenstepercentage = Double.parseDouble(percentage.getText());
-                if(gewenstepercentage >= 100 || gewenstepercentage < 0) {
+                if (gewenstepercentage >= 100 || gewenstepercentage <= 0) {
                     panellabels.add(errorBP);
                     repaint();
-                } else { 
-                Algoritme algoritme = new Algoritme(netwerk);
-                algoritme.maakCombinatie(gewenstepercentage);
-                //netwerkcomponenten weergeven op het scherm
-                int xcords = 0;
-                  for (NetwerkComponent nc : netwerk.getNetwerkLijst()) {
-                    JLabel naam = new JLabel(nc.getNaam());
-                    naam.setBounds(25, xcords, 115, 25);
-                    panellabels.add(naam);
-                    System.out.println(nc.getNaam());
-                    xcords += 15;
-                    repaint();
-                  }
-                //prijs op het scherm tonen
-                JLabel prijs = new JLabel(netwerk.berekenTotalePrijs());
-                prijs.setBounds(375, 0, 115, 25);
-                panellabels.add(prijs);
-                                
-                //beschikbaarheidspercentage op het scherm tonen
-                double beschikbaarheid = netwerk.berekenBeschikbaarheid();
-                DecimalFormat df = new DecimalFormat("#.##");
-                JLabel beschikbaarheidspercentage = new JLabel(df.format(beschikbaarheid) + " %");
-                beschikbaarheidspercentage.setBounds(375, 15, 115, 25);
-                panellabels.add(beschikbaarheidspercentage);
-                error.setVisible(false);
+                } else {
+                    Algoritme algoritme = new Algoritme(netwerk);
+                    algoritme.maakCombinatie(gewenstepercentage);
+                    //netwerkcomponenten weergeven op het scherm
+                    int xcords = 0;
+                    for (NetwerkComponent nc : netwerk.getNetwerkLijst()) {
+                        JLabel naam = new JLabel(nc.getNaam());
+                        naam.setBounds(25, xcords, 115, 25);
+                        panellabels.add(naam);
+                        System.out.println(nc.getNaam());
+                        xcords += 15;
+                        repaint();
+                    }
+                    //prijs op het scherm tonen
+                    JLabel prijs = new JLabel(netwerk.berekenTotalePrijs());
+                    prijs.setBounds(375, 0, 115, 25);
+                    panellabels.add(prijs);
+
+                    //beschikbaarheidspercentage op het scherm tonen
+                    double beschikbaarheid = netwerk.berekenBeschikbaarheid();
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    JLabel beschikbaarheidspercentage = new JLabel(df.format(beschikbaarheid) + " %");
+                    beschikbaarheidspercentage.setBounds(375, 15, 115, 25);
+                    panellabels.add(beschikbaarheidspercentage);
+                    error.setVisible(false);
                 }
             } catch (Exception ex) {
-               System.out.println("error");
-               repaint();
-               panellabels.add(error);             
-            } 
-                
+                System.out.println("error");
+                repaint();
+                panellabels.add(error);
             }
+
         }
     }
-
-
+}
