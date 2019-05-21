@@ -123,6 +123,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     public void tekenComponenten(HuidigeConfiguratie netwerk) {
         //todo dit moet beter kunnen????????!!!!!!!!!???????????????
         //todo fix duplicate code
+//        aantalDbservers = 0;
+//        aantalWebservers = 0;
+//        aantalFirewalls = 0;
+//        aantalLoadbalancers = 0;
+
         int xcordsdbserver = 0;
         int xcordsfirewall = 0;
         int xcordsloadbalancer = 0;
@@ -140,12 +145,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 dbserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalDbservers--;
+//                        aantalDbservers--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(dbserverImage);
                 tekenp.add(dbservertekstlabel);
+//                aantalDbservers++;
             }
             if (component instanceof Firewall) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/firewall.png"));
@@ -158,12 +164,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 firewallImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalFirewalls--;
+//                        aantalFirewalls--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(firewallImage);
                 tekenp.add(firewalltekstlabel);
+//                aantalFirewalls++;
             }
             if (component instanceof LoadBalancer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/loadbalancer.png"));
@@ -176,12 +183,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 loadbalancerImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalLoadbalancers--;
+//                        aantalLoadbalancers--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(loadbalancerImage);
                 tekenp.add(loadbalancertekstlabel);
+//                aantalLoadbalancers++;
             }
             if (component instanceof Webserver) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/webserver.png"));
@@ -194,12 +202,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 webserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
-                        aantalWebservers--;
+//                        aantalWebservers--;
                         tekenComponenten(netwerk);
                     }
                 });
                 tekenp.add(webserverImage);
                 tekenp.add(webservertekstlabel);
+//                aantalWebservers++;
             }
         }
         totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
@@ -210,25 +219,21 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dbserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
-            if (aantalDbservers < 7) {
+//            if (aantalDbservers < 7) {
                 netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalDbservers++;
-            }
+//            }
         } else if (e.getSource() == firewallbutton) {
-            if (aantalFirewalls < 7) {
+//            if (aantalFirewalls < 7) {
                 netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalFirewalls++;
-            }
+//            }
         } else if (e.getSource() == loadbalancerbutton) {
-            if (aantalLoadbalancers < 7) {
+//            if (aantalLoadbalancers < 7) {
                 netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalLoadbalancers++;
-            }
+//            }
         } else if (e.getSource() == webserverbutton) {
-            if (aantalWebservers < 7) {
+//            if (aantalWebservers < 7) {
                 netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
-                aantalWebservers++;
-            }
+//            }
         }
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
         tekenComponenten(netwerk);
