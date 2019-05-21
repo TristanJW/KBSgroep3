@@ -98,7 +98,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(opslaanbutton);
             laadbutton.setText("Configuratie laden");
             add(laadbutton);
-            leegmaakbutton.setText("leegmaken");
+            leegmaakbutton.setText("Leeg maken");
             add(leegmaakbutton);
 
             // de hoofdtekst bovenaan die toegevoegd word
@@ -118,6 +118,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(loadbalancerbutton);
             add(webserverlabel);
             add(webserverbutton);
+            leegmaakbutton.addActionListener(this);
 
         } catch (Exception ex) {
             System.out.println(ex);
@@ -238,7 +239,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 //            if (aantalWebservers < 7) {
             netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 //            }
+        } else if (e.getSource() == leegmaakbutton) {
+            netwerk.getNetwerkLijst().clear();
+            tekenp.removeAll();
         }
+            
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
         tekenComponenten(netwerk);
     }
