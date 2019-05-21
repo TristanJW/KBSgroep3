@@ -27,6 +27,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     //// BUTTONS ////
     JButton opslaanbutton = new JButton();
     JButton laadbutton = new JButton();
+    JButton leegmaakbutton = new JButton();
     //// LABELS ////
     JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
     JLabel dbserverlabel = new JLabel("DBserver");
@@ -92,10 +93,13 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             //voegt de 3 buttons onderaan toe met de locatie
             opslaanbutton.setBounds(600, 550, 150, 20);
             laadbutton.setBounds(425, 550, 150, 20);
+            leegmaakbutton.setBounds(250, 550, 150, 20);
             opslaanbutton.setText("Opslaan");
             add(opslaanbutton);
             laadbutton.setText("Configuratie laden");
             add(laadbutton);
+            leegmaakbutton.setText("leegmaken");
+            add(leegmaakbutton);
 
             // de hoofdtekst bovenaan die toegevoegd word
             add(hoofdtekst);
@@ -220,19 +224,19 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dbserverbutton) { // e.getSource==buttonnaam kijkt naar of deze button geklikt is, zo ja dan runt de code van deze if, zo nee gaat het naar de volgende else if.
 //            if (aantalDbservers < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
+            netwerk.voegToe(LeveranciersLijst.aanbodDBServer.get(dbserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 //            }
         } else if (e.getSource() == firewallbutton) {
 //            if (aantalFirewalls < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
+            netwerk.voegToe(LeveranciersLijst.aanbodFirewall.get(firewalldropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 //            }
         } else if (e.getSource() == loadbalancerbutton) {
 //            if (aantalLoadbalancers < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
+            netwerk.voegToe(LeveranciersLijst.aanbodLoadBalancer.get(loadbalancerdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 //            }
         } else if (e.getSource() == webserverbutton) {
 //            if (aantalWebservers < 7) {
-                netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
+            netwerk.voegToe(LeveranciersLijst.aanbodWebserver.get(webserverdropdown.getSelectedIndex())); // voegt het component toe aan de array met de configuratie
 //            }
         }
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)

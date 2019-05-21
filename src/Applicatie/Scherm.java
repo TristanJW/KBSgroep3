@@ -22,6 +22,7 @@ public class Scherm extends JFrame implements ActionListener {
         // actionlisteners
         p1.opslaanbutton.addActionListener(this);
         p1.laadbutton.addActionListener(this);
+        p1.leegmaakbutton.addActionListener(this);
         p3.opslaanbutton.addActionListener(this);
 
         setTitle("Applicatie");
@@ -61,6 +62,7 @@ public class Scherm extends JFrame implements ActionListener {
                     Logger.getLogger(Scherm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        } else if (e.getSource() == p1.leegmaakbutton) {
 
         }
     }
