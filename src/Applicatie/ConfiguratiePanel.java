@@ -287,7 +287,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             netwerk.getNetwerkLijst().clear();
             tekenp.removeAll();
             totaleprijslabel.setText("0 Euro");
-            totaleuptimelabel.setText("0.0 %");
+            totaleuptimelabel.setText("Geen beschikbaarheid");
             repaint();
         }
 
