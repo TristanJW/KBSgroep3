@@ -53,7 +53,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         JLabel loadbalancerlabel = new JLabel("Loadbalancer");
         JLabel webserverlabel = new JLabel("Webserver");
         totaleprijslabel = new JLabel(netwerk.berekenTotalePrijs());
-        totaleuptimelabel = new JLabel(netwerk.berekenBeschikbaarheid() + " %");
+        totaleuptimelabel = new JLabel("Geen beschikbaarheid");
 
         //panel waarin de aangeklikte componenten komen te staan binnen de zwarte rechthoek
         tekenp.setSize(500, 400);
@@ -223,8 +223,12 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             }
 
             totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
-            totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %"); // update de totale uptime
-            repaint();
+                if(netwerk.berekenBeschikbaarheid() == 0) {
+                    totaleuptimelabel.setText("Geen beschikbaarheid");
+                } else {
+                    totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %");// update de totale uptime
+                } 
+                repaint();
         }
     }
 
