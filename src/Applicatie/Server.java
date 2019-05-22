@@ -1,21 +1,10 @@
 package Applicatie;
 
-public abstract class Server extends NetwerkComponent{
-  private int processorBelasting;
-  private int schijfruimte;
+public abstract class Server extends NetwerkComponent {
 
-    public Server(String naam, double prijs, double beschikbaarheidspercentage) {
-        super(naam, prijs, beschikbaarheidspercentage);
-    }  
-
-    public int getProcessorBelasting() {
-        return processorBelasting;
+    public Server(int itemID, String naam, double prijs, double beschikbaarheidspercentage) {
+        super(itemID, naam, prijs, beschikbaarheidspercentage);
     }
-
-    public int getSchijfruimte() {
-        return schijfruimte;
-    }
-
 
 
 }
