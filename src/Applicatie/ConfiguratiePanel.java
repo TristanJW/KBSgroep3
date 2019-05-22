@@ -13,9 +13,9 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
     public HuidigeConfiguratie netwerk;
     private LeveranciersLijst leverancier = new LeveranciersLijst();
-
+    
     private ArrayList<NetwerkComponent> alletypescomponenten;
-
+    
     //// AANTALLEN ////
     int aantalDbservers = 0;
     int aantalWebservers = 0;
@@ -64,28 +64,28 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             Image DBserver = ImageIO.read(getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
             dbserverbutton.setIcon(new ImageIcon(DBserver)); // plaats de imageicon in een button
             dbserverbutton.addActionListener(this); //zorgt ervoor dat de actionlistener kan zien of deze knop is geklikt met e.getsource
-            dbserverbutton.setBounds(25, 25, 100, 80);
+            dbserverbutton.setBounds(15, 25, 120, 80);
 
             Image firewall = ImageIO.read(getClass().getResource("resources/firewall.png"));
             firewallbutton.setIcon(new ImageIcon(firewall));
-            firewallbutton.setBounds(25, 150, 100, 80);
+            firewallbutton.setBounds(15, 150, 120, 80);
             firewallbutton.addActionListener(this);
 
             Image loadbalancer = ImageIO.read(getClass().getResource("resources/loadbalancer.png"));
             loadbalancerbutton.setIcon(new ImageIcon(loadbalancer));
-            loadbalancerbutton.setBounds(25, 275, 100, 80);
+            loadbalancerbutton.setBounds(15, 275, 120, 80);
             loadbalancerbutton.addActionListener(this);
 
             Image webserver = ImageIO.read(getClass().getResource("resources/webserver.png"));
             webserverbutton.setIcon(new ImageIcon(webserver));
-            webserverbutton.setBounds(25, 400, 100, 80);
+            webserverbutton.setBounds(15, 400, 120, 80);
             webserverbutton.addActionListener(this);
 
             // locaties van combo boxes (dropdowns)
-            dbserverdropdown.setBounds(25, 105, 100, 20);
-            firewalldropdown.setBounds(25, 230, 100, 20);
-            loadbalancerdropdown.setBounds(25, 355, 100, 20);
-            webserverdropdown.setBounds(25, 480, 100, 20);
+            dbserverdropdown.setBounds(15, 105, 120, 20);
+            firewalldropdown.setBounds(15, 230, 120, 20);
+            loadbalancerdropdown.setBounds(15, 355, 120, 20);
+            webserverdropdown.setBounds(15, 480, 120, 20);
 
             // zet de labels en buttons op de locatie (x-as, y-as, breedte, hoogte)
             dbserverlabel.setBounds(45, 10, 100, 10);
@@ -127,7 +127,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             add(webserverlabel);
             add(webserverbutton);
             leegmaakbutton.addActionListener(this);
-
         } catch (Exception ex) {
             System.out.println(ex);
         }
