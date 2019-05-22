@@ -52,11 +52,15 @@ public class Scherm extends JFrame implements ActionListener {
             LaadDialoog ld1 = new LaadDialoog(this, p1);
             ld1.setVisible(true);
             if (ld1.getOphalen()) {
+                //als er een configuratie is geladen dan wordt alles in een nieuwe huidigecnfiguratie gezet
                 try {
                     HuidigeConfiguratie geimporteerdNetwerk = new HuidigeConfiguratie();
+                    //het resultaat van de sql querry in het nieuwe netwerk zetten
                     geimporteerdNetwerk.dataNaarNetwerk(ld1.getResultaat());
 
+                    //het nieuwe geimporteerde netwerk meegeven aan het configuratiepanel
                     p1.netwerk = geimporteerdNetwerk;
+                    p1.actionPerformed(e); // anders moeten we een keer apart klikken voordat het wordt getoont.
                 } catch (SQLException ex) {
                     Logger.getLogger(Scherm.class.getName()).log(Level.SEVERE, null, ex);
                 }
