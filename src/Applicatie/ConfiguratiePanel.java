@@ -139,6 +139,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         int xcordswebserver = 5;
         tekenp.removeAll();
         setAlletypescomponenten();
+        
         for (NetwerkComponent component : alletypescomponenten) {
             if (component instanceof DBServer) {
                 JLabel dbserverAantalLabel = new JLabel(String.valueOf(aantalVanX(component))); // methode voor aantal van X , X is een type DBServer
@@ -210,7 +211,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 webserverImage.setBounds(xcordswebserver, 375, 100, 80);
                 webservertekstlabel.setBounds(xcordswebserver + 15, 440, 100, 20);
                 xcordswebserver += 85;
-
                 webserverImage.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         netwerk.verwijderComponent(component);
@@ -229,7 +229,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     }
 
     public void setAlletypescomponenten() {
-        System.out.println("");
         alletypescomponenten = new ArrayList<>();
         for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
             if(!heeftArrayX(component, alletypescomponenten)){
@@ -252,7 +251,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     public int aantalVanX(NetwerkComponent component){
         int counter =0;
         for(NetwerkComponent nc : netwerk.getNetwerkLijst()){
-            if(nc.equals(component)){
+            if(nc.getNaam().equals(component.getNaam())){
                 counter++;
             }
         }
