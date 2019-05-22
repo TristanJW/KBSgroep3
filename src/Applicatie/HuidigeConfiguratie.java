@@ -26,19 +26,15 @@ public class HuidigeConfiguratie {
         netwerkLijst.remove(component);
     }
 
-    public void vervang(NetwerkComponent component, int index) {
-        netwerkLijst.set(index, component);
-    }
-
     //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
     public double berekenBeschikbaarheid() {
         double uitkomst = (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
-        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3,RoundingMode.UP);
+        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3, RoundingMode.UP);
         uitkomst = afgerondeUitkomst.doubleValue();
         return uitkomst;
     }
-    
-    public void Optimaliseer(double percentage){
+
+    public void Optimaliseer(double percentage) {
         Algoritme algoritme = new Algoritme();
         netwerkLijst = algoritme.maakCombinatie(percentage);
     }
@@ -99,19 +95,15 @@ public class HuidigeConfiguratie {
             if (type.equals("Webserver")) {
                 Webserver server = new Webserver(itemID, naam, prijs, beschikbaarheid);
                 netwerkLijst.add(server);
-                System.out.println(server.getNaam() + "toegevoegd");
             } else if (type.equals("DBserver")) {
                 DBServer database = new DBServer(itemID, naam, prijs, beschikbaarheid);
                 netwerkLijst.add(database);
-                System.out.println(database.getNaam() + "toegevoegd");
             } else if (type.equals("firewall")) {
                 Firewall firewall = new Firewall(itemID, naam, prijs, beschikbaarheid);
                 netwerkLijst.add(firewall);
-                System.out.println(firewall.getNaam() + "toegevoegd");
             } else if (type.equals("loadbalancer")) {
                 LoadBalancer loadbalancer = new LoadBalancer(itemID, naam, prijs, beschikbaarheid);
                 netwerkLijst.add(loadbalancer);
-                System.out.println(loadbalancer.getNaam() + "toegevoegd");
             }
         }
     }

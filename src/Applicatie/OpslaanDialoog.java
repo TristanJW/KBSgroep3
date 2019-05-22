@@ -8,20 +8,17 @@ import java.time.ZoneId;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class OpslaanDialoog extends JDialog implements ActionListener {
     private HuidigeConfiguratie netwerk;
-    private int aantalDbservers;
     private int hoogsteID;
     JDBC database = new JDBC();
     LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
     JTextField opslaannaam;
     JButton ODopslaanbutton;
-    JTabbedPane tp;
 
-    public OpslaanDialoog (JFrame frame1) {
+    public OpslaanDialoog(JFrame frame1) {
         super(frame1, true);
         setLayout(null);
         setTitle("Opslaan");
@@ -35,16 +32,17 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
         ODopslaanbutton.addActionListener(this);
         this.add(ODopslaanbutton);
     }
+
     public OpslaanDialoog(JFrame frame1, ConfiguratiePanel config1) {
-       this(frame1);
-       netwerk = config1.netwerk;
+        this(frame1);
+        netwerk = config1.netwerk;
     }
 
     public OpslaanDialoog(JFrame frame1, OptimaliseringPanel config1) {
         this(frame1);
         netwerk = config1.netwerk;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == ODopslaanbutton) {
@@ -57,16 +55,13 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
                     hoogsteID++;
                     netwerk.configuratieNaarDatabase("INSERT INTO netwerk (netwerkID, datum, beschikbaarheidspercentage, naam, prijs) VALUES (" + hoogsteID + ", \"" + datum + "\"," + netwerk.berekenBeschikbaarheid() + ", \"" + opslaannaam.getText() + "\"," + netwerk.dbTotalePrijs() + ")");
                 }
-                for(NetwerkComponent component: netwerk.getNetwerkLijst()) {
-                  netwerk.configuratieNaarDatabase("insert into netwerkregel (netwerkID, itemID) VALUES ("+ hoogsteID + "," + component.getItemID() + ");");
+                for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
+                    netwerk.configuratieNaarDatabase("insert into netwerkregel (netwerkID, itemID) VALUES (" + hoogsteID + "," + component.getItemID() + ");");
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
             }
-            System.out.println("Opslaan");
             dispose();
-        } else {
         }
-
     }
 }

@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Applicatie;
 
-import static Applicatie.LeveranciersLijst.aanbodWebserver;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,17 +12,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Trist
- */
+
 public class LaadDialoog extends JDialog implements ActionListener {
 
-    ConfiguratiePanel panel1;
     JButton laadbutton;
     JButton verwijderbutton;
     JTextField input1;
-    int itemID;
     private Boolean ophalen = false;
     private ResultSet resultaat;
 
@@ -103,7 +92,6 @@ public class LaadDialoog extends JDialog implements ActionListener {
         //query voor het ophalen van alle opgeslagen configuraties
         JDBC database = new JDBC();
         ResultSet resultaat = database.dataOphalen("SELECT * From netwerk");
-        HuidigeConfiguratie configuratie = new HuidigeConfiguratie();
         try {
             //while (gaat alle resultaten door van de query hierboven)
             while (resultaat.next()) {
@@ -139,10 +127,6 @@ public class LaadDialoog extends JDialog implements ActionListener {
         } catch (SQLException se) {
             se.printStackTrace();
         }
-    }
-
-    public void tekenComponenten() {
-
     }
 
     @Override

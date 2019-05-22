@@ -1,6 +1,5 @@
 package Applicatie;
 
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ public class Scherm extends JFrame implements ActionListener {
 
     ConfiguratiePanel p1 = new ConfiguratiePanel();
     MonitorPanel p2 = new MonitorPanel();
-
     OptimaliseringPanel p3 = new OptimaliseringPanel();
 
     JTabbedPane tp;

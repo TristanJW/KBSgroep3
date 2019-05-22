@@ -1,11 +1,9 @@
 package Applicatie;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import javax.swing.border.Border;
 
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
@@ -18,9 +16,6 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
     JLabel errorBP;
     JPanel panellabels = new JPanel();
 
-    public void berekenNieuweBeschikbaarheid() {
-        //hier komt het algoritme die de beschikbaarheid berekent
-    }
 
     public OptimaliseringPanel() { //LeveranciersLijst lijst; moet hier nog in? denk ik xxx tristan xxx
         panellabels.setSize(500, 400);
@@ -81,7 +76,6 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
                         JLabel naam = new JLabel(nc.getNaam());
                         naam.setBounds(25, xcords, 115, 25);
                         panellabels.add(naam);
-                        System.out.println(nc.getNaam());
                         xcords += 15;
                         repaint();
                     }
@@ -99,7 +93,6 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
                     error.setVisible(false);
                 }
             } catch (Exception ex) {
-                System.out.println("error");
                 repaint();
                 panellabels.add(error);
             }

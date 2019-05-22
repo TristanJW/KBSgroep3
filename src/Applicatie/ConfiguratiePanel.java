@@ -13,14 +13,8 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
 
     public HuidigeConfiguratie netwerk;
     private LeveranciersLijst leverancier = new LeveranciersLijst();
-    
+
     private ArrayList<NetwerkComponent> alletypescomponenten;
-    
-    //// AANTALLEN ////
-    int aantalDbservers = 0;
-    int aantalWebservers = 0;
-    int aantalFirewalls = 0;
-    int aantalLoadbalancers = 0;
 
     //// BUTTONS ////
     JButton dbserverbutton = new JButton();
@@ -139,7 +133,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         int xcordswebserver = 5;
         tekenp.removeAll();
         setAlletypescomponenten();
-        
+
         for (NetwerkComponent component : alletypescomponenten) {
             if (component instanceof DBServer) {
                 JLabel dbserverAantalLabel = new JLabel(String.valueOf(aantalVanX(component))); // methode voor aantal van X , X is een type DBServer
@@ -189,7 +183,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
                 JLabel loadbalancertekstlabel = new JLabel(component.getNaam());
                 loadbalancerAantalLabel.setBounds(xcordsloadbalancer, 260, 100, 80);
                 loadbalancerImage.setBounds(xcordsloadbalancer, 250, 100, 80);
-                loadbalancertekstlabel.setBounds(xcordsloadbalancer + 20, 320, 100, 20); // todo fix tekst die half afgehakt is
+                loadbalancertekstlabel.setBounds(xcordsloadbalancer + 20, 320, 100, 20);
                 xcordsloadbalancer += 85;
 
                 loadbalancerImage.addMouseListener(new MouseAdapter() {
@@ -223,50 +217,40 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             }
 
             totaleprijslabel.setText(netwerk.berekenTotalePrijs()); // update de totale prijs
-                if(netwerk.berekenBeschikbaarheid() == 0) {
-                    totaleuptimelabel.setText("Geen beschikbaarheid");
-                } else {
-                    totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %");// update de totale uptime
-                } 
-                repaint();
+            if (netwerk.berekenBeschikbaarheid() == 0) {
+                totaleuptimelabel.setText("Geen beschikbaarheid");
+            } else {
+                totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %");// update de totale uptime
+            }
+            repaint();
         }
     }
 
     public void setAlletypescomponenten() {
         alletypescomponenten = new ArrayList<>();
         for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
-            if(!heeftArrayX(component, alletypescomponenten)){
+            if (!heeftArrayX(component, alletypescomponenten)) {
                 alletypescomponenten.add(component);
             }
         }
     }
-    public Boolean heeftArrayX(NetwerkComponent component, ArrayList<NetwerkComponent> netwerk){
+
+    public Boolean heeftArrayX(NetwerkComponent component, ArrayList<NetwerkComponent> netwerk) {
         boolean heeftArrayX = false;
-        for(NetwerkComponent nc :netwerk){
+        for (NetwerkComponent nc : netwerk) {
             //zit er al in
-            if(nc.getNaam().equals(component.getNaam())){
+            if (nc.getNaam().equals(component.getNaam())) {
                 heeftArrayX = true;
                 break;
             }
         }
         return heeftArrayX;
     }
-    
-    public int aantalVanX(NetwerkComponent component){
-        int counter =0;
-        for(NetwerkComponent nc : netwerk.getNetwerkLijst()){
-            if(nc.getNaam().equals(component.getNaam())){
-                counter++;
-            }
-        }
-        return counter;
-    }
 
-    //// verbeterd worden (alletypescomponenten.contains(netwerk)) is nog fout
-    public int aantalComponenten(ArrayList<NetwerkComponent> netwerk) {
+    public int aantalVanX(NetwerkComponent component) {
         int counter = 0;
-        for (NetwerkComponent nc : netwerk) {
-            if (nc.equals(alletypescomponenten.contains(netwerk))) {
+        for (NetwerkComponent nc : netwerk.getNetwerkLijst()) {
+            if (nc.getNaam().equals(component.getNaam())) {
                 counter++;
             }
         }

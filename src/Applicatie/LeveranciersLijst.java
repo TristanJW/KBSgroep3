@@ -1,14 +1,9 @@
 package Applicatie;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.sql.*;
-import java.text.AttributedString;
 
 public class LeveranciersLijst {
-private String naampercentage;
     static ArrayList<NetwerkComponent> aanbodWebserver;
     static ArrayList<NetwerkComponent> aanbodDBServer;
     static ArrayList<NetwerkComponent> aanbodLoadBalancer;
