@@ -59,7 +59,7 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
             try {
                 //ingevulde percentage ophalen en in het algoritme invoeren
                 HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-                int gewenstepercentage = Integer.parseInt(percentage.getText());
+                double gewenstepercentage = Double.parseDouble(percentage.getText());
                 System.out.println(gewenstepercentage);
                 netwerk.Optimaliseer(gewenstepercentage);
                 //netwerkcomponenten weergeven op het scherm
