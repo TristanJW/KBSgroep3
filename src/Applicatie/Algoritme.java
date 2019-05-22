@@ -1,6 +1,8 @@
 
 package Applicatie;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Algoritme {
@@ -34,13 +36,8 @@ public class Algoritme {
             kostenroof = berekenTotalePrijs(netwerk);
             ArrayList<NetwerkComponent> ontwerp = maakGoedkoper(percentage,netwerk);
             netwerk = ontwerp;
-            System.out.println("uitkomst:");
-            for(NetwerkComponent nc: netwerk){
-                System.out.print(nc.getNaam() + " ");
-            }
-            System.out.print(berekenBeschikbaarheid(netwerk) + " " + berekenTotalePrijs(netwerk));
         }
-        return null;
+        return netwerk;
     }
     
     private void voegVolgendeToe(Class type){
@@ -53,27 +50,27 @@ public class Algoritme {
     }
     
     private Boolean isVoldaan(double percentage, ArrayList<NetwerkComponent> netwerk) {
-        return berekenBeschikbaarheid(netwerk) >= percentage;
+        return (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class,netwerk) / 100) * berekenComponent(DBServer.class,netwerk) >= percentage;
     }
     
     private ArrayList<NetwerkComponent> maakGoedkoper(double percentage,ArrayList<NetwerkComponent> netwerk){
         //een ontwerp maken dat gebaseerd is op netwerk
         ArrayList<NetwerkComponent> ontwerp = netwerk;
-        eersteOntwerp = netwerk;
         
         while(!webserversDoorlopen && !DBServersDoorlopen){
+            //foor loop om het juiste component te bepalen.
             for(int j = 0; j < leverancier.aanbodWebserver.size()-1; j++){
+                //goedkoopste component en de volgende in het aanbod is de duurdere
                 NetwerkComponent goedkoopsteWS = leverancier.aanbodWebserver.get(0);
                 NetwerkComponent duurdereWS = leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.indexOf(goedkoopsteWS)+1);
                 
+                //elke goedkoopste component een plaats omhoog zetten
                 for(int i =0; i < hoeveelVanX(goedkoopsteWS, ontwerp); i++){
                     ontwerp.set(ontwerp.lastIndexOf(goedkoopsteWS), duurdereWS);
-                    for(NetwerkComponent nc: ontwerp){
-                        System.out.print(nc.getNaam() + " ");
-                    }
-                    System.out.println(berekenBeschikbaarheid(ontwerp)+ " " + berekenTotalePrijs(ontwerp));
                 }
-                
+                //kijken of het goedkoper is en of het nog wel voldaan is aan het percentage
+                //als dit niet zo is dan gaan we eerst weer een goedkope webserver toevoegen
+                //als dat nog niet werkt gaan we helemaal terug naar de vorige stap en eindigt de loop
                 for(int i =0; i < hoeveelVanX(duurdereWS,ontwerp); i++){
                     if(kostenroof < berekenTotalePrijs(ontwerp)){
                         ontwerp.remove(duurdereWS);
@@ -81,10 +78,8 @@ public class Algoritme {
                         kostenroof = berekenTotalePrijs(ontwerp);
                     }
                     if(!isVoldaan(percentage,ontwerp)){
-                        System.out.println("voldaan");
                         ontwerp.add(goedkoopsteWS);
                     }else {
-                        System.out.println("niet voldaan");
                         break;
                     }
                 }
@@ -108,14 +103,8 @@ public class Algoritme {
                         break;
                     }
                 }
-            }DBServersDoorlopen = true;
-        }
-        
-        if(!eersteOntwerp.equals(ontwerp)){
-            DBServersDoorlopen = false;
-            webserversDoorlopen = false;
-            maakGoedkoper(percentage,ontwerp);
-        }
+            }
+        }DBServersDoorlopen = true;
         return netwerk;
     }
     
@@ -128,17 +117,6 @@ public class Algoritme {
             }
         }
         return counter;
-    }
-
-    // kijken of een object de laatste van het aanbod van servers is.
-    private Boolean isObjectX(NetwerkComponent component, int index) {
-        Boolean isObjectX = false;
-            if(component instanceof Webserver){
-                isObjectX = component == leverancier.aanbodWebserver.get(index);
-            }else if (component instanceof DBServer){
-                isObjectX = component == leverancier.aanbodDBServer.get(index);
-            }
-        return isObjectX;
     }
     
     public double berekenComponent(Class type, ArrayList<NetwerkComponent> netwerk) {
@@ -153,10 +131,14 @@ public class Algoritme {
         return (1 - beschikbaarheid) * 100;
     }
     
+    //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
     public double berekenBeschikbaarheid(ArrayList<NetwerkComponent> netwerk) {
-        return (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class,netwerk) / 100) * berekenComponent(DBServer.class,netwerk);
+        double uitkomst = (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class,netwerk) / 100) * berekenComponent(DBServer.class,netwerk);
+        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3,RoundingMode.UP);
+        uitkomst = afgerondeUitkomst.doubleValue();
+        return uitkomst;
     }
-    
+    //methode voor het berekenen van de totale prijs
     public int berekenTotalePrijs(ArrayList<NetwerkComponent> netwerk) {
         int totalePrijs = 0;
         try {

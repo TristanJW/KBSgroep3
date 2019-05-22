@@ -28,6 +28,5 @@ public class Main {
 //        for (NetwerkComponent s : leverancier.aanbodWebserver) {
 //            System.out.println(s.getNaam());
 //        }
-
     }
 }

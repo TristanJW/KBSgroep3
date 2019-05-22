@@ -1,5 +1,7 @@
 package Applicatie;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,8 +30,17 @@ public class HuidigeConfiguratie {
         netwerkLijst.set(index, component);
     }
 
+    //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
     public double berekenBeschikbaarheid() {
-        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
+        double uitkomst = (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
+        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3,RoundingMode.UP);
+        uitkomst = afgerondeUitkomst.doubleValue();
+        return uitkomst;
+    }
+    
+    public void Optimaliseer(double percentage){
+        Algoritme algoritme = new Algoritme();
+        netwerkLijst = algoritme.maakCombinatie(percentage);
     }
 
     public double berekenComponent(Class type) {
