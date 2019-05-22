@@ -28,6 +28,12 @@ public class Main {
 //        for (NetwerkComponent s : leverancier.aanbodWebserver) {
 //            System.out.println(s.getNaam());
 //        }
-
+        HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+        netwerk.Optimaliseer(99.99);
+        
+        for(NetwerkComponent nc : netwerk.getNetwerkLijst()){
+            System.out.print(nc.getNaam() + " ");
+        }
+        System.out.print(netwerk.berekenBeschikbaarheid() + " " + netwerk.berekenTotalePrijs());
     }
 }
