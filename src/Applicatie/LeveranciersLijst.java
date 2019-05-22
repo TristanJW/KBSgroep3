@@ -60,7 +60,7 @@ public class LeveranciersLijst {
         counter = 0;
         for (NetwerkComponent nc : lijst) {
             if (nc.getClassNaam().toLowerCase().equals(term)) {
-                namen[counter] = nc.getNaam();
+                namen[counter] = nc.getNaam() + " " + nc.getBeschikbaarheid() + "%";
                 counter++;
             }
         }

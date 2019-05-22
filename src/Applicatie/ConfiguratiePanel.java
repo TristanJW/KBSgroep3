@@ -64,34 +64,34 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             Image DBserver = ImageIO.read(getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
             dbserverbutton.setIcon(new ImageIcon(DBserver)); // plaats de imageicon in een button
             dbserverbutton.addActionListener(this); //zorgt ervoor dat de actionlistener kan zien of deze knop is geklikt met e.getsource
-            dbserverbutton.setBounds(25, 25, 100, 80);
+            dbserverbutton.setBounds(5, 25, 135, 80);
 
             Image firewall = ImageIO.read(getClass().getResource("resources/firewall.png"));
             firewallbutton.setIcon(new ImageIcon(firewall));
-            firewallbutton.setBounds(25, 150, 100, 80);
+            firewallbutton.setBounds(5, 150, 135, 80);
             firewallbutton.addActionListener(this);
 
             Image loadbalancer = ImageIO.read(getClass().getResource("resources/loadbalancer.png"));
             loadbalancerbutton.setIcon(new ImageIcon(loadbalancer));
-            loadbalancerbutton.setBounds(25, 275, 100, 80);
+            loadbalancerbutton.setBounds(5, 275, 135, 80);
             loadbalancerbutton.addActionListener(this);
 
             Image webserver = ImageIO.read(getClass().getResource("resources/webserver.png"));
             webserverbutton.setIcon(new ImageIcon(webserver));
-            webserverbutton.setBounds(25, 400, 100, 80);
+            webserverbutton.setBounds(5, 400, 135, 80);
             webserverbutton.addActionListener(this);
 
             // locaties van combo boxes (dropdowns)
-            dbserverdropdown.setBounds(25, 105, 100, 20);
-            firewalldropdown.setBounds(25, 230, 100, 20);
-            loadbalancerdropdown.setBounds(25, 355, 100, 20);
-            webserverdropdown.setBounds(25, 480, 100, 20);
+            dbserverdropdown.setBounds(5, 105, 135, 20);
+            firewalldropdown.setBounds(5, 230, 135, 20);
+            loadbalancerdropdown.setBounds(5, 355, 135, 20);
+            webserverdropdown.setBounds(5, 480, 135, 20);
 
             // zet de labels en buttons op de locatie (x-as, y-as, breedte, hoogte)
-            dbserverlabel.setBounds(45, 10, 100, 10);
-            firewalllabel.setBounds(50, 135, 100, 10);
-            loadbalancerlabel.setBounds(40, 260, 100, 10);
-            webserverlabel.setBounds(45, 385, 100, 10);
+            dbserverlabel.setBounds(40, 10, 100, 10);
+            firewalllabel.setBounds(40, 135, 100, 10);
+            loadbalancerlabel.setBounds(30, 260, 100, 10);
+            webserverlabel.setBounds(40, 385, 100, 10);
             hoofdtekst.setBounds(250, 5, 400, 15);
             totaleprijslabel.setBounds(50, 530, 400, 15);
             totaleuptimelabel.setBounds(50, 545, 400, 15);
