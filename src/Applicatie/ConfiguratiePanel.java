@@ -134,15 +134,14 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     }
 
     public void tekenComponenten(HuidigeConfiguratie netwerk) {
-
         int xcordsdbserver = 0;
         int xcordsfirewall = 0;
         int xcordsloadbalancer = 0;
         int xcordswebserver = 0;
         tekenp.removeAll();
         setAlletypescomponenten();
+        System.out.println(alletypescomponenten.size());
         for (NetwerkComponent component : alletypescomponenten) {
-
             if (component instanceof DBServer) {
                 ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("resources/dbserver.png")); // zorgt ervoor dat de png op imageicon geplaatst word
                 JLabel dbserverImage = new JLabel(imageIcon); // maakt een label met de imageicon die hierboven aangemaakt is
@@ -220,12 +219,24 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     }
 
     public void setAlletypescomponenten() {
+        System.out.println("");
         alletypescomponenten = new ArrayList<>();
         for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
-            if (!alletypescomponenten.contains(component)) {
+            if(!heeftArrayX(component, alletypescomponenten)){
                 alletypescomponenten.add(component);
             }
         }
+    }
+    public Boolean heeftArrayX(NetwerkComponent component, ArrayList<NetwerkComponent> netwerk){
+        boolean heeftArrayX = false;
+        for(NetwerkComponent nc :netwerk){
+            //zit er al in
+            if(nc.getNaam().equals(component.getNaam())){
+                heeftArrayX = true;
+                break;
+            }
+        }
+        return heeftArrayX;
     }
 
     //// verbeterd worden (alletypescomponenten.contains(netwerk)) is nog fout
@@ -255,7 +266,6 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             totaleprijslabel.setText("0 Euro");
             totaleuptimelabel.setText("0.0 %");
             repaint();
-
         }
 
         // het volgende wordt op iedere button klik uitgevoerd en hoeft dus niet steeds in iedere IF herhaalt te worden (lijkt me?)
