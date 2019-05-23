@@ -60,9 +60,10 @@ public class Algoritme {
                 //goedkoopste component en de volgende in het aanbod is de duurdere
                 NetwerkComponent goedkoopsteWS = leverancier.aanbodWebserver.get(0);
                 NetwerkComponent duurdereWS = leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.indexOf(goedkoopsteWS) + 1);
-
+                
+                int aantal = hoeveelVanX(goedkoopsteWS,ontwerp);
                 //elke goedkoopste component een plaats omhoog zetten
-                for (int i = 0; i < hoeveelVanX(goedkoopsteWS, ontwerp); i++) {
+                for (int i = 0; i < aantal; i++) {
                     ontwerp.set(ontwerp.lastIndexOf(goedkoopsteWS), duurdereWS);
                 }
                 //kijken of het goedkoper is en of het nog wel voldaan is aan het percentage
@@ -85,8 +86,9 @@ public class Algoritme {
             for (int j = 0; j < leverancier.aanbodDBServer.size() - 1; j++) {
                 NetwerkComponent goedkoopsteDB = leverancier.aanbodDBServer.get(0);
                 NetwerkComponent duurdereDB = leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.indexOf(goedkoopsteDB) + 1);
-
-                for (int i = 0; i < hoeveelVanX(goedkoopsteDB, ontwerp); i++) {
+                
+                int aantal = hoeveelVanX(goedkoopsteDB,ontwerp);
+                for (int i = 0; i < aantal; i++) {
                     ontwerp.set(ontwerp.lastIndexOf(goedkoopsteDB), duurdereDB);
                 }
                 for (int i = 0; i < hoeveelVanX(duurdereDB, ontwerp); i++) {
