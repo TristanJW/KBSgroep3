@@ -1,18 +1,16 @@
 
 package Applicatie;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
-public class Algoritme {
+class Algoritme {
     private ArrayList<NetwerkComponent> netwerk = new ArrayList<>();
     private LeveranciersLijst leverancier = new LeveranciersLijst();
     private int kostenroof = 0;
     private Boolean webserversDoorlopen = false;
     private Boolean DBServersDoorlopen = false;
 
-    public ArrayList<NetwerkComponent> maakCombinatie(double percentage) {
+    ArrayList<NetwerkComponent> maakCombinatie(double percentage) {
         // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver heeft.
         if (netwerk.isEmpty()) {
             netwerk.add(leverancier.aanbodFirewall.get(0));
@@ -118,7 +116,7 @@ public class Algoritme {
         return counter;
     }
 
-    public double berekenComponent(Class type, ArrayList<NetwerkComponent> netwerk) {
+    private double berekenComponent(Class type, ArrayList<NetwerkComponent> netwerk) {
         double beschikbaarheid = 1;
         // voor elke component wordt gekeken of het een webserver is.
         // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
@@ -130,16 +128,8 @@ public class Algoritme {
         return (1 - beschikbaarheid) * 100;
     }
 
-    //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
-    public double berekenBeschikbaarheid(ArrayList<NetwerkComponent> netwerk) {
-        double uitkomst = (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class, netwerk) / 100) * berekenComponent(DBServer.class, netwerk);
-        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3, RoundingMode.UP);
-        uitkomst = afgerondeUitkomst.doubleValue();
-        return uitkomst;
-    }
-
     //methode voor het berekenen van de totale prijs
-    public int berekenTotalePrijs(ArrayList<NetwerkComponent> netwerk) {
+    private int berekenTotalePrijs(ArrayList<NetwerkComponent> netwerk) {
         int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerk) {

@@ -17,7 +17,7 @@ public abstract class NetwerkComponent {
         return naam;
     }
 
-    public int getItemID() {
+    int getItemID() {
         return itemID;
     }
 
@@ -25,11 +25,11 @@ public abstract class NetwerkComponent {
         return prijs;
     }
 
-    public String getClassNaam() {
+    String getClassNaam() {
         return this.getClass().getSimpleName();
     }
 
-    public double getBeschikbaarheid() {
+    double getBeschikbaarheid() {
         return this.beschikbaarheidspercentage;
     }
 }

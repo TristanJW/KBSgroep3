@@ -20,7 +20,7 @@ public class MonitorPanel extends JPanel implements Runnable {
     private JLabel tijdBeschikbaar;
     private JLabel isBeschikbaar;
 
-    public MonitorPanel() {
+    MonitorPanel() {
         setLayout(null);
         int y = 0;
         int x = 20;

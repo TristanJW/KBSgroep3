@@ -11,37 +11,37 @@ import javax.swing.*;
 
 public class ConfiguratiePanel extends JPanel implements ActionListener {
 
-    public HuidigeConfiguratie netwerk;
+    HuidigeConfiguratie netwerk;
     private LeveranciersLijst leverancier = new LeveranciersLijst();
 
     private ArrayList<NetwerkComponent> alletypescomponenten;
 
     //// BUTTONS ////
-    JButton dbserverbutton = new JButton();
-    JButton firewallbutton = new JButton();
-    JButton loadbalancerbutton = new JButton();
-    JButton webserverbutton = new JButton();
+    private JButton dbserverbutton = new JButton();
+    private JButton firewallbutton = new JButton();
+    private JButton loadbalancerbutton = new JButton();
+    private JButton webserverbutton = new JButton();
     //// BUTTONS ////
     JButton opslaanbutton = new JButton();
     JButton laadbutton = new JButton();
-    JButton leegmaakbutton = new JButton();
+    private JButton leegmaakbutton = new JButton();
     //// LABELS ////
-    JLabel totaleprijslabel;
-    JLabel totaleuptimelabel;
+    private JLabel totaleprijslabel;
+    private JLabel totaleuptimelabel;
     //// DROPDOWNS ////
-    JComboBox dbserverdropdown = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
-    JComboBox firewalldropdown = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodFirewall));
-    JComboBox loadbalancerdropdown = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodLoadBalancer));
-    JComboBox webserverdropdown = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodWebserver));
+    private JComboBox dbserverdropdown = new JComboBox(leverancier.zoekNaam("dbserver", leverancier.aanbodDBServer));
+    private JComboBox firewalldropdown = new JComboBox(leverancier.zoekNaam("firewall", leverancier.aanbodFirewall));
+    private JComboBox loadbalancerdropdown = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodLoadBalancer));
+    private JComboBox webserverdropdown = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodWebserver));
 
-    Tekenpanel tekenp = new Tekenpanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
+    private TekenPanel tekenp = new TekenPanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
 
-    public ConfiguratiePanel() {
+    ConfiguratiePanel() {
         netwerk = new HuidigeConfiguratie();
         setLayout(null);
 
         //// LABELS ////
-        JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
+        JLabel hoofdtekst = new JLabel("Klik op de knoppen om toe te voegen | Klik op een toegevoegd component om te verwijderen");
         JLabel dbserverlabel = new JLabel("DBserver");
         JLabel firewalllabel = new JLabel("Firewall");
         JLabel loadbalancerlabel = new JLabel("Loadbalancer");
@@ -86,7 +86,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             firewalllabel.setBounds(40, 135, 100, 10);
             loadbalancerlabel.setBounds(30, 260, 100, 10);
             webserverlabel.setBounds(40, 385, 100, 10);
-            hoofdtekst.setBounds(250, 5, 400, 15);
+            hoofdtekst.setBounds(200, 5, 600, 15);
             totaleprijslabel.setBounds(50, 530, 400, 15);
             totaleuptimelabel.setBounds(50, 545, 400, 15);
             add(totaleprijslabel);
@@ -126,7 +126,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void tekenComponenten(HuidigeConfiguratie netwerk) {
+    private void tekenComponenten(HuidigeConfiguratie netwerk) {
         int xcordsdbserver = 5;
         int xcordsfirewall = 5;
         int xcordsloadbalancer = 5;
@@ -222,11 +222,11 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             } else {
                 totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %");// update de totale uptime
             }
-            repaint();
         }
+        repaint();
     }
 
-    public void setAlletypescomponenten() {
+    private void setAlletypescomponenten() {
         alletypescomponenten = new ArrayList<>();
         for (NetwerkComponent component : netwerk.getNetwerkLijst()) {
             if (!heeftArrayX(component, alletypescomponenten)) {
@@ -235,7 +235,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         }
     }
 
-    public Boolean heeftArrayX(NetwerkComponent component, ArrayList<NetwerkComponent> netwerk) {
+    private Boolean heeftArrayX(NetwerkComponent component, ArrayList<NetwerkComponent> netwerk) {
         boolean heeftArrayX = false;
         for (NetwerkComponent nc : netwerk) {
             //zit er al in
@@ -247,7 +247,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         return heeftArrayX;
     }
 
-    public int aantalVanX(NetwerkComponent component) {
+    private int aantalVanX(NetwerkComponent component) {
         int counter = 0;
         for (NetwerkComponent nc : netwerk.getNetwerkLijst()) {
             if (nc.getNaam().equals(component.getNaam())) {

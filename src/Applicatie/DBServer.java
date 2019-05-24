@@ -1,8 +1,8 @@
 package Applicatie;
 
-public class DBServer extends Server {
+class DBServer extends NetwerkComponent {
 
-    public DBServer(int itemID, String naam, double prijs, double beschikbaarheidspercentage) {
+    DBServer(int itemID, String naam, double prijs, double beschikbaarheidspercentage) {
         super(itemID, naam, prijs, beschikbaarheidspercentage);
     }
 

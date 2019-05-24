@@ -7,17 +7,15 @@ import java.text.DecimalFormat;
 
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
-    private LeveranciersLijst lijst;
-    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-    JButton optimaliseer;
+    HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    private JButton optimaliseer;
     JButton opslaanbutton;
     private JTextField percentage;
-    JLabel error;
-    JLabel errorBP;
-    JPanel panellabels = new JPanel();
+    private JLabel error;
+    private JLabel errorBP;
+    private JPanel panellabels = new JPanel();
 
-
-    public OptimaliseringPanel() { //LeveranciersLijst lijst; moet hier nog in? denk ik xxx tristan xxx
+    OptimaliseringPanel() {
         panellabels.setSize(500, 400);
         panellabels.setBounds(50, 50, 500, 500);
         panellabels.setLayout(null);
@@ -25,8 +23,8 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
 
         setLayout(null);
 
-        //melding die weergeven wordt als er een getal >= 100 wordt ingevoerd
-        errorBP = new JLabel("voer een getal tussen 0 en 100 in");
+        //melding die weergeven wordt als er een getal > 99.99 wordt ingevoerd
+        errorBP = new JLabel("voer een getal tussen 0 en 99.99 in");
         errorBP.setBounds(200, 0, 200, 25);
 
         //melding die weergeven wordt als er geen getal wordt ingevoerd
@@ -65,7 +63,7 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
             try {
                 //ingevulde percentage ophalen en in het algoritme invoeren
                 double gewenstepercentage = Double.parseDouble(percentage.getText());
-                if (gewenstepercentage >= 100 || gewenstepercentage < 0) {
+                if (gewenstepercentage > 99.99 || gewenstepercentage < 0) {
                     panellabels.add(errorBP);
                     repaint();
                 } else {
@@ -96,7 +94,6 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
                 repaint();
                 panellabels.add(error);
             }
-
         }
     }
 }

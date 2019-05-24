@@ -12,22 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 public class LaadDialoog extends JDialog implements ActionListener {
 
-    JButton laadbutton;
-    JButton verwijderbutton;
-    JTextField input1;
+    private JButton laadbutton;
+    private JButton verwijderbutton;
+    private JTextField input1;
     private Boolean ophalen = false;
     private ResultSet resultaat;
 
-    int queryinput;
+    private JLabel error = new JLabel("voer een geldig configuratie ID in");
 
-    JLabel error = new JLabel("voer een geldig configuratie ID in");
+    private JPanel panel = new JPanel();
 
-    JPanel panel = new JPanel();
-
-    public LaadDialoog(JFrame frame1, ConfiguratiePanel panel1) {
+    LaadDialoog(JFrame frame1, ConfiguratiePanel panel1) {
         super(frame1, true);
         setLayout(null);
         setTitle("Laad configuratie");
@@ -86,7 +83,7 @@ public class LaadDialoog extends JDialog implements ActionListener {
         netwerkenOphalen();
     }
 
-    public void netwerkenOphalen() {
+    private void netwerkenOphalen() {
         int ycords = 0;
         panel.removeAll();
         //query voor het ophalen van alle opgeslagen configuraties
@@ -131,6 +128,7 @@ public class LaadDialoog extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        int queryinput;
         if (e.getSource() == laadbutton) {
             try {
                 queryinput = Integer.parseInt(input1.getText());
@@ -156,11 +154,11 @@ public class LaadDialoog extends JDialog implements ActionListener {
         repaint();
     }
 
-    public Boolean getOphalen() {
+    Boolean getOphalen() {
         return ophalen;
     }
 
-    public ResultSet getResultaat() {
+    ResultSet getResultaat() {
         return resultaat;
     }
 }

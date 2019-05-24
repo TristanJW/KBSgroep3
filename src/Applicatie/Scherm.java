@@ -9,13 +9,11 @@ import javax.swing.*;
 
 public class Scherm extends JFrame implements ActionListener {
 
-    ConfiguratiePanel p1 = new ConfiguratiePanel();
-    MonitorPanel p2 = new MonitorPanel();
-    OptimaliseringPanel p3 = new OptimaliseringPanel();
+    private ConfiguratiePanel p1 = new ConfiguratiePanel();
+    private OptimaliseringPanel p3 = new OptimaliseringPanel();
 
-    JTabbedPane tp;
-
-    public Scherm() {
+    Scherm() {
+        MonitorPanel p2 = new MonitorPanel();
         //p2.start(); //uncomment voor een werkend monitorpanel
         // actionlisteners
         p1.opslaanbutton.addActionListener(this);
@@ -24,7 +22,7 @@ public class Scherm extends JFrame implements ActionListener {
 
         setTitle("Applicatie");
 
-        tp = new JTabbedPane();
+        JTabbedPane tp = new JTabbedPane();
 
         tp.add("Configuratie", p1);
         tp.add("Monitoren", p2);

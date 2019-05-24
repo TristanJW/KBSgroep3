@@ -1,45 +1,40 @@
 package Applicatie;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class HuidigeConfiguratie {
+class HuidigeConfiguratie {
 
     private ArrayList<NetwerkComponent> netwerkLijst;
 
-    public HuidigeConfiguratie() {
+    HuidigeConfiguratie() {
         this.netwerkLijst = new ArrayList<NetwerkComponent>();
     }
 
-    public ArrayList<NetwerkComponent> getNetwerkLijst() {
+    ArrayList<NetwerkComponent> getNetwerkLijst() {
         return netwerkLijst;
     }
 
-    public void voegToe(NetwerkComponent component) {
+    void voegToe(NetwerkComponent component) {
         netwerkLijst.add(component);
     }
 
-    public void verwijderComponent(NetwerkComponent component) {
+    void verwijderComponent(NetwerkComponent component) {
         netwerkLijst.remove(component);
     }
 
     //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
-    public double berekenBeschikbaarheid() {
-        double uitkomst = (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
-        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3, RoundingMode.UP);
-        uitkomst = afgerondeUitkomst.doubleValue();
-        return uitkomst;
+    double berekenBeschikbaarheid() {
+        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
     }
 
-    public void Optimaliseer(double percentage) {
+    void Optimaliseer(double percentage) {
         Algoritme algoritme = new Algoritme();
         netwerkLijst = algoritme.maakCombinatie(percentage);
     }
 
-    public double berekenComponent(Class type) {
+    private double berekenComponent(Class type) {
         double beschikbaarheid = 1;
         // voor elke component wordt gekeken of het een webserver is.
         // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
@@ -53,7 +48,7 @@ public class HuidigeConfiguratie {
 
     // looped over alle items in de netwerklijst ArrayList en telt de prijs bij
     // elkaar op, returned dit als int
-    public String berekenTotalePrijs() {
+    String berekenTotalePrijs() {
         int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerkLijst) {
@@ -65,7 +60,7 @@ public class HuidigeConfiguratie {
         return totalePrijs + " Euro";
     }
 
-    public int dbTotalePrijs() {
+    int dbTotalePrijs() {
         int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerkLijst) {
@@ -77,13 +72,13 @@ public class HuidigeConfiguratie {
         return totalePrijs;
     }
 
-    public void configuratieNaarDatabase(String query) {
+    void configuratieNaarDatabase(String query) {
         JDBC database = new JDBC();
         database.dataToevoegen(query);
 
     }
 
-    public void dataNaarNetwerk(ResultSet resultaat) throws SQLException {
+    void dataNaarNetwerk(ResultSet resultaat) throws SQLException {
         while (resultaat.next()) {
             String naam = resultaat.getString("Naam");
             int itemID = resultaat.getInt("itemID");
