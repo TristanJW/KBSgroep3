@@ -41,7 +41,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
         setLayout(null);
 
         //// LABELS ////
-        JLabel hoofdtekst = new JLabel("Klik op de componenten die gebruikt moeten worden");
+        JLabel hoofdtekst = new JLabel("Klik op de knoppen om toe te voegen | Klik op een toegevoegd component om te verwijderen");
         JLabel dbserverlabel = new JLabel("DBserver");
         JLabel firewalllabel = new JLabel("Firewall");
         JLabel loadbalancerlabel = new JLabel("Loadbalancer");
@@ -86,7 +86,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             firewalllabel.setBounds(40, 135, 100, 10);
             loadbalancerlabel.setBounds(30, 260, 100, 10);
             webserverlabel.setBounds(40, 385, 100, 10);
-            hoofdtekst.setBounds(250, 5, 400, 15);
+            hoofdtekst.setBounds(200, 5, 600, 15);
             totaleprijslabel.setBounds(50, 530, 400, 15);
             totaleuptimelabel.setBounds(50, 545, 400, 15);
             add(totaleprijslabel);

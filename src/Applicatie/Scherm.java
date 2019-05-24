@@ -13,6 +13,7 @@ public class Scherm extends JFrame implements ActionListener {
     private OptimaliseringPanel p3 = new OptimaliseringPanel();
 
     Scherm() {
+        MonitorPanel p2 = new MonitorPanel();
         //p2.start(); //uncomment voor een werkend monitorpanel
         // actionlisteners
         p1.opslaanbutton.addActionListener(this);
@@ -24,7 +25,6 @@ public class Scherm extends JFrame implements ActionListener {
         JTabbedPane tp = new JTabbedPane();
 
         tp.add("Configuratie", p1);
-        MonitorPanel p2 = new MonitorPanel();
         tp.add("Monitoren", p2);
         tp.add("Optimaliseren", p3);
 

@@ -3,13 +3,12 @@ package Applicatie;
 
 import java.util.ArrayList;
 
-public class Algoritme {
+class Algoritme {
     private ArrayList<NetwerkComponent> netwerk = new ArrayList<>();
     private LeveranciersLijst leverancier = new LeveranciersLijst();
     private int kostenroof = 0;
     private Boolean webserversDoorlopen = false;
     private Boolean DBServersDoorlopen = false;
-    private Boolean DBServersVerzet = false;
 
     ArrayList<NetwerkComponent> maakCombinatie(double percentage) {
         // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver heeft.
@@ -49,7 +48,7 @@ public class Algoritme {
         return (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class, netwerk) / 100) * berekenComponent(DBServer.class, netwerk) >= percentage;
     }
 
-        private ArrayList<NetwerkComponent> maakGoedkoper(double percentage, ArrayList<NetwerkComponent> netwerk) {
+    private ArrayList<NetwerkComponent> maakGoedkoper(double percentage, ArrayList<NetwerkComponent> netwerk) {
         //een ontwerp maken dat gebaseerd is op netwerk
         ArrayList<NetwerkComponent> ontwerp = netwerk;
 
