@@ -6,40 +6,37 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-class HuidigeConfiguratie {
+public class HuidigeConfiguratie {
 
     private ArrayList<NetwerkComponent> netwerkLijst;
 
-    HuidigeConfiguratie() {
+    public HuidigeConfiguratie() {
         this.netwerkLijst = new ArrayList<NetwerkComponent>();
     }
 
-    ArrayList<NetwerkComponent> getNetwerkLijst() {
+    public ArrayList<NetwerkComponent> getNetwerkLijst() {
         return netwerkLijst;
     }
 
-    void voegToe(NetwerkComponent component) {
+    public void voegToe(NetwerkComponent component) {
         netwerkLijst.add(component);
     }
 
-    void verwijderComponent(NetwerkComponent component) {
+    public void verwijderComponent(NetwerkComponent component) {
         netwerkLijst.remove(component);
     }
 
     //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
     double berekenBeschikbaarheid() {
-        double uitkomst = (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
-        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3, RoundingMode.UP);
-        uitkomst = afgerondeUitkomst.doubleValue();
-        return uitkomst;
+        return (berekenComponent(Firewall.class) / 100) * (berekenComponent(LoadBalancer.class) / 100) * (berekenComponent(Webserver.class) / 100) * berekenComponent(DBServer.class);
     }
 
-    void Optimaliseer(double percentage) {
+    public void Optimaliseer(double percentage) {
         Algoritme algoritme = new Algoritme();
         netwerkLijst = algoritme.maakCombinatie(percentage);
     }
 
-    private double berekenComponent(Class type) {
+    public double berekenComponent(Class type) {
         double beschikbaarheid = 1;
         // voor elke component wordt gekeken of het een webserver is.
         // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
@@ -53,7 +50,7 @@ class HuidigeConfiguratie {
 
     // looped over alle items in de netwerklijst ArrayList en telt de prijs bij
     // elkaar op, returned dit als int
-    String berekenTotalePrijs() {
+    public String berekenTotalePrijs() {
         int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerkLijst) {
@@ -65,7 +62,7 @@ class HuidigeConfiguratie {
         return totalePrijs + " Euro";
     }
 
-    int dbTotalePrijs() {
+    public int dbTotalePrijs() {
         int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerkLijst) {
@@ -77,13 +74,13 @@ class HuidigeConfiguratie {
         return totalePrijs;
     }
 
-    void configuratieNaarDatabase(String query) {
+    public void configuratieNaarDatabase(String query) {
         JDBC database = new JDBC();
         database.dataToevoegen(query);
 
     }
 
-    void dataNaarNetwerk(ResultSet resultaat) throws SQLException {
+    public void dataNaarNetwerk(ResultSet resultaat) throws SQLException {
         while (resultaat.next()) {
             String naam = resultaat.getString("Naam");
             int itemID = resultaat.getInt("itemID");

@@ -1,8 +1,6 @@
 
 package Applicatie;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Algoritme {
@@ -11,6 +9,7 @@ public class Algoritme {
     private int kostenroof = 0;
     private Boolean webserversDoorlopen = false;
     private Boolean DBServersDoorlopen = false;
+    private Boolean DBServersVerzet = false;
 
     ArrayList<NetwerkComponent> maakCombinatie(double percentage) {
         // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver heeft.
@@ -55,30 +54,30 @@ public class Algoritme {
         ArrayList<NetwerkComponent> ontwerp = netwerk;
 
         while (!webserversDoorlopen && !DBServersDoorlopen) {
-            //foor loop om het juiste component te bepalen.
+            //for loop om het juiste component te bepalen.
             for (int j = 0; j < leverancier.aanbodWebserver.size() - 1; j++) {
                 //goedkoopste component en de volgende in het aanbod is de duurdere
                 NetwerkComponent goedkoopsteWS = leverancier.aanbodWebserver.get(0);
                 NetwerkComponent duurdereWS = leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.indexOf(goedkoopsteWS) + 1);
                 
-                int aantal = hoeveelVanX(goedkoopsteWS,ontwerp);
-                //elke goedkoopste component een plaats omhoog zetten
-                for (int i = 0; i < aantal; i++) {
-                    ontwerp.set(ontwerp.lastIndexOf(goedkoopsteWS), duurdereWS);
-                }
+                    int aantal = hoeveelVanX(goedkoopsteWS,ontwerp);
+                    //elke goedkoopste component een plaats omhoog zetten
+                    for (int i = 0; i < aantal; i++) {
+                        ontwerp.set(ontwerp.lastIndexOf(goedkoopsteWS), duurdereWS);
+                    }
                 //kijken of het goedkoper is en of het nog wel voldaan is aan het percentage
                 //als dit niet zo is dan gaan we eerst weer een goedkope webserver toevoegen
                 //als dat nog niet werkt gaan we helemaal terug naar de vorige stap en eindigt de loop
+                //precies hetzelfde wordt gedaan bij DBServers
                 for (int i = 0; i < hoeveelVanX(duurdereWS, ontwerp); i++) {
                     if (kostenroof < berekenTotalePrijs(ontwerp)) {
                         ontwerp.remove(duurdereWS);
+                        if(!isVoldaan(percentage,ontwerp)){
+                            ontwerp.add(goedkoopsteWS);
+                            break;
+                        }
                     } else if (isVoldaan(percentage, ontwerp)) {
                         kostenroof = berekenTotalePrijs(ontwerp);
-                    }
-                    if (!isVoldaan(percentage, ontwerp)) {
-                        ontwerp.add(goedkoopsteWS);
-                    } else {
-                        break;
                     }
                 }
             }
@@ -87,25 +86,33 @@ public class Algoritme {
                 NetwerkComponent goedkoopsteDB = leverancier.aanbodDBServer.get(0);
                 NetwerkComponent duurdereDB = leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.indexOf(goedkoopsteDB) + 1);
                 
-                int aantal = hoeveelVanX(goedkoopsteDB,ontwerp);
-                for (int i = 0; i < aantal; i++) {
-                    ontwerp.set(ontwerp.lastIndexOf(goedkoopsteDB), duurdereDB);
+                if(!DBServersVerzet){
+                    int aantal = hoeveelVanX(goedkoopsteDB,ontwerp);
+                    for (int i = 0; i < aantal; i++) {
+                        ontwerp.set(ontwerp.lastIndexOf(goedkoopsteDB), duurdereDB);
+                    }
+                    DBServersVerzet = true;
                 }
-                for (int i = 0; i < hoeveelVanX(duurdereDB, ontwerp); i++) {
+                int aantalDB = hoeveelVanX(duurdereDB,ontwerp);
+                for (int i = 0; i < aantalDB; i++) {
                     if (kostenroof < berekenTotalePrijs(ontwerp)) {
                         ontwerp.remove(duurdereDB);
+                        if(!isVoldaan(percentage,ontwerp)){
+                            ontwerp.add(goedkoopsteDB);                
+                            break;
+                        }
                     } else {
                         kostenroof = berekenTotalePrijs(ontwerp);
                     }
                     if (!isVoldaan(percentage, ontwerp)) {
                         ontwerp.add(goedkoopsteDB);
-                    } else {
-                        break;
                     }
                 }
             }
         }
-        DBServersDoorlopen = true;
+        //een laatste db server veranderen in de goedkoopste
+        //het algoritme wil volgens onze logica het niet veranderen in het algoritme
+        ontwerp.set(ontwerp.lastIndexOf(leverancier.aanbodDBServer.get(1)), leverancier.aanbodDBServer.get(0));
         return netwerk;
     }
 
@@ -132,12 +139,9 @@ public class Algoritme {
         return (1 - beschikbaarheid) * 100;
     }
 
-    //afronding want als we naar 5 plaatsen achter de comma gaan dan wordt er fout afgerond
+    //methode die de beschikbaarheid van een heel netwerk uitrekend
     public double berekenBeschikbaarheid(ArrayList<NetwerkComponent> netwerk) {
-        double uitkomst = (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class, netwerk) / 100) * berekenComponent(DBServer.class, netwerk);
-        BigDecimal afgerondeUitkomst = new BigDecimal(uitkomst).setScale(3, RoundingMode.UP);
-        uitkomst = afgerondeUitkomst.doubleValue();
-        return uitkomst;
+        return (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class, netwerk) / 100) * berekenComponent(DBServer.class, netwerk);
     }
 
     //methode voor het berekenen van de totale prijs
