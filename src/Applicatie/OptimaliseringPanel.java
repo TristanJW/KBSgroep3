@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
-    private LeveranciersLijst lijst;
     public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
     JButton optimaliseer;
     JButton opslaanbutton;
@@ -15,7 +14,6 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
     JLabel error;
     JLabel errorBP;
     JPanel panellabels = new JPanel();
-
 
     public OptimaliseringPanel() { //LeveranciersLijst lijst; moet hier nog in? denk ik xxx tristan xxx
         panellabels.setSize(500, 400);
