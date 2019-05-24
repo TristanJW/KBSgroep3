@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-public class Tekenpanel extends JPanel {
+public class TekenPanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -12,7 +12,7 @@ public class Tekenpanel extends JPanel {
         g.drawRect(0, 0, 600, 470);
     }
 
-    Tekenpanel() {
+    TekenPanel() {
         setLayout(null);
     }
 }
