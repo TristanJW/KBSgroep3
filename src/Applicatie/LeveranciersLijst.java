@@ -3,13 +3,13 @@ package Applicatie;
 import java.util.ArrayList;
 import java.sql.*;
 
-public class LeveranciersLijst {
+class LeveranciersLijst {
     static ArrayList<NetwerkComponent> aanbodWebserver;
     static ArrayList<NetwerkComponent> aanbodDBServer;
     static ArrayList<NetwerkComponent> aanbodLoadBalancer;
     static ArrayList<NetwerkComponent> aanbodFirewall;
 
-    public LeveranciersLijst() {
+    LeveranciersLijst() {
         aanbodWebserver = new ArrayList<>();
         aanbodDBServer = new ArrayList<>();
         aanbodLoadBalancer = new ArrayList<>();
@@ -48,7 +48,7 @@ public class LeveranciersLijst {
         }
     }
 
-    public String[] zoekNaam(String term, ArrayList<NetwerkComponent> lijst) {
+    String[] zoekNaam(String term, ArrayList<NetwerkComponent> lijst) {
         int counter = 0;
         for (NetwerkComponent nc : lijst) {
             if (nc.getClassNaam().toLowerCase().equals(term)) {

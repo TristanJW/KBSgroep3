@@ -13,12 +13,12 @@ import javax.swing.JTextField;
 public class OpslaanDialoog extends JDialog implements ActionListener {
     private HuidigeConfiguratie netwerk;
     private int hoogsteID;
-    JDBC database = new JDBC();
-    LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
-    JTextField opslaannaam;
-    JButton ODopslaanbutton;
+    private JDBC database = new JDBC();
+    private LocalDate datum = LocalDate.now(ZoneId.of("Europe/Amsterdam"));
+    private JTextField opslaannaam;
+    private JButton ODopslaanbutton;
 
-    public OpslaanDialoog(JFrame frame1) {
+    private OpslaanDialoog(JFrame frame1) {
         super(frame1, true);
         setLayout(null);
         setTitle("Opslaan");
@@ -33,12 +33,12 @@ public class OpslaanDialoog extends JDialog implements ActionListener {
         this.add(ODopslaanbutton);
     }
 
-    public OpslaanDialoog(JFrame frame1, ConfiguratiePanel config1) {
+    OpslaanDialoog(JFrame frame1, ConfiguratiePanel config1) {
         this(frame1);
         netwerk = config1.netwerk;
     }
 
-    public OpslaanDialoog(JFrame frame1, OptimaliseringPanel config1) {
+    OpslaanDialoog(JFrame frame1, OptimaliseringPanel config1) {
         this(frame1);
         netwerk = config1.netwerk;
     }

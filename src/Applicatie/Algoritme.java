@@ -12,7 +12,7 @@ public class Algoritme {
     private Boolean webserversDoorlopen = false;
     private Boolean DBServersDoorlopen = false;
 
-    public ArrayList<NetwerkComponent> maakCombinatie(double percentage) {
+    ArrayList<NetwerkComponent> maakCombinatie(double percentage) {
         // kijken of netwerklijst al een firewall, loadbalancer, webserver of dbserver heeft.
         if (netwerk.isEmpty()) {
             netwerk.add(leverancier.aanbodFirewall.get(0));
@@ -120,7 +120,7 @@ public class Algoritme {
         return counter;
     }
 
-    public double berekenComponent(Class type, ArrayList<NetwerkComponent> netwerk) {
+    private double berekenComponent(Class type, ArrayList<NetwerkComponent> netwerk) {
         double beschikbaarheid = 1;
         // voor elke component wordt gekeken of het een webserver is.
         // hierna wordt de formule uitgevoerd voor de beschikbaarheid.
@@ -141,7 +141,7 @@ public class Algoritme {
     }
 
     //methode voor het berekenen van de totale prijs
-    public int berekenTotalePrijs(ArrayList<NetwerkComponent> netwerk) {
+    private int berekenTotalePrijs(ArrayList<NetwerkComponent> netwerk) {
         int totalePrijs = 0;
         try {
             for (NetwerkComponent component : netwerk) {

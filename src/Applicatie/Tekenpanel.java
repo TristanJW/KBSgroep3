@@ -12,7 +12,7 @@ public class Tekenpanel extends JPanel {
         g.drawRect(0, 0, 600, 470);
     }
 
-    public Tekenpanel() {
+    Tekenpanel() {
         setLayout(null);
     }
 }

@@ -7,9 +7,9 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
-public class SSHConnectie {
+class SSHConnectie {
 
-    public static String SSHConnect(String user, String host, String password, String command) {
+    static String SSHConnect(String user, String host, String password, String command) {
 
         String CommandOutput = null;
         try {
@@ -47,6 +47,7 @@ public class SSHConnectie {
                 try {
                     Thread.sleep(1000);
                 } catch (Exception ee) {
+                    System.out.println(ee);
                 }
             }
             channel.disconnect();

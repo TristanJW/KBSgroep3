@@ -7,15 +7,15 @@ import java.text.DecimalFormat;
 
 public class OptimaliseringPanel extends JPanel implements ActionListener {
 
-    public HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
-    JButton optimaliseer;
+    HuidigeConfiguratie netwerk = new HuidigeConfiguratie();
+    private JButton optimaliseer;
     JButton opslaanbutton;
     private JTextField percentage;
-    JLabel error;
-    JLabel errorBP;
-    JPanel panellabels = new JPanel();
+    private JLabel error;
+    private JLabel errorBP;
+    private JPanel panellabels = new JPanel();
 
-    public OptimaliseringPanel() { //LeveranciersLijst lijst; moet hier nog in? denk ik xxx tristan xxx
+    OptimaliseringPanel() { //LeveranciersLijst lijst; moet hier nog in? denk ik xxx tristan xxx
         panellabels.setSize(500, 400);
         panellabels.setBounds(50, 50, 500, 500);
         panellabels.setLayout(null);
@@ -94,7 +94,6 @@ public class OptimaliseringPanel extends JPanel implements ActionListener {
                 repaint();
                 panellabels.add(error);
             }
-
         }
     }
 }
