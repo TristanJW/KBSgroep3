@@ -222,8 +222,8 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
             } else {
                 totaleuptimelabel.setText(netwerk.berekenBeschikbaarheid() + " %");// update de totale uptime
             }
-            repaint();
         }
+        repaint();
     }
 
     private void setAlletypescomponenten() {
