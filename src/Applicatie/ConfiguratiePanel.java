@@ -34,7 +34,7 @@ public class ConfiguratiePanel extends JPanel implements ActionListener {
     private JComboBox loadbalancerdropdown = new JComboBox(leverancier.zoekNaam("loadbalancer", leverancier.aanbodLoadBalancer));
     private JComboBox webserverdropdown = new JComboBox(leverancier.zoekNaam("webserver", leverancier.aanbodWebserver));
 
-    private Tekenpanel tekenp = new Tekenpanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
+    private TekenPanel tekenp = new TekenPanel(); //deel waarin de aangeklikte componenten komen binnen de zwarte rand
 
     ConfiguratiePanel() {
         netwerk = new HuidigeConfiguratie();
