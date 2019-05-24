@@ -49,35 +49,34 @@ public class Algoritme {
         return (berekenComponent(Firewall.class, netwerk) / 100) * (berekenComponent(LoadBalancer.class, netwerk) / 100) * (berekenComponent(Webserver.class, netwerk) / 100) * berekenComponent(DBServer.class, netwerk) >= percentage;
     }
 
-    private ArrayList<NetwerkComponent> maakGoedkoper(double percentage, ArrayList<NetwerkComponent> netwerk) {
+        private ArrayList<NetwerkComponent> maakGoedkoper(double percentage, ArrayList<NetwerkComponent> netwerk) {
         //een ontwerp maken dat gebaseerd is op netwerk
         ArrayList<NetwerkComponent> ontwerp = netwerk;
 
         while (!webserversDoorlopen && !DBServersDoorlopen) {
-            //for loop om het juiste component te bepalen.
+            //foor loop om het juiste component te bepalen.
             for (int j = 0; j < leverancier.aanbodWebserver.size() - 1; j++) {
                 //goedkoopste component en de volgende in het aanbod is de duurdere
                 NetwerkComponent goedkoopsteWS = leverancier.aanbodWebserver.get(0);
                 NetwerkComponent duurdereWS = leverancier.aanbodWebserver.get(leverancier.aanbodWebserver.indexOf(goedkoopsteWS) + 1);
 
-                int aantal = hoeveelVanX(goedkoopsteWS, ontwerp);
                 //elke goedkoopste component een plaats omhoog zetten
-                for (int i = 0; i < aantal; i++) {
+                for (int i = 0; i < hoeveelVanX(goedkoopsteWS, ontwerp); i++) {
                     ontwerp.set(ontwerp.lastIndexOf(goedkoopsteWS), duurdereWS);
                 }
                 //kijken of het goedkoper is en of het nog wel voldaan is aan het percentage
                 //als dit niet zo is dan gaan we eerst weer een goedkope webserver toevoegen
                 //als dat nog niet werkt gaan we helemaal terug naar de vorige stap en eindigt de loop
-                //precies hetzelfde wordt gedaan bij DBServers
                 for (int i = 0; i < hoeveelVanX(duurdereWS, ontwerp); i++) {
                     if (kostenroof < berekenTotalePrijs(ontwerp)) {
                         ontwerp.remove(duurdereWS);
-                        if (!isVoldaan(percentage, ontwerp)) {
-                            ontwerp.add(goedkoopsteWS);
-                            break;
-                        }
                     } else if (isVoldaan(percentage, ontwerp)) {
                         kostenroof = berekenTotalePrijs(ontwerp);
+                    }
+                    if (!isVoldaan(percentage, ontwerp)) {
+                        ontwerp.add(goedkoopsteWS);
+                    } else {
+                        break;
                     }
                 }
             }
@@ -86,33 +85,24 @@ public class Algoritme {
                 NetwerkComponent goedkoopsteDB = leverancier.aanbodDBServer.get(0);
                 NetwerkComponent duurdereDB = leverancier.aanbodDBServer.get(leverancier.aanbodDBServer.indexOf(goedkoopsteDB) + 1);
 
-                if (!DBServersVerzet) {
-                    int aantal = hoeveelVanX(goedkoopsteDB, ontwerp);
-                    for (int i = 0; i < aantal; i++) {
-                        ontwerp.set(ontwerp.lastIndexOf(goedkoopsteDB), duurdereDB);
-                    }
-                    DBServersVerzet = true;
+                for (int i = 0; i < hoeveelVanX(goedkoopsteDB, ontwerp); i++) {
+                    ontwerp.set(ontwerp.lastIndexOf(goedkoopsteDB), duurdereDB);
                 }
-                int aantalDB = hoeveelVanX(duurdereDB, ontwerp);
-                for (int i = 0; i < aantalDB; i++) {
+                for (int i = 0; i < hoeveelVanX(duurdereDB, ontwerp); i++) {
                     if (kostenroof < berekenTotalePrijs(ontwerp)) {
                         ontwerp.remove(duurdereDB);
-                        if (!isVoldaan(percentage, ontwerp)) {
-                            ontwerp.add(goedkoopsteDB);
-                            break;
-                        }
                     } else {
                         kostenroof = berekenTotalePrijs(ontwerp);
                     }
                     if (!isVoldaan(percentage, ontwerp)) {
                         ontwerp.add(goedkoopsteDB);
+                    } else {
+                        break;
                     }
                 }
             }
         }
-        //een laatste db server veranderen in de goedkoopste
-        //het algoritme wil volgens onze logica het niet veranderen in het algoritme
-        ontwerp.set(ontwerp.lastIndexOf(leverancier.aanbodDBServer.get(1)), leverancier.aanbodDBServer.get(0));
+        DBServersDoorlopen = true;
         return netwerk;
     }
 
